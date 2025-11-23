@@ -6,3 +6,6 @@
 - Virtualization and Cloud Computing (NSWI150) (2024-2025)
 - Recommended Programming Practices (NPRG043) (2023-2024)
 - Programming in Parallel Environment (NPRG042) (2023-2024)
+- Advanced C# Programming (NPRG038) (2023-2024)
+- Software Development Tools (NSWI154) (2023-2024)
+- Principles of Compilers (NSWI098) (2023-2024)
