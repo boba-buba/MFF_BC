@@ -9,3 +9,8 @@
 - Advanced C# Programming (NPRG038) (2023-2024)
 - Software Development Tools (NSWI154) (2023-2024)
 - Principles of Compilers (NSWI098) (2023-2024)
+- Operating Systems (NSWI200) (2023-2024)
+- Probability and Statistics 1 (NMAI059) (2021-2022)
+- Computer Systems (NSWI170) (2021-2022)
+- Programming of Web Applications (NSWI142) (2022-2023)
+- Modern Database Systems (NDBI040) (2022-2023)
