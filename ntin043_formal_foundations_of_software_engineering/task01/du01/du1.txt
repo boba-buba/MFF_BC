@@ -1,0 +1,81 @@
+Autonomous Car
+==============
+task 1: create algebraic specification of a control system for autonomous cars
+	- what you should capture in your model (specification, prototype):
+		- common input sensor devices (position/GPS, current speed, camera, lidar, radar, etc) that provide new data continuously (every unit of time)
+		- input processing subsystem that identifies: obstacles, road lanes, other cars, pedestrians, and so on
+			- ignore details about how the subsystem does that (just assume it is a magic black-box that notifies the control subsystem when it detects some object)
+		- control unit (subsystem) that decides about the next action (keep going with the same speed, accelerate, slow down, stop abruptly, turn right or left, ...)
+		- actual "hardware components" of the car (engine, wheels, brakes)
+	- focus on modeling the input sensors that provide data about environment, control unit (subsystem) that decides what action to take next, and physical "hardware" that really performs the desired actions
+		- design some abstraction of the input processing subsystem (ignore details)
+
+task 2: document your solution
+	- explain key decisions and high-level design
+
+    The model consists of submodels that are dependent on each other and together represent the model of the autonomous car.
+    There are n models
+    1. Obstacle. The model represents collection of various physical objects that can be analized by other models.
+    2. GPS system. Model provides functionality to get current position in coordinates or special object GPSTerrain for further analysis.
+    3. Camera. Model is needed for getting visual information about current locality. Apart from that GPS system info and Camera info can be combined for more detailed analysis of locality that reflects reality.
+    4. Speed. Speedometer is responsible for getting current speed and changeing it.
+    5. Lidar. Lidar model is not very detailed and is basically provides scans of the current locality. Other than that Lidar and Radar data can be combined foe detailed analysis.
+    6. Radar. Same as lidar is not very detailed and provides opportunity to get scan of the current locality and combine it with lidar data.
+    7. Input processing. Model uses all models 1-6 io analyze input data and indicate wether there is an obstacle or whether the desired speed can be set.
+    8. Engine. Hardware part that is controlled by control unit. Provides opportunity to change state of the engine.
+    9. Wheels. Again hardware part that is managed by control unit. Can accelerate/decelerate rotation of the wheels and change teir direction.
+    10. Brakes. Another hardware sub-model that is responsible for applying and releasing brakes. Managed by control unit.
+    11. Control Unit. The most important part that includes Input processing (7) and hardware parts 8-10. Control unit based on results of analysis from input processing desides what hardware parts must do next.
+
+    The general idea was to descibe complex model using smaller models. Sometimes it was intuitively and sometimes it was not. I did not know if I succeded, but I wanted for different models to be "black boxes" to each other.
+    Models which include some other models would basically use "API" of the included model. At least that was the idea. I did not want to create one big model with everything in it for several reasons. First, all submodels would
+     be accessible to eache other even when it doesnt make sense, for example engine and camera;
+    second, such division helps to understand layers of the model, like they are described in the assignment: input detectors -> input processor -> control unit -> HW parts.
+
+    More detailed docs are in the file with the model.
+
+task 3: prepare some test cases (scenarios, inputs)
+	- common scenarios that may occur in a real traffic on the road (street)
+    1. reduce in OBSTACLE : TypeOfPhysicalObject(pedestrian) .
+    2. reduce in OBSTACLE : physObjIsObstacle(otherCar) .
+    3. reduce in GPS : getTerrainLatitude(getTerrain(getCurrentLatitude(gpsSystemCoordinates(9.0, 8.0)), getCurrentLongitude(gpsSystemCoordinates(9.0, 8.0)))) .
+    4. reduce in INPUT_PROCESSING : speedCanBeSet(50, gpsSystemTerrain(city)) .
+    5. reduce in INPUT_PROCESSING : isObstacleAhead(combineGPSCamera(cameraGetCurrentImage(camera), highway), combineLidarRadar(scanLidarTerrain(lidar), scanRadarTerrain(radar))) .
+    6. reduce in CONTROL_UNIT : changeCarState(carState(keepGoing, released, wheelState(moving, speed(40), straight), engineState(running, 1200), speedometer(30)), carState(carAccelerate, released, wheelState(moving, speed(80), straight), engineState(running, 1000), speedometer(80)), isObstacleAhead(combineGPSCamera(cameraGetCurrentImage(C), highway), combineLidarRadar(scanLidarTerrain(lidar), scanRadarTerrain(radar)))) .
+
+task 4: evaluate your solution (model) according to the following criteria
+
+	- level of abstraction (in the sense "what details you ignored")
+    Technical details of how Lidar, radar and other parts work. I dont think I described input processing model in the best way, as its functionality is pretty limited, but I could not come up with more functions it can provide.
+
+	- level of approximation (over-, under-) in the sense "over-specification/over-constraining (specification is too restrictive) versus under-specification/under-constraining (model is too permissive)"
+	There are definitely some restrictions, for example there is restricted set of type of obstacles. Not all HW parts are described (only basics like engine, brakes, wheels).
+    I cant unecuivocally say that the model is too restrictive or too permissive because in some parts like terrain types it is too restrictive and in other parts like speed of car/wheels/engine it is too permissive as there is no restriction 
+    of allowed maximum/minimum at all.
+
+    - ambiguity versus precision
+    It was really hard not to go down the rabbit hole with precision with some sub-models when I got ideas how to describe various small details. And in case of other sub-models I did not know details about I was stuck as it was hard
+     to grasp something more complex than a general idea. In the end I still have some sub-models described better than others.
+
+	- completeness (all scenarios)
+    I definitely did not describe all scenarios. In documentation I found pretty neat way to describe potential scenrios with rules and conditional rules. In some models
+    there are more of suct rules, because I understood the model better. But even in those more detailed models not all scenarios are described.
+
+task 5: tell me your opinion about the modeling language, tool, and the whole approach (methodology) based on your personal experience
+    In general the tool is OK (easy to install, launch, debugging syntax could be better but is tolerale), the language is not as intuitive as I would like it to be and because the language
+    is not popular the only source of information is documentation, where I need to find one small detail in several hundred pages. I tried using chatGPT as an explaining tool for when I had 
+    mistakes in maude after loading my file or when I could find smth in documenation because I did not know how it is called in the maude language. ChatGPT was not really that helpful, some 
+    it suggestions (how to fix a problem) were not successful and it took a while and several tabs of different docs to find the right way.
+
+    I have conflicting thoughts on the approach. I get what the purpose is: to describe the model of the system without complicated details of implementation and to maybe to certain
+    extent simulate the model behavior in different situation. But the language which is basically a tool to describe system is not intuitive and that pretty much demotivates me to use it.
+    I think that some practices from SW engineering like activity digrams, state diagrams etc. can describe the system and stakeholders requirements.
+
+	- specifically, can you imagine to use something like that (whole approach) in practice given proper tool support in some iDE
+    I think the modeling language has the potential as systems are becoming more and more complex and we as engineers sometimes need to see a whole picture with different levels of details.
+    The tool and language definitely need more support and popularity for more examples of use (and here not particularly scenarios when to use a modeling tool, but examples of syntax usage).
+    With that I think I could imagine myself using a tool in real situation, because by thinking about the way to represent the model I was thinking about the system itself more and more and
+     that helped with designing the modesl.
+
+	- possible usage scenarios to consider: validating the design of a complex system, capturing and validating requirements (maybe for consistency), precise documentation
+    I think it would be really helpful in case of complex systems as I said before as it is a nice way (when done rigth) to describe model with various levels of abstractions.

@@ -1,0 +1,5 @@
+maude
+*.maude
+*.sty
+
+!du01/aut_car.maude

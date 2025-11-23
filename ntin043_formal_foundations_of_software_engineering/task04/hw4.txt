@@ -1,0 +1,58 @@
+topic: Colored Petri Nets or TLA+/PlusCal
+
+deadline: 16.2.2025
+
+note: you can use either Colored Petri Nets or TLA+/PlusCal (if you are brave)
+
+task 1: create model for air traffic control system at middle-sized international airport (Prague, Vienna)
+	- you should capture the following:
+
+	main control tower,
+	multiple runways (at least 2),
+	several airplanes (take-off, descent),
+	input from radar,
+	communication between the control tower and some airplanes
+
+task 2: document your solution
+	- explain key overall design decisions
+	I tried to break the model into 3 parts:
+	1. Approaching airport and getting permission to land
+	2. Runways
+	3. Preflight (setting everyrthing up for the takeoff)
+
+	In PetriDotNet I tried to create several single tokens and on complex (consists of those single ones). Plane is a complex token that consists of singles: 
+	plane_vehicle (just abstract object) and allowed_to_land (has bool values), but again I was not able to run simulation at all. The idea was that single tokens can take some paths
+	and then in case of success they could assemble into one complex token and move forward (for example with approaching allowed_to_land would go through transition send_msg_about_approaching
+	and in case of success it would move Plane forward to one of the runways.) But I did not find a way to simulate it.
+
+task 3: evaluate your solution (model) according to the following criteria
+	- level of abstraction (in the sense "what details you ignored")
+	Specific details of some of the stages of the air traffic. Only preflight and approaching was described in details.
+
+	- level of approximation (over-, under-) in the sense "over-specification/over-constraining (specification is too restrictive) versus under-specification/under-constraining (model is too permissive)"
+	It was definetely under-specification as a lot of details were not described. Probably one of the problems was that I did not know what I can describe with CPN and was not sure that some parts
+	that I tried to describe were described in a right way.
+
+	- ambiguity versus precision
+	I tried to capture details of couple of the procedures precisely, but only couple, otherwise the model would become confusing (at least for me).
+
+	- completeness (all scenarios)
+	Only basic scenario with little details was described.
+
+task 4: tell me your opinion about the modeling language, tool, and the whole approach (methodology) based on your personal experience
+	- specifically, can you imagine to use something like that (whole approach) in practice given proper tool support in some IDE
+	This language and tools (IDEs for it) are the worst of the all languages that we had in this course. CPN: potentially great for capturing behavior of the constantly changing
+	environment, but the language is very poorly described. There is almost no examples, tutorials. For CPN I did not find any examples, the were only for Petri Nets, and even then,
+	they were trivial and the same across different sources. As for the IDEs, I was not able to install CPNTools or CPN IDE, as the programs would not start on my computer. I tried to
+	use PetriDotNet, I was able to install and run it, and I tried to follow tha manual on how to use it. It was not very successful as I tried to create some trivial models in petri nets, that
+	I was even able to run, but when I tried to create model in CPN I could not run the simulation at all. And in the end I did not find the reason why. The manual of PetriDotNet does not
+	describe or provide any examples on CPN.
+
+	- possible usage scenarios to consider: validating the design of a complex system, capturing and validating requirements (maybe for consistency), precise documentation
+	Again potentially great tool for modeling something like a plant, airport, trainstations and visual demonstration. But I still have a feeling that I do not know how to use it, what IDEs to use,
+	what exactly I can demonstrate with this modeling tool and how to do it.
+
+resources:
+	https://en.wikipedia.org/wiki/Air_traffic_control
+	https://science.howstuffworks.com/transport/flight/modern/air-traffic-control.htm
+

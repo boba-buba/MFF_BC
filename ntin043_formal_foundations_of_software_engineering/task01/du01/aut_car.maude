@@ -1,0 +1,504 @@
+*** Obstacle model defines different physical objects, some of which are obstacles.
+mod OBSTACLE is
+  *** Messaging for type of object.
+  protecting STRING .
+  protecting BOOL .
+
+  including CONFIGURATION .
+
+  *** All kinds of possible objects.
+  sorts Obstacle Lane CrossRoad OtherCar Pavement Pedestrian Wall PhysicalObject .
+  subsort Pedestrian OtherCar Pavement Wall < Obstacle .
+  subsorts Obstacle Lane CrossRoad < PhysicalObject .
+
+  --- Constructors for each Physical object type.
+  op pedestrian : -> Pedestrian [ctor] .
+  op otherCar : -> OtherCar [ctor] .
+  op pavement : -> Pavement [ctor] .
+  op wall : -> Wall [ctor] .
+  op lane : -> Lane [ctor] .
+  op crossroad : -> CrossRoad [ctor] .
+
+  *** Operations.
+  op TypeOfObstacle : Obstacle -> String .
+  op TypeOfPhysicalObject : PhysicalObject -> String .
+  op physObjIsObstacle : PhysicalObject -> Bool .
+
+  var P : Pedestrian .
+  var O : OtherCar .
+  var Pvm : Pavement .
+  eq TypeOfObstacle(P) = "Pedestrian" .
+  eq TypeOfObstacle(O) = "Other Car" .
+  eq TypeOfObstacle(Pvm) = "Pavement" .
+
+  var L : Lane .
+  var CR : CrossRoad .
+  eq TypeOfPhysicalObject(L) = "Lane" .
+  eq TypeOfPhysicalObject(CR) = "CrossRoad" .
+  eq TypeOfPhysicalObject(P) = "Obstacle" .
+  eq TypeOfPhysicalObject(O) = "Obstacle" .
+  eq TypeOfPhysicalObject(Pvm) = "Obstacle" .
+
+  eq physObjIsObstacle(P) = true .
+  eq physObjIsObstacle(O) = true .
+  eq physObjIsObstacle(Pvm) = true .
+  eq physObjIsObstacle(L) = false .
+  eq physObjIsObstacle(CR) = false .
+
+endm
+
+*** Lidar and rada are together and GPS and camera are 
+*** together and then input processor will interpret them.
+
+*** GPS system.
+mod GPS is
+
+  protecting FLOAT .
+  protecting STRING .
+  protecting NAT .
+
+  including OBSTACLE .
+
+  *** GPSTerrain image of terrain from GPS system database.
+  sorts GPSystem GPSTerrain Town Village City HighWay .
+  subsorts Town Village City HighWay < GPSTerrain .
+
+  *** Constructor for GPS system.
+  op gpsSystem : -> GPSystem [ctor] .
+  op gpsSystemTerrain : GPSTerrain -> GPSystem [ctor] .
+  op gpsSystemCoordinates : Float Float -> GPSystem [ctor] .
+
+  *** Get coordinates of current position, which is stored in GPSystem.
+  ops getCurrentLatitude getCurrentLongitude : GPSystem -> Float .
+
+  *** Get GPSTerrain image  based on coordinates.
+  op getTerrain : Float Float -> GPSTerrain .
+  op gpsTerrain : PhysicalObject PhysicalObject PhysicalObject -> GPSTerrain .
+
+  *** Get GPSTerrain coordinates based on GPSTerrain image.
+  ops getTerrainLongitude getTerrainLatitude : GPSTerrain -> Float .
+
+  *** Get type of terrain  based on GPSTerrain image.
+  op getTerrainType : GPSTerrain -> GPSTerrain .
+
+  *** Get max/min allowed speed in locality based on GPSTerrain.
+  ops getMaxAllowedSpeed getMinAllowedSpeed : GPSTerrain -> Nat .
+
+  *** Constructors for possible types of terrain.
+  op town : -> Town [ctor] .
+  op highway : -> HighWay [ctor] .
+  op city : -> City [ctor] .
+  op village : -> Village [ctor] .
+
+  *** Equations.
+  var T : Town .
+  var V : Village .
+  var HW : HighWay .
+  var C : City .
+  eq getTerrainType(T) = town .
+  eq getTerrainType(V) = village .
+  eq getTerrainType(HW) = highway .
+
+  eq getMaxAllowedSpeed(T) = 40 .
+  eq getMaxAllowedSpeed(V) = 30 .
+  eq getMaxAllowedSpeed(HW) = 90 .
+  eq getMaxAllowedSpeed(C) = 60 .
+  eq getMinAllowedSpeed(T) = 30 .
+  eq getMinAllowedSpeed(V) = 20 .
+  eq getMinAllowedSpeed(HW) = 70 .
+  eq getMinAllowedSpeed(C) = 35 .
+
+  var gps : GPSystem .
+  var X Y : Float .
+  eq getTerrainLongitude(getTerrain(getCurrentLatitude(gps), getCurrentLongitude(gps))) = getCurrentLongitude(gps) .
+  eq getTerrainLatitude(getTerrain(getCurrentLatitude(gps), getCurrentLongitude(gps))) = getCurrentLatitude(gps) .
+  eq getTerrainLatitude(getTerrain(getCurrentLatitude(gpsSystemCoordinates(X, Y)), getCurrentLongitude(gpsSystemCoordinates(X, Y)))) = getCurrentLatitude(gpsSystemCoordinates(X, Y)) .
+  eq getTerrainLongitude(getTerrain(getCurrentLatitude(gpsSystemCoordinates(X, Y)), getCurrentLongitude(gpsSystemCoordinates(X, Y)))) = getCurrentLongitude(gpsSystemCoordinates(X, Y)) .
+  eq getCurrentLatitude(gpsSystemCoordinates(X, Y)) = X .
+  eq getCurrentLongitude(gpsSystemCoordinates(X, Y)) = Y .
+  eq getTerrainLatitude(getTerrain(X, Y)) = X .
+  eq getTerrainLongitude(getTerrain(X, Y)) = Y .
+endm
+
+*** Camera system of the car. Can take a photo of the current loaclity and combine it with GPS data.
+mod CAMERA is
+  protecting NAT .
+
+  including OBSTACLE .
+  including GPS .
+  including BOOL .
+
+  *** CameraTerrain is image taken by the camera.
+  sort Camera CameraTerrain CombinedTerrain .
+
+  *** Constructor for camera device.
+  op camera : -> Camera [ctor] .
+
+  *** Take a photo of current locality.
+  op cameraGetCurrentImage : Camera -> CameraTerrain [ctor] .
+
+  *** Layer camera image on top of image from the GPS database.
+  op combineGPSCamera : CameraTerrain GPSTerrain -> CombinedTerrain [ctor] .
+
+  *** 0-100 evaluation of combined images (if the images are of the same locality).
+  op combinationOK : CombinedTerrain -> Nat .
+
+  *** Define the type of object from the camera photo. If it is an obstacle or not defines OBSTACLE model.
+  *** This op basically serves as an input for OBSTACLE operations.
+  op TypeOfObject : CameraTerrain -> PhysicalObject .
+
+  var gps : GPSystem .
+  var C : Camera .
+  eq combinationOK(combineGPSCamera(cameraGetCurrentImage(C), getTerrain(getCurrentLatitude(gps), getCurrentLongitude(gps)))) = 100 .
+endm
+
+
+*** Speed module that enables getting/setting speed.
+mod SPEED is
+
+  protecting INT . *** To represent speed. NAT was not enough as - operator did not wat on NAT.
+
+  including GPS .
+
+  sorts Speedometer .
+
+  *** Constructor
+  op speedometer : Int -> Speedometer [ctor] .
+
+  *** Get the current speed of the car.
+  op getCurrentSpeed : Speedometer -> Int .
+
+  *** Cahnge speed of the car.
+  ops speedUp speedDown : Speedometer Int -> Speedometer .
+
+  var N M : Int .
+  var Sp : Speedometer .
+  eq getCurrentSpeed(speedUp(speedometer(M), N)) = N + M .
+  eq getCurrentSpeed(speedUp(speedometer(0), N)) = N .
+
+  ceq getCurrentSpeed(speedDown(speedometer(M), N)) = M - N if M > N .
+  ceq getCurrentSpeed(speedDown(speedometer(M), N)) = 0 if M <= N .
+
+endm
+
+*** Lidar module that gets scan of the current locality.
+mod LIDAR is
+  protecting NAT .
+
+  sorts Lidar LidarTerrain .
+
+  op lidar : -> Lidar [ctor] .
+  *** Get terrain from camera.
+  op scanLidarTerrain : Lidar -> LidarTerrain [ctor] .
+
+  *** Layer several Lidar images on top of each other to get more precise scan.
+  op combineLidarTerrain : LidarTerrain LidarTerrain -> LidarTerrain [ctor] .
+
+endm
+
+*** Radar system that scans the current locality and can combine radar data with lidar data for further more detailed analysis.
+mod RADAR is
+
+  protecting NAT .
+
+  including LIDAR .
+
+  sorts Radar RadarTerrain CombinedLidarRadar .
+
+  *** Constructor.
+  op radar : -> Radar [ctor] .
+
+  *** Scan the current locality.
+  op scanRadarTerrain : Radar -> RadarTerrain .
+
+  *** Layer two radar "images" for better precision.
+  op combineRadarTerrain : RadarTerrain RadarTerrain -> RadarTerrain .
+
+  *** Combine Lidar and radar data.
+  op combineLidarRadar : LidarTerrain RadarTerrain -> CombinedLidarRadar .
+
+endm
+
+*** Input Processing Subsystem as a Black Box
+mod INPUT_PROCESSING is
+  protecting NAT .
+  protecting BOOL .
+
+  including GPS .
+  including CAMERA .
+  including SPEED .
+  including OBSTACLE .
+  including LIDAR .
+  including RADAR .
+
+  sorts InputProcessor .
+
+  *** Constructor.
+  op inputProcessor : -> InputProcessor [ctor] .
+
+  *** Based on current locality from GPS system check whether new spped can be set.
+  op speedCanBeSet : Nat GPSystem -> Bool .
+
+  *** Desides whether there is an obstacle based on input data from all detectors.
+  ops isObstacleAhead isObstacleLeft isObstacleRight isObstacleBehind : CombinedTerrain CombinedLidarRadar -> Bool .
+
+  *** Get distance to the physical object.
+  op getDistanceTo : PhysicalObject -> Nat .
+
+  var T : GPSTerrain .
+  var S Ns : Int .
+  var C : Camera .
+  var L : Lidar .
+  var R : Radar .
+  var G : GPSystem .
+  var H : HighWay .
+  ceq speedCanBeSet(Ns, gpsSystemTerrain(T)) = true if Ns < getMaxAllowedSpeed(T) /\ Ns > getMinAllowedSpeed(T) .
+  eq isObstacleAhead(combineGPSCamera(cameraGetCurrentImage(C), H), combineLidarRadar(scanLidarTerrain(L), scanRadarTerrain(R))) = false .
+endm
+
+
+*** Engine of the car that is responsible for the 
+mod ENGINE is
+
+  protecting INT .
+  protecting NAT .
+  protecting BOOL .
+  protecting STRING .
+  sorts EngineState RPM Command .
+
+  *** Various engine state
+  ops off idle running : -> EngineState [ctor] .
+
+  *** Speed of engine.
+  subsort RPM < Nat .
+
+  *** Commands sent to the Engine.
+  ops startEngine stopEngine accelerateEngine decelerateEngine : -> Command [ctor] .
+
+  *** Engine state constructor.
+  op engineState : EngineState RPM -> EngineState [ctor] .
+
+  op _&_ : EngineState Command -> EngineState .
+
+  *** When the engine is off and receives startEngine, it transitions to idle with RPM 1000
+  rl [startEngine-off] :
+    engineState(off, 0) & startEngine =>
+    engineState(idle, 1000) .
+
+  *** When the engine is idle and receives accelerateEngine, it transitions to running with increased RPM
+  var R : Int .
+  rl [accelerate-idle] :
+    engineState(idle, R) & accelerateEngine =>
+    engineState(running, R + 200) .
+
+  *** When the engine is running and receives accelerateEngine, it increases RPM
+  crl [accelerate-running] :
+    engineState(running, R) & accelerateEngine =>
+    engineState(running, R + 200) if R < 6000 .
+
+  crl [accelerate-running] :
+    engineState(running, R) & accelerateEngine =>
+    engineState(running, R) if R >= 6000 .
+
+  *** When the engine is running and receives decelerateEngine, it decreases RPM
+  crl [decelerate-running] :
+    engineState(running, R) & decelerateEngine =>
+    engineState(running, R - 200) if R > 1000 .
+
+  *** When RPM drops below 1000, transition from running to idle
+  crl [decelerate-to-idle] :
+    engineState(running, R) & decelerateEngine =>
+    engineState(idle, 800) if R - 200 <= 1000 .
+
+  *** When the engine is idle and receives stopEngine, it transitions to off with RPM 0
+  rl [stopEngine-idle] :
+    engineState(idle, R) & stopEngine =>
+    engineState(off, 0) .
+
+  *** When the engine is running and receives stopEngine, it transitions to off with RPM 0
+  rl [stopEngine-running] :
+    engineState(running, R) & stopEngine =>
+    engineState(off, 0) .
+
+endm
+
+*** The model doesn differenciate between different wheels,
+*** all 4 are considered as one system and rules and operations are applied to all four.
+mod WHEELS is
+  protecting NAT .
+  protecting BOOL .
+  protecting INT .
+
+  sorts WheelState WheelSpeed WheelDirection WheelCommand .
+
+  *** Various wheels states.
+  ops stopped moving : -> WheelState [ctor] .
+
+  *** Various directions.
+  ops straight left right : -> WheelDirection [ctor] .
+
+  *** Constructor foe wheels speed.
+  op speed : Int -> WheelSpeed [ctor] .
+
+  *** Wheels commands.
+  ops accelerate decelerate : WheelSpeed -> WheelCommand [ctor] .
+  op turn : WheelDirection -> WheelCommand [ctor] .
+
+  *** Constructor of the Wheels state.
+  op wheelState : WheelState WheelSpeed WheelDirection -> WheelState [ctor] .
+
+  *** Operator for applying commands on wheels.
+  op _&_ : WheelState WheelCommand -> WheelState .
+
+  vars S S1 S2 R : Int .
+  var WS : WheelState .
+  var D : WheelDirection .
+  *** Accelerating: if wheels are stopped, they start moving; if moving, they increase speed
+  crl [accelerate-wheels] :
+    wheelState(stopped, speed(0), D) & accelerate(speed(S)) =>
+    wheelState(moving, speed(S), D)
+  if S > 0 .
+
+  crl [increase-speed] :
+    wheelState(moving, speed(S1), D) & accelerate(speed(S2)) =>
+    wheelState(moving, speed(S1 + S2), D)
+  if S2 > 0 .
+
+  *** Decelerating: decrease speed if moving; stop if speed reaches zero
+  crl [decelerate-wheels] :
+    wheelState(moving, speed(S), D) & decelerate(speed(R)) =>
+    wheelState(moving, speed(S - R), D)
+  if S > R and R > 0 .
+
+  rl [stop-wheels] :
+    wheelState(moving, speed(S), D) & decelerate(speed(S)) =>
+    wheelState(stopped, speed(0), D) .
+
+  *** Turning left or right changes the direction
+  rl [turn-left] :
+    wheelState(WS, speed(S), straight) & turn(left) =>
+    wheelState(WS, speed(S), left) .
+
+  rl [turn-right] :
+    wheelState(WS, speed(S), straight) & turn(right) =>
+    wheelState(WS, speed(S), right) .
+
+  *** Adjust direction if already turning
+  rl [adjust-left] :
+    wheelState(WS, speed(S), right) & turn(left) =>
+    wheelState(WS, speed(S), straight) .
+
+  rl [adjust-right] :
+    wheelState(WS, speed(S), left) & turn(right) =>
+    wheelState(WS, speed(S), straight) .
+
+endm
+
+*** Brakes subsystem of the car.
+mod BRAKES is
+  protecting NAT .
+
+  sorts BrakeState BrakeIntensity BrakeCommand .
+
+  *** Various brakes states.
+  ops released engaged : -> BrakeState [ctor] .
+
+  *** Brake intensity (0 to 100) constructor.
+  op intensity : Nat -> BrakeIntensity [ctor] .
+
+  *** Brakes commands.
+  ops applyBrake releaseBrake : BrakeIntensity -> BrakeCommand [ctor] .
+
+  *** Brakes state constructor.
+  op brakeState : BrakeState BrakeIntensity -> BrakeState [ctor] .
+
+  *** Operator for applying commands on Brakes.
+  op _&_ : BrakeState BrakeCommand -> BrakeState .
+
+  *** Applying the brake sets the state to engaged with specified intensity
+  vars I J : Nat .
+  crl [apply-brake] :
+    brakeState(released, intensity(0)) & applyBrake(intensity(I)) =>
+    brakeState(engaged, intensity(I))
+    if I > 0 and I <= 100 .
+
+  *** Adjusting the brake intensity if already engaged
+  crl [adjust-brake] :
+    brakeState(engaged, intensity(I)) & applyBrake(intensity(J)) =>
+    brakeState(engaged, intensity(J))
+    if J > 0 and J <= 100 .
+
+  *** Releasing the brake sets the state to released with intensity 0
+  rl [release-brake] :
+    brakeState(engaged, intensity(I)) & releaseBrake(intensity(0)) =>
+    brakeState(released, intensity(0)) .
+
+endm
+
+
+*** Control unit that decides about the next action (keep going with the same speed, accelerate, slow down, stop abruptly, turn right or left, ...)
+mod CONTROL_UNIT is
+  including INPUT_PROCESSING .
+  including ENGINE .
+  including BRAKES .
+  including WHEELS .
+
+  sorts ControlUnit Action CarState .
+
+  *** Constructor
+  op cu : -> ControlUnit [ctor] .
+
+  *** Various actions that control unit can execute.
+  ops keepGoing carAccelerate carDecelerate carStop carStart carTurnLeft carTurnRight : -> Action [ctor] .
+
+  *** Car state constructor.
+  op carState : Action BrakeState WheelState EngineState Speedometer -> CarState [ctor] .
+
+  op changeCarState : CarState CarState Bool -> CarState [ctor] .
+  *** Operator for applying input processing results on control unit.
+  op _&_ : CarState Bool -> CarState [ctor] . --- bool is result of isObstacle... or canSetSpeed
+  op _&_&_ : CarState Bool CarState -> CarState [ctor] .
+  *** Several examples of rules for decision-making based on input processing.
+  var A : Action .
+  var O : Obstacle .
+  var R Wsp : Nat .
+  var Sp : Int .
+  var C : Camera .
+  var G : GPSystem .
+  var L : Lidar .
+  var Ra : Radar .
+  var H : HighWay .
+  var Oc : OtherCar .
+  var Cr : CrossRoad .
+  var KG Nkg : Action .
+  var RL Nrl : BrakeState .
+  var MV Nmv : WheelState .
+  var ST Nst : WheelDirection .
+  var Rn Nrn : EngineState .
+  var Cs NCs : CarState .
+  var Ct : CombinedTerrain .
+  var Crl : CombinedLidarRadar .
+
+  *** If condition is false then car state can be changed from Cs to Ncs.
+  eq changeCarState(Cs, NCs, false) = NCs .
+
+  *** If condition is true then the state cannot be change to new and remains Cs.
+  eq changeCarState(Cs, NCs, true) = Cs .
+
+  *** If highway ahead then speed can be increased.
+  crl [highway-ahead] :
+    carState(KG, RL, MV, Rn, speedometer(Sp))
+    & isObstacleAhead(combineGPSCamera(cameraGetCurrentImage(C), H), combineLidarRadar(scanLidarTerrain(L), scanRadarTerrain(Ra)))
+    & carState(Nkg, Nrl, Nmv, Nrn, speedometer(Sp + 50)) =>
+    carState(carAccelerate, released, wheelState(moving, speed(80), straight), engineState(running, 1000), speedometer(Sp + 50))
+    if Sp + 50 < getMaxAllowedSpeed(H)  .
+
+
+  *** If any kind of obstacle is ahead, then the car must stop.
+  crl [obstacle-ahead] :
+    carState(keepGoing, released, wheelState(moving, speed(Wsp), straight), engineState(running, R), speedometer(Sp))
+    & isObstacleAhead(combineGPSCamera(cameraGetCurrentImage(C), gpsTerrain(Oc, O, Cr)), combineLidarRadar(scanLidarTerrain(L), scanRadarTerrain(Ra))) =>
+    carState(carStop, brakeState(released, intensity(0)) & applyBrake(intensity(100)) , wheelState(stopped, speed(0), straight), engineState(idle, R), speedometer(0))
+    if physObjIsObstacle(O) == true  or physObjIsObstacle(Oc) == true or physObjIsObstacle(Cr) == true .
+
+endm

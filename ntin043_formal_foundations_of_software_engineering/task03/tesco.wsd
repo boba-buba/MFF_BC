@@ -1,0 +1,220 @@
+@startuml
+
+''''''''''''''''' Warehouse '''''''''''''''''
+
+abstract class Warehouse {
+    + IsInWareHouse(Good good) : Integer
+    + ChangeNumberOfUnits(Good good, Integer difference)
+}
+
+
+' Local warehouse for cities.
+class LocalWarehouse {
+
+}
+
+' One big central warehouse for all stores of Tesco.
+class CentralWarehouse {
+
+}
+
+Warehouse <|.. LocalWarehouse
+Warehouse <|.. CentralWarehouse
+
+'There are a lot of goods in warehouse.
+Warehouse "1" -- "0..*" Item : stores
+Warehouse "1" -- "0..*" Product : stores
+
+'  All goods in a warehouse must have a non-negative price.
+note bottom of Warehouse
+    OCL Invariant:
+    context Warehouse
+    inv : self.stores->forAll(good | good.price >= 0)
+end note
+
+''''''''''''''''' Warehouse '''''''''''''''''
+
+''''''''''''''''''' Goods '''''''''''''''''''
+abstract Good {
+    'base bying price for bying many units.
+    - price : Integer
+    'price that stores must use to sell good.
+    + StorePrice : Integer
+}
+
+' Non-edible
+class Item {
+    - price : Integer
+    + StorePrice : Integer
+}
+
+' Edible
+class Product {
+    - price : Integer
+    + StorePrice : Integer
+    + ExpirationDate : Date
+    + IsExpired() : Boolean
+}
+
+Good <|.. Item
+Good <|.. Product
+
+' Calculates whether a product has expired based on today's date.
+note bottom of Product
+    OCL Derivation Rule:
+    context Product::IsExpired() : Boolean
+    body: self.ExpirationDate < today()
+end note
+
+' StorePrice must always be greater than or equal to the base price.
+note bottom of Good
+    OCL Invariant:
+    context Good
+    inv : self.StorePrice >= self.price
+end note
+
+''''''''''''''''''' Goods '''''''''''''''''''
+
+'''''''''''''''''' Store ''''''''''''''''''''
+
+' Physical store.
+class Store {
+    + ContactInfo : Dictionary(String, String)
+    + GetOverallRackCapacity() : Integer
+}
+
+' Categories with racks in store.
+abstract class Category {
+    + Name : String
+}
+
+class Vegetables {
+
+}
+
+class Fruits {
+
+}
+
+class MeatFish {
+
+}
+
+class Baking {
+
+}
+
+class Home {
+
+}
+
+class Stationary {
+
+}
+
+class Cleaning {
+
+}
+
+Category <|.. Vegetables
+Category <|.. Fruits
+Category <|.. MeatFish
+Category <|.. Baking
+Category <|.. Home
+Category <|.. Cleaning
+Category <|.. Stationary
+
+
+class Rack {
+    - capacity : Integer
+    + AddGood(good : Good, quantity : Integer)
+    + RemoveGood(good : Good, quantity : Integer)
+}
+
+Store "*" -- "*" Category : has
+Category "1" -- "1..*" Rack : InCategory
+Rack "1" -- "0.." Good : InRack
+
+'' Sums up the capacity of all racks in the store.
+note bottom of Store
+    OCL Derivation Rule:
+    context Store::GetOverallRackCapacity() : Integer
+    body: self.has->collect(category | category.InCategory.capacity)->sum()
+end note
+
+'' Ensures that adding goods doesnt exceed rack capacity.
+note bottom of Rack
+    OCL Pre-Condition for AddGood:
+    context Rack::AddGood(good : Good, quantity : Integer)
+    pre: self.capacity >= self.InRack->size() + quantity
+end note
+
+'' After removing goods the total number of items in the rack should decrease accordingly.
+note bottom of Rack
+    OCL Post-Condition for RemoveGood:
+    context Rack::RemoveGood(good : Good, quantity : Integer)
+    post: self.InRack->includes(good) implies self.InRack->size() = self.InRack@pre->size() - quantity
+end note
+
+'''''''''''''''''' Store ''''''''''''''''''''
+
+'''''''''''''''''' Tesco ''''''''''''''''''''
+
+'Invoice for order by some store.
+class Invoice {
+    + OverallPrice : Integer
+}
+
+'List of needed products and tgeir prices for particular order, based on which the invoice is created.
+class PriceList {
+    ' Class Good has field price that is used for storing price of the good for unit.
+    + Quantities : Dictionary(Good, Integer)
+}
+
+'List of needed goods and the time order must be processed due.
+class Order {
+    + Quantities : Dictionary(Good, Integer)
+    + TimeDue : Date
+}
+
+'After every order delivery must be to the store that made the order.
+class Delivery {
+    + DateOfDelivery : Date
+    + Quantities : Dictionary(Good, Integer)
+}
+
+class Tesco {
+
+}
+
+Tesco "1" -- "0..*" Store : has
+Tesco "1" -- "1" CentralWarehouse : has
+
+Store "1" -- "1..*" LocalWarehouse : has
+
+Store "1" -- "0.." Order : make
+
+Order "1" -- "1" Invoice
+(Order, Invoice) . PriceList
+
+Delivery "1" -- "1..*" LocalWarehouse : from
+
+Delivery "1" -- "1..*" Order : delivers
+
+'' All goods in an order have a positive price.
+note bottom of Order
+    OCL Pre-Condition:
+    context Order
+    pre: self.Quantities->forAll(good | good.price > 0)
+end note
+
+'' Sums up the overall price for invoice
+note bottom of Invoice
+    OCL Derivation Rule:
+    context Invoice::OverallPrice : Integer
+    body: self.PriceList.Quantities->collect(good, qty | good.price * qty)->sum()
+end note
+
+'''''''''''''''''' Tesco ''''''''''''''''''''
+
+@enduml

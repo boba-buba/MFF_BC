@@ -1,0 +1,153 @@
+' task 1: create model for "grocery store" (Tesco, Albert, Billa)
+' 	- important entities to consider: goods (items, products), racks where the food
+' and drinks are available to pick, warehouse (central, local), price list, orders, invoices, categories of goods, transport from the central warehouse to a local branch (store)
+' 	- required: create an UML class diagram that captures relevant entities and relationships between them
+' 		- define some binary and ternary relations between classes (with reasonable multiplicities)
+' 	- required: create at least one UML diagram of some other type (preferably the sequence or activity diagram)
+' 	- define some OCL constraints (derivation rules, invariants, pre-conditions and post-conditions)
+
+
+@startuml
+
+''''''''''''''''' Warehouse '''''''''''''''''
+abstract class Warehouse {
+
+    + IsInWareHouse(Good good) : Integer
+    + ChangeNumberOfUnits(Good good, Integer difference)
+}
+
+class LocalWarehouse {
+
+}
+
+class CentralWarehouse {
+
+}
+
+Warehouse <|.. LocalWarehouse
+Warehouse <|.. CentralWarehouse
+
+Warehouse "1" -- "0..*" Item : stores
+Warehouse "1" -- "0..*" Product : stores
+
+
+''''''''''''''''' Warehouse '''''''''''''''''
+
+''''''''''''''''''' Goods '''''''''''''''''''
+class Good {
+    - price : Integer
+    + StorePrice : Integer
+}
+
+' Non-edible
+class Item {
+    - price : Integer
+    + StorePrice : Integer
+}
+
+' Edible
+class Product {
+    - price : Integer
+    + StorePrice : Integer
+    + ExpirationDate : Date
+}
+
+Good <|.. Item
+Good <|.. Product
+
+''''''''''''''''''' Goods '''''''''''''''''''
+
+'''''''''''''''''' Store ''''''''''''''''''''
+
+class Store {
+    + ContactInfo : Dictionary(String, String)
+}
+
+abstract Category {
+    + Name : String
+}
+
+class Vegetables {
+
+}
+
+class Fruits {
+
+}
+
+class MeatFish {
+
+}
+
+class Baking {
+
+}
+
+class Home {
+
+}
+
+class Stationary {
+
+}
+
+class Cleaning {
+
+}
+
+Category <|.. Vegetables
+Category <|.. Fruits
+Category <|.. MeatFish
+Category <|.. Baking
+Category <|.. Home
+Category <|.. Cleaning
+Category <|.. Stationary
+
+class Rack {
+
+}
+
+Store "*" -- "*" Category : has
+Category "1" -- "1..*" Rack : InCategory
+Rack "1" -- "0.." Good : InRack
+'''''''''''''''''' Store ''''''''''''''''''''
+
+'''''''''''''''''' Tesco ''''''''''''''''''''
+class Invoice {
+    + OverallPrice : Integer
+}
+
+
+class PriceList {
+    ' Class Good has field price that is used for bying
+    + Quantities : Dictionary(Good, Integer)
+}
+
+class Order {
+    + Quantities : Dictionary(Good, Integer)
+    + TimeDue : Date
+}
+
+class Delivery {
+    + DateOfDelivery : Date
+    + Quantities : Dictionary(Good, Integer)
+}
+
+Tesco "1" -- "0..*" Store : has
+Tesco "1" -- "1" CentralWarehouse : has
+
+Store "1" -- "1..*" LocalWarehouse : has
+
+Store "1" -- "0.." Order : make
+
+Order "1" -- "1" Invoice
+(Order, Invoice) . PriceList
+
+Delivery "1" -- "1..*" LocalWarehouse : from
+
+Delivery "1" -- "1..*" Order : delivers
+
+'''''''''''''''''' Tesco ''''''''''''''''''''
+
+
+@enduml

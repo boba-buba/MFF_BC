@@ -1,0 +1,45 @@
+topic: models in UML and OCL
+
+task 1: create model for "grocery store" (Tesco, Albert, Billa)
+	- important entities to consider: goods (items, products), racks where the food and drinks are available to pick, warehouse (central, local), price list, orders, invoices, categories of goods, transport from the central warehouse to a local branch (store)
+	- required: create an UML class diagram that captures relevant entities and relationships between them
+		- define some binary and ternary relations between classes (with reasonable multiplicities)
+	- required: create at least one UML diagram of some other type (preferably the sequence or activity diagram)
+	- define some OCL constraints (derivation rules, invariants, pre-conditions and post-conditions)
+
+task 2: document your solution
+	- explain key design decisions (in plain text)
+
+	The model has class Tesco, that represets the brand. Then the brand has multiple physical stores. Stores have categories of different goods, racks and goods (products (edible) and 
+	Items (non-edible)). Apart from that the brand has one central warehouse and multiple local warehouses. The system of delivery is represented by classes Order, Pricelist, Invoice and Delivery.
+	Store creates an order for necessary goods, sends it to local warehouse, if local warehouse has everythin the order is assembled and delivered to the sore. If local store doesnt have 
+	everything new order is created for central warehouse. From central warehouse order is delivered to local warehouse and from there to the store. The invoice is created based on order and 
+	pricelist.
+
+task 3: evaluate your solution (model) according to the following criteria
+	- level of abstraction (in the sense "what details you ignored")
+	Payment deatils were not included into the model. Delivery system was not described in lots of details as well. Though for the delivery, activity diagram describes the delivery process
+	on example of "life of one product". But apart from that all basic concepts are captured.
+
+	- level of approximation (over-, under-) in the sense "over-specification/over-constraining (specification is too restrictive) versus under-specification/under-constraining (model is too permissive)"
+	The model is closer to being under-specified and under-constrained because again it would take a lot of other tools to specify everything. During modeling I had a feeling that with Alloy for example I
+	was able to describe more with writing less than in case of UML.
+
+	- ambiguity versus precision
+	The model is more ambiguous than previous from 2nd assignment, as class diagram describes only relations but not behavior. And to describe all constraints, states the system can be in and behavior a lot of
+	additional extensions like OCL, activity and sequence diagrams are needed.
+
+	- completeness (all scenarios)
+	A lot of sceanrios were not covered mainly because it would take a lot of additional diagrams to describe all scenarios as was written earlier.
+
+task 4: tell me your opinion about the modeling language, tools, and the whole approach (methodology) based on your personal experience
+	- specifically, do you think it really makes sense to create proper UML diagrams with all the features in practice (and not sticking just to simpler informal diagrams)
+	Well, proper UML diagrams that describe the system in details can take a lot of time to create and if there will be a change (and there will definitely be change), then someone will need to change all diagrams 
+	accordingly to reflect reality.
+
+	- possible usage scenarios to consider: modeling the design of a complex system, capturing and validating requirements (maybe for consistency), precise documentation
+	I would not use UML diagrams for designing complex system, but rather to demonstate the system to people without technical backround. I would not use it during architecture phase, because there would be a lot 
+	of changes during that process and no one would want to reflect them in the model. But I think UML diagrams (especially activity) are very useful to show behavior of the system to other people, like stakeholders.
+
+deadline: 12.1.2025
+

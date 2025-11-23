@@ -1,0 +1,994 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<pnml>
+     <net id="n1" type="http://www.pnml.org/version-2009/grammar/symmetricnet">
+          <name>
+               <text>Net1</text>
+          </name>
+          <declaration>
+               <structure>
+                    <declarations>
+                         <namedsort id="p" name="plane_vehicle">
+                              <cyclicenumeration>
+                                   <feconstant id="0" name="p_0" />
+                                   <feconstant id="1" name="p_1" />
+                                   <feconstant id="2" name="p_2" />
+                                   <feconstant id="3" name="p_3" />
+                                   <feconstant id="4" name="p_4" />
+                              </cyclicenumeration>
+                              <toolspecific tool="Petri.NET" version="1.5.5945.12338">
+                                   <graphics>
+                                        <fill color="#0080FF" />
+                                   </graphics>
+                                   <order ordered="False" />
+                              </toolspecific>
+                         </namedsort>
+                         <namedsort id="atl" name="allowed_to_land">
+                              <cyclicenumeration>
+                                   <feconstant id="0" name="not_allowed" />
+                                   <feconstant id="1" name="allowed" />
+                              </cyclicenumeration>
+                              <toolspecific tool="Petri.NET" version="1.5.5945.12338">
+                                   <graphics>
+                                        <fill color="#408080" />
+                                   </graphics>
+                                   <order ordered="True" />
+                              </toolspecific>
+                         </namedsort>
+                         <namedsort id="P" name="Plane">
+                              <productsort>
+                                   <usersort declaration="p" />
+                                   <usersort declaration="atl" />
+                              </productsort>
+                              <toolspecific tool="Petri.NET" version="1.5.5945.12338">
+                                   <graphics>
+                                        <fill color="#8000FF" />
+                                   </graphics>
+                              </toolspecific>
+                         </namedsort>
+                         <variabledecl id="pp" name="pp">
+                              <usersort declaration="p" />
+                         </variabledecl>
+                         <variabledecl id="alt1" name="alt1">
+                              <usersort declaration="atl" />
+                         </variabledecl>
+                    </declarations>
+               </structure>
+          </declaration>
+          <place id="id98">
+               <name>
+                    <text>Init</text>
+               </name>
+               <graphics>
+                    <position x="500" y="580" />
+                    <fill color="PaleGreen" />
+                    <line color="Black" />
+               </graphics>
+               <type>
+                    <text>p</text>
+                    <structure>
+                         <usersort declaration="p" />
+                    </structure>
+               </type>
+               <hlinitialMarking>
+                    <text>1`p_0</text>
+               </hlinitialMarking>
+               <toolspecific tool="Petri.NET" version="1.5.5945.12338">
+                    <textalign>Bottom</textalign>
+                    <textvisible visible="true" />
+                    <interface>False</interface>
+               </toolspecific>
+          </place>
+          <place id="id100">
+               <name>
+                    <text>Approaching</text>
+               </name>
+               <graphics>
+                    <position x="740" y="580" />
+                    <fill color="PaleGreen" />
+                    <line color="Black" />
+               </graphics>
+               <type>
+                    <text>p</text>
+                    <structure>
+                         <usersort declaration="p" />
+                    </structure>
+               </type>
+               <hlinitialMarking>
+                    <text />
+               </hlinitialMarking>
+               <toolspecific tool="Petri.NET" version="1.5.5945.12338">
+                    <textalign>Bottom</textalign>
+                    <textvisible visible="true" />
+                    <interface>False</interface>
+               </toolspecific>
+          </place>
+          <place id="id104">
+               <name>
+                    <text>Landing</text>
+               </name>
+               <graphics>
+                    <position x="1040" y="580" />
+                    <fill color="PaleGreen" />
+                    <line color="Black" />
+               </graphics>
+               <type>
+                    <text>p</text>
+                    <structure>
+                         <usersort declaration="p" />
+                    </structure>
+               </type>
+               <hlinitialMarking>
+                    <text />
+               </hlinitialMarking>
+               <toolspecific tool="Petri.NET" version="1.5.5945.12338">
+                    <textalign>Bottom</textalign>
+                    <textvisible visible="true" />
+                    <interface>False</interface>
+               </toolspecific>
+          </place>
+          <place id="id114">
+               <name>
+                    <text>CPlace2</text>
+               </name>
+               <graphics>
+                    <position x="740" y="720" />
+                    <fill color="PaleGreen" />
+                    <line color="Black" />
+               </graphics>
+               <type>
+                    <text>p</text>
+                    <structure>
+                         <usersort declaration="p" />
+                    </structure>
+               </type>
+               <hlinitialMarking>
+                    <text />
+               </hlinitialMarking>
+               <toolspecific tool="Petri.NET" version="1.5.5945.12338">
+                    <textalign>Bottom</textalign>
+                    <textvisible visible="false" />
+                    <interface>False</interface>
+               </toolspecific>
+          </place>
+          <place id="id121">
+               <name>
+                    <text>CPlace3</text>
+               </name>
+               <graphics>
+                    <position x="900" y="780" />
+                    <fill color="PaleGreen" />
+                    <line color="Black" />
+               </graphics>
+               <type>
+                    <text>p</text>
+                    <structure>
+                         <usersort declaration="p" />
+                    </structure>
+               </type>
+               <hlinitialMarking>
+                    <text />
+               </hlinitialMarking>
+               <toolspecific tool="Petri.NET" version="1.5.5945.12338">
+                    <textalign>Bottom</textalign>
+                    <textvisible visible="false" />
+                    <interface>False</interface>
+               </toolspecific>
+          </place>
+          <place id="id122">
+               <name>
+                    <text>CPlace4</text>
+               </name>
+               <graphics>
+                    <position x="600" y="780" />
+                    <fill color="PaleGreen" />
+                    <line color="Black" />
+               </graphics>
+               <type>
+                    <text>p</text>
+                    <structure>
+                         <usersort declaration="p" />
+                    </structure>
+               </type>
+               <hlinitialMarking>
+                    <text />
+               </hlinitialMarking>
+               <toolspecific tool="Petri.NET" version="1.5.5945.12338">
+                    <textalign>Bottom</textalign>
+                    <textvisible visible="false" />
+                    <interface>False</interface>
+               </toolspecific>
+          </place>
+          <place id="id130">
+               <name>
+                    <text>CPlace5</text>
+               </name>
+               <graphics>
+                    <position x="900" y="640" />
+                    <fill color="PaleGreen" />
+                    <line color="Black" />
+               </graphics>
+               <type>
+                    <text>p</text>
+                    <structure>
+                         <usersort declaration="p" />
+                    </structure>
+               </type>
+               <hlinitialMarking>
+                    <text />
+               </hlinitialMarking>
+               <toolspecific tool="Petri.NET" version="1.5.5945.12338">
+                    <textalign>Bottom</textalign>
+                    <textvisible visible="false" />
+                    <interface>False</interface>
+               </toolspecific>
+          </place>
+          <place id="id139">
+               <name>
+                    <text>Runway1</text>
+               </name>
+               <graphics>
+                    <position x="1240" y="520" />
+                    <fill color="PaleGreen" />
+                    <line color="Black" />
+               </graphics>
+               <type>
+                    <text>p</text>
+                    <structure>
+                         <usersort declaration="p" />
+                    </structure>
+               </type>
+               <hlinitialMarking>
+                    <text />
+               </hlinitialMarking>
+               <toolspecific tool="Petri.NET" version="1.5.5945.12338">
+                    <textalign>Bottom</textalign>
+                    <textvisible visible="true" />
+                    <interface>False</interface>
+               </toolspecific>
+          </place>
+          <place id="id140">
+               <name>
+                    <text>Runway2</text>
+               </name>
+               <graphics>
+                    <position x="1240" y="640" />
+                    <fill color="PaleGreen" />
+                    <line color="Black" />
+               </graphics>
+               <type>
+                    <text>p</text>
+                    <structure>
+                         <usersort declaration="p" />
+                    </structure>
+               </type>
+               <hlinitialMarking>
+                    <text />
+               </hlinitialMarking>
+               <toolspecific tool="Petri.NET" version="1.5.5945.12338">
+                    <textalign>Bottom</textalign>
+                    <textvisible visible="true" />
+                    <interface>False</interface>
+               </toolspecific>
+          </place>
+          <place id="id149">
+               <name>
+                    <text>weather_ok</text>
+               </name>
+               <graphics>
+                    <position x="1560" y="520" />
+                    <fill color="PaleGreen" />
+                    <line color="Black" />
+               </graphics>
+               <type>
+                    <text>p</text>
+                    <structure>
+                         <usersort declaration="p" />
+                    </structure>
+               </type>
+               <hlinitialMarking>
+                    <text />
+               </hlinitialMarking>
+               <toolspecific tool="Petri.NET" version="1.5.5945.12338">
+                    <textalign>Bottom</textalign>
+                    <textvisible visible="true" />
+                    <interface>False</interface>
+               </toolspecific>
+          </place>
+          <place id="id156">
+               <name>
+                    <text>radar_setected_clear_way</text>
+               </name>
+               <graphics>
+                    <position x="1560" y="640" />
+                    <fill color="PaleGreen" />
+                    <line color="Black" />
+               </graphics>
+               <type>
+                    <text>p</text>
+                    <structure>
+                         <usersort declaration="p" />
+                    </structure>
+               </type>
+               <hlinitialMarking>
+                    <text />
+               </hlinitialMarking>
+               <toolspecific tool="Petri.NET" version="1.5.5945.12338">
+                    <textalign>Bottom</textalign>
+                    <textvisible visible="true" />
+                    <interface>False</interface>
+               </toolspecific>
+          </place>
+          <place id="id166">
+               <name>
+                    <text>CPlace1</text>
+               </name>
+               <graphics>
+                    <position x="1380" y="580" />
+                    <fill color="PaleGreen" />
+                    <line color="Black" />
+               </graphics>
+               <type>
+                    <text>p</text>
+                    <structure>
+                         <usersort declaration="p" />
+                    </structure>
+               </type>
+               <hlinitialMarking>
+                    <text />
+               </hlinitialMarking>
+               <toolspecific tool="Petri.NET" version="1.5.5945.12338">
+                    <textalign>Bottom</textalign>
+                    <textvisible visible="false" />
+                    <interface>False</interface>
+               </toolspecific>
+          </place>
+          <place id="id176">
+               <name>
+                    <text>route_set</text>
+               </name>
+               <graphics>
+                    <position x="1560" y="580" />
+                    <fill color="PaleGreen" />
+                    <line color="Black" />
+               </graphics>
+               <type>
+                    <text>p</text>
+                    <structure>
+                         <usersort declaration="p" />
+                    </structure>
+               </type>
+               <hlinitialMarking>
+                    <text />
+               </hlinitialMarking>
+               <toolspecific tool="Petri.NET" version="1.5.5945.12338">
+                    <textalign>Bottom</textalign>
+                    <textvisible visible="true" />
+                    <interface>False</interface>
+               </toolspecific>
+          </place>
+          <place id="id179">
+               <name>
+                    <text>CPlace6</text>
+               </name>
+               <graphics>
+                    <position x="1740" y="580" />
+                    <fill color="PaleGreen" />
+                    <line color="Black" />
+               </graphics>
+               <type>
+                    <text>p</text>
+                    <structure>
+                         <usersort declaration="p" />
+                    </structure>
+               </type>
+               <hlinitialMarking>
+                    <text />
+               </hlinitialMarking>
+               <toolspecific tool="Petri.NET" version="1.5.5945.12338">
+                    <textalign>Bottom</textalign>
+                    <textvisible visible="false" />
+                    <interface>False</interface>
+               </toolspecific>
+          </place>
+          <transition id="id102">
+               <name>
+                    <text>allowed_to_land</text>
+               </name>
+               <graphics>
+                    <position x="880" y="580" />
+                    <fill color="PaleGreen" />
+                    <line color="Black" />
+               </graphics>
+               <condition>
+                    <text />
+                    <!--TODO: write parsed guard-->
+               </condition>
+               <toolspecific tool="Petri.NET" version="1.5.5945.12338">
+                    <orientation>Vertical</orientation>
+                    <priority>100</priority>
+                    <important>False</important>
+                    <abnormal>False</abnormal>
+                    <textalign>Bottom</textalign>
+                    <textvisible visible="true" />
+                    <command />
+               </toolspecific>
+          </transition>
+          <transition id="id106">
+               <name>
+                    <text>CTransition1</text>
+               </name>
+               <graphics>
+                    <position x="1120" y="540" />
+                    <fill color="PaleGreen" />
+                    <line color="Black" />
+               </graphics>
+               <condition>
+                    <text />
+                    <!--TODO: write parsed guard-->
+               </condition>
+               <toolspecific tool="Petri.NET" version="1.5.5945.12338">
+                    <orientation>Vertical</orientation>
+                    <priority>100</priority>
+                    <important>False</important>
+                    <abnormal>False</abnormal>
+                    <textalign>Bottom</textalign>
+                    <textvisible visible="false" />
+                    <command />
+               </toolspecific>
+          </transition>
+          <transition id="id107">
+               <name>
+                    <text>CTransition2</text>
+               </name>
+               <graphics>
+                    <position x="1120" y="620" />
+                    <fill color="PaleGreen" />
+                    <line color="Black" />
+               </graphics>
+               <condition>
+                    <text />
+                    <!--TODO: write parsed guard-->
+               </condition>
+               <toolspecific tool="Petri.NET" version="1.5.5945.12338">
+                    <orientation>Vertical</orientation>
+                    <priority>100</priority>
+                    <important>False</important>
+                    <abnormal>False</abnormal>
+                    <textalign>Bottom</textalign>
+                    <textvisible visible="false" />
+                    <command />
+               </toolspecific>
+          </transition>
+          <transition id="id112">
+               <name>
+                    <text>send_msg_about_approaching</text>
+               </name>
+               <graphics>
+                    <position x="740" y="660" />
+                    <fill color="PaleGreen" />
+                    <line color="Black" />
+               </graphics>
+               <condition>
+                    <text />
+                    <!--TODO: write parsed guard-->
+               </condition>
+               <toolspecific tool="Petri.NET" version="1.5.5945.12338">
+                    <orientation>Vertical</orientation>
+                    <priority>100</priority>
+                    <important>False</important>
+                    <abnormal>False</abnormal>
+                    <textalign>Bottom</textalign>
+                    <textvisible visible="true" />
+                    <command />
+               </toolspecific>
+          </transition>
+          <transition id="id117">
+               <name>
+                    <text>cannot_land</text>
+               </name>
+               <graphics>
+                    <position x="680" y="780" />
+                    <fill color="PaleGreen" />
+                    <line color="Black" />
+               </graphics>
+               <condition>
+                    <text />
+                    <!--TODO: write parsed guard-->
+               </condition>
+               <toolspecific tool="Petri.NET" version="1.5.5945.12338">
+                    <orientation>Vertical</orientation>
+                    <priority>100</priority>
+                    <important>False</important>
+                    <abnormal>False</abnormal>
+                    <textalign>Bottom</textalign>
+                    <textvisible visible="true" />
+                    <command />
+               </toolspecific>
+          </transition>
+          <transition id="id119">
+               <name>
+                    <text>can_land_some_runway_free</text>
+               </name>
+               <graphics>
+                    <position x="800" y="780" />
+                    <fill color="PaleGreen" />
+                    <line color="Black" />
+               </graphics>
+               <condition>
+                    <text />
+                    <!--TODO: write parsed guard-->
+               </condition>
+               <toolspecific tool="Petri.NET" version="1.5.5945.12338">
+                    <orientation>Vertical</orientation>
+                    <priority>100</priority>
+                    <important>False</important>
+                    <abnormal>False</abnormal>
+                    <textalign>Bottom</textalign>
+                    <textvisible visible="true" />
+                    <command />
+               </toolspecific>
+          </transition>
+          <transition id="id125">
+               <name>
+                    <text>send_neg_to_landing</text>
+               </name>
+               <graphics>
+                    <position x="540" y="700" />
+                    <fill color="PaleGreen" />
+                    <line color="Black" />
+               </graphics>
+               <condition>
+                    <text />
+                    <!--TODO: write parsed guard-->
+               </condition>
+               <toolspecific tool="Petri.NET" version="1.5.5945.12338">
+                    <orientation>Vertical</orientation>
+                    <priority>100</priority>
+                    <important>False</important>
+                    <abnormal>False</abnormal>
+                    <textalign>Bottom</textalign>
+                    <textvisible visible="true" />
+                    <command />
+               </toolspecific>
+          </transition>
+          <transition id="id128">
+               <name>
+                    <text>send_pos_to_landing</text>
+               </name>
+               <graphics>
+                    <position x="900" y="700" />
+                    <fill color="PaleGreen" />
+                    <line color="Black" />
+               </graphics>
+               <condition>
+                    <text />
+                    <!--TODO: write parsed guard-->
+               </condition>
+               <toolspecific tool="Petri.NET" version="1.5.5945.12338">
+                    <orientation>Vertical</orientation>
+                    <priority>100</priority>
+                    <important>False</important>
+                    <abnormal>False</abnormal>
+                    <textalign>Bottom</textalign>
+                    <textvisible visible="true" />
+                    <command />
+               </toolspecific>
+          </transition>
+          <transition id="id135">
+               <name>
+                    <text>radar_registered_approaching_plane</text>
+               </name>
+               <graphics>
+                    <position x="620" y="600" />
+                    <fill color="PaleGreen" />
+                    <line color="Black" />
+               </graphics>
+               <condition>
+                    <text />
+                    <!--TODO: write parsed guard-->
+               </condition>
+               <toolspecific tool="Petri.NET" version="1.5.5945.12338">
+                    <orientation>Vertical</orientation>
+                    <priority>100</priority>
+                    <important>False</important>
+                    <abnormal>False</abnormal>
+                    <textalign>Bottom</textalign>
+                    <textvisible visible="true" />
+                    <command />
+               </toolspecific>
+          </transition>
+          <transition id="id145">
+               <name>
+                    <text>move_to_the_gates</text>
+               </name>
+               <graphics>
+                    <position x="1460" y="580" />
+                    <fill color="PaleGreen" />
+                    <line color="Black" />
+               </graphics>
+               <condition>
+                    <text />
+                    <!--TODO: write parsed guard-->
+               </condition>
+               <toolspecific tool="Petri.NET" version="1.5.5945.12338">
+                    <orientation>Vertical</orientation>
+                    <priority>100</priority>
+                    <important>False</important>
+                    <abnormal>False</abnormal>
+                    <textalign>Bottom</textalign>
+                    <textvisible visible="true" />
+                    <command />
+               </toolspecific>
+          </transition>
+          <transition id="id151">
+               <name>
+                    <text>clearence_given</text>
+               </name>
+               <graphics>
+                    <position x="1660" y="580" />
+                    <fill color="PaleGreen" />
+                    <line color="Black" />
+               </graphics>
+               <condition>
+                    <text />
+                    <!--TODO: write parsed guard-->
+               </condition>
+               <toolspecific tool="Petri.NET" version="1.5.5945.12338">
+                    <orientation>Vertical</orientation>
+                    <priority>100</priority>
+                    <important>False</important>
+                    <abnormal>False</abnormal>
+                    <textalign>Bottom</textalign>
+                    <textvisible visible="true" />
+                    <command />
+               </toolspecific>
+          </transition>
+          <transition id="id167">
+               <name>
+                    <text>CTransition3</text>
+               </name>
+               <graphics>
+                    <position x="1320" y="540" />
+                    <fill color="PaleGreen" />
+                    <line color="Black" />
+               </graphics>
+               <condition>
+                    <text />
+                    <!--TODO: write parsed guard-->
+               </condition>
+               <toolspecific tool="Petri.NET" version="1.5.5945.12338">
+                    <orientation>Vertical</orientation>
+                    <priority>100</priority>
+                    <important>False</important>
+                    <abnormal>False</abnormal>
+                    <textalign>Bottom</textalign>
+                    <textvisible visible="false" />
+                    <command />
+               </toolspecific>
+          </transition>
+          <transition id="id168">
+               <name>
+                    <text>CTransition4</text>
+               </name>
+               <graphics>
+                    <position x="1320" y="620" />
+                    <fill color="PaleGreen" />
+                    <line color="Black" />
+               </graphics>
+               <condition>
+                    <text />
+                    <!--TODO: write parsed guard-->
+               </condition>
+               <toolspecific tool="Petri.NET" version="1.5.5945.12338">
+                    <orientation>Vertical</orientation>
+                    <priority>100</priority>
+                    <important>False</important>
+                    <abnormal>False</abnormal>
+                    <textalign>Bottom</textalign>
+                    <textvisible visible="false" />
+                    <command />
+               </toolspecific>
+          </transition>
+          <arc id="id105" source="id102" target="id104">
+               <graphics>
+                    <fill color="White" />
+                    <line color="Black" />
+               </graphics>
+               <hlinscription>
+                    <text />
+                    <!--TODO: write parsed arc expression-->
+               </hlinscription>
+          </arc>
+          <arc id="id109" source="id104" target="id106">
+               <graphics>
+                    <fill color="White" />
+                    <line color="Black" />
+               </graphics>
+               <hlinscription>
+                    <text />
+                    <!--TODO: write parsed arc expression-->
+               </hlinscription>
+          </arc>
+          <arc id="id110" source="id104" target="id107">
+               <graphics>
+                    <fill color="White" />
+                    <line color="Black" />
+               </graphics>
+               <hlinscription>
+                    <text />
+                    <!--TODO: write parsed arc expression-->
+               </hlinscription>
+          </arc>
+          <arc id="id113" source="id100" target="id112">
+               <graphics>
+                    <fill color="White" />
+                    <line color="Black" />
+               </graphics>
+               <hlinscription>
+                    <text />
+                    <!--TODO: write parsed arc expression-->
+               </hlinscription>
+          </arc>
+          <arc id="id115" source="id112" target="id114">
+               <graphics>
+                    <fill color="White" />
+                    <line color="Black" />
+               </graphics>
+               <hlinscription>
+                    <text />
+                    <!--TODO: write parsed arc expression-->
+               </hlinscription>
+          </arc>
+          <arc id="id118" source="id114" target="id117">
+               <graphics>
+                    <fill color="White" />
+                    <line color="Black" />
+               </graphics>
+               <hlinscription>
+                    <text />
+                    <!--TODO: write parsed arc expression-->
+               </hlinscription>
+          </arc>
+          <arc id="id120" source="id114" target="id119">
+               <graphics>
+                    <fill color="White" />
+                    <line color="Black" />
+               </graphics>
+               <hlinscription>
+                    <text />
+                    <!--TODO: write parsed arc expression-->
+               </hlinscription>
+          </arc>
+          <arc id="id123" source="id119" target="id121">
+               <graphics>
+                    <fill color="White" />
+                    <line color="Black" />
+               </graphics>
+               <hlinscription>
+                    <text />
+                    <!--TODO: write parsed arc expression-->
+               </hlinscription>
+          </arc>
+          <arc id="id124" source="id117" target="id122">
+               <graphics>
+                    <fill color="White" />
+                    <line color="Black" />
+               </graphics>
+               <hlinscription>
+                    <text />
+                    <!--TODO: write parsed arc expression-->
+               </hlinscription>
+          </arc>
+          <arc id="id126" source="id122" target="id125">
+               <graphics>
+                    <fill color="White" />
+                    <line color="Black" />
+               </graphics>
+               <hlinscription>
+                    <text />
+                    <!--TODO: write parsed arc expression-->
+               </hlinscription>
+          </arc>
+          <arc id="id127" source="id125" target="id98">
+               <graphics>
+                    <fill color="White" />
+                    <line color="Black" />
+               </graphics>
+               <hlinscription>
+                    <text />
+                    <!--TODO: write parsed arc expression-->
+               </hlinscription>
+          </arc>
+          <arc id="id129" source="id121" target="id128">
+               <graphics>
+                    <fill color="White" />
+                    <line color="Black" />
+               </graphics>
+               <hlinscription>
+                    <text />
+                    <!--TODO: write parsed arc expression-->
+               </hlinscription>
+          </arc>
+          <arc id="id131" source="id128" target="id130">
+               <graphics>
+                    <fill color="White" />
+                    <line color="Black" />
+               </graphics>
+               <hlinscription>
+                    <text />
+                    <!--TODO: write parsed arc expression-->
+               </hlinscription>
+          </arc>
+          <arc id="id132" source="id130" target="id102">
+               <graphics>
+                    <fill color="White" />
+                    <line color="Black" />
+               </graphics>
+               <hlinscription>
+                    <text />
+                    <!--TODO: write parsed arc expression-->
+               </hlinscription>
+          </arc>
+          <arc id="id136" source="id98" target="id135">
+               <graphics>
+                    <fill color="White" />
+                    <line color="Black" />
+               </graphics>
+               <hlinscription>
+                    <text>p_0</text>
+                    <!--TODO: write parsed arc expression-->
+               </hlinscription>
+          </arc>
+          <arc id="id137" source="id135" target="id100">
+               <graphics>
+                    <fill color="White" />
+                    <line color="Black" />
+               </graphics>
+               <hlinscription>
+                    <text>all</text>
+                    <!--TODO: write parsed arc expression-->
+               </hlinscription>
+          </arc>
+          <arc id="id142" source="id106" target="id139">
+               <graphics>
+                    <fill color="White" />
+                    <line color="Black" />
+               </graphics>
+               <hlinscription>
+                    <text />
+                    <!--TODO: write parsed arc expression-->
+               </hlinscription>
+          </arc>
+          <arc id="id143" source="id107" target="id140">
+               <graphics>
+                    <fill color="White" />
+                    <line color="Black" />
+               </graphics>
+               <hlinscription>
+                    <text />
+                    <!--TODO: write parsed arc expression-->
+               </hlinscription>
+          </arc>
+          <arc id="id150" source="id145" target="id149">
+               <graphics>
+                    <fill color="White" />
+                    <line color="Black" />
+               </graphics>
+               <hlinscription>
+                    <text />
+                    <!--TODO: write parsed arc expression-->
+               </hlinscription>
+          </arc>
+          <arc id="id152" source="id149" target="id151">
+               <graphics>
+                    <fill color="White" />
+                    <line color="Black" />
+               </graphics>
+               <hlinscription>
+                    <text />
+                    <!--TODO: write parsed arc expression-->
+               </hlinscription>
+          </arc>
+          <arc id="id169" source="id139" target="id167">
+               <graphics>
+                    <fill color="White" />
+                    <line color="Black" />
+               </graphics>
+               <hlinscription>
+                    <text />
+                    <!--TODO: write parsed arc expression-->
+               </hlinscription>
+          </arc>
+          <arc id="id170" source="id167" target="id166">
+               <graphics>
+                    <fill color="White" />
+                    <line color="Black" />
+               </graphics>
+               <hlinscription>
+                    <text />
+                    <!--TODO: write parsed arc expression-->
+               </hlinscription>
+          </arc>
+          <arc id="id171" source="id140" target="id168">
+               <graphics>
+                    <fill color="White" />
+                    <line color="Black" />
+               </graphics>
+               <hlinscription>
+                    <text />
+                    <!--TODO: write parsed arc expression-->
+               </hlinscription>
+          </arc>
+          <arc id="id172" source="id168" target="id166">
+               <graphics>
+                    <fill color="White" />
+                    <line color="Black" />
+               </graphics>
+               <hlinscription>
+                    <text />
+                    <!--TODO: write parsed arc expression-->
+               </hlinscription>
+          </arc>
+          <arc id="id173" source="id166" target="id145">
+               <graphics>
+                    <fill color="White" />
+                    <line color="Black" />
+               </graphics>
+               <hlinscription>
+                    <text />
+                    <!--TODO: write parsed arc expression-->
+               </hlinscription>
+          </arc>
+          <arc id="id174" source="id145" target="id156">
+               <graphics>
+                    <fill color="White" />
+                    <line color="Black" />
+               </graphics>
+               <hlinscription>
+                    <text />
+                    <!--TODO: write parsed arc expression-->
+               </hlinscription>
+          </arc>
+          <arc id="id175" source="id156" target="id151">
+               <graphics>
+                    <fill color="White" />
+                    <line color="Black" />
+               </graphics>
+               <hlinscription>
+                    <text />
+                    <!--TODO: write parsed arc expression-->
+               </hlinscription>
+          </arc>
+          <arc id="id177" source="id145" target="id176">
+               <graphics>
+                    <fill color="White" />
+                    <line color="Black" />
+               </graphics>
+               <hlinscription>
+                    <text />
+                    <!--TODO: write parsed arc expression-->
+               </hlinscription>
+          </arc>
+          <arc id="id178" source="id176" target="id151">
+               <graphics>
+                    <position x="1660" y="580" />
+                    <fill color="White" />
+                    <line color="Black" />
+               </graphics>
+               <hlinscription>
+                    <text />
+                    <!--TODO: write parsed arc expression-->
+               </hlinscription>
+          </arc>
+          <arc id="id180" source="id151" target="id179">
+               <graphics>
+                    <fill color="White" />
+                    <line color="Black" />
+               </graphics>
+               <hlinscription>
+                    <text />
+                    <!--TODO: write parsed arc expression-->
+               </hlinscription>
+          </arc>
+     </net>
+</pnml>

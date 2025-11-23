@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cpnet>
+    <declarations>
+        <type name="Airplane"/>
+        <var name="a" type="Airplane"/>
+    </declarations>
+    
+    <place id="P1" name="Airplane_ArrivalQueue" type="Airplane"/>
+    <place id="P2" name="Landing_Clearance" type="Airplane"/>
+    <place id="P3" name="Runway_Available" type="Airplane"/>
+    <place id="P4" name="Airplane_Landed" type="Airplane"/>
+    <place id="P5" name="Airplane_DepartureQueue" type="Airplane"/>
+    <place id="P6" name="Takeoff_Clearance" type="Airplane"/>
+    <place id="P7" name="In_Air" type="Airplane"/>
+    <place id="P8" name="Radar_Scan" type="Airplane"/>
+    
+    <transition id="T1" name="Request_Landing">
+        <arc source="P1" target="T1" type="normal"/>
+        <arc source="T1" target="P2" type="normal"/>
+    </transition>
+    
+    <transition id="T2" name="Grant_Landing">
+        <arc source="P2" target="T2" type="normal"/>
+        <arc source="P3" target="T2" type="normal"/>
+        <arc source="T2" target="P4" type="normal"/>
+    </transition>
+    
+    <transition id="T3" name="Request_Takeoff">
+        <arc source="P5" target="T3" type="normal"/>
+        <arc source="T3" target="P6" type="normal"/>
+    </transition>
+    
+    <transition id="T4" name="Grant_Takeoff">
+        <arc source="P6" target="T4" type="normal"/>
+        <arc source="P3" target="T4" type="normal"/>
+        <arc source="T4" target="P7" type="normal"/>
+    </transition>
+    
+    <transition id="T5" name="Radar_Update">
+        <arc source="P7" target="T5" type="normal"/>
+        <arc source="T5" target="P8" type="normal"/>
+    </transition>
+</cpnet>

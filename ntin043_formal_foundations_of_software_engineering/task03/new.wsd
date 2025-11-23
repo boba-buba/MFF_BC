@@ -1,0 +1,44 @@
+@startuml
+
+|#palegreen| CentralWareHouse|
+
+|LocalWarehouse|
+start
+
+repeat :getOrder;
+
+if (EverythingAssembled?) then (yes)
+  :DeliverToStore;
+  |#gold| Store|
+  repeat
+    :Put goods on racks;
+    if (CustomerTookGood?) then (yes)
+      
+    else (no)
+      :DecreasePrice;
+    endif
+  repeat while (Goods are in store and not Expired) is (No) not (Yes)
+
+  if (Expired) then (yes)
+   :throw away;
+  else (no)
+  '' if not expired then there is no good left
+  endif
+  :Add good to order;
+
+else (no)
+  |LocalWarehouse|
+  repeat :Assemble order;
+  :Send big order to Central WareHouse;
+  |#palegreen| CentralWareHouse|
+  :Assemble big order;
+  :Send to local warehouse;
+  repeat while (WOK) is (Yes) not (No)
+  end
+endif
+
+|#gold| Store|
+repeat while (OrderReady) is (No) not (Yes)
+
+
+@enduml

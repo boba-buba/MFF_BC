@@ -1,0 +1,48 @@
+
+
+@startuml
+
+
+class Person {
+  - name: String
+  - age: int
+  + setName(name: String): void
+  + getName(): String
+}
+
+class Student {
+  - studentId: int
+  + enroll(course: Course): void
+}
+
+class Course {
+  - courseName: String
+  - courseCode: String
+  + getCourseDetails(): String
+}
+
+Person <|-- Student
+Student --> Course
+
+abstract class Shape {
+  + area(): double
+  + perimeter(): double
+}
+
+class Circle {
+  - radius: double
+  + area(): double
+  + perimeter(): double
+}
+
+class Rectangle {
+  - width: double
+  - height: double
+  + area(): double
+  + perimeter(): double
+}
+
+Shape <|.. Circle
+Shape <|.. Rectangle
+
+@enduml

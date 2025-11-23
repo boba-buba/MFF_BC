@@ -1,0 +1,22 @@
+@startuml
+start
+
+:Customer selects products;
+:Customer adds products to cart;
+
+if (Products available?) then (yes)
+  :Proceed to checkout;
+  :Generate invoice;
+  :Customer makes payment;
+  if (Payment successful?) then (yes)
+    :Prepare for delivery;
+    :Dispatch goods;
+  else (no)
+    :Notify customer of payment failure;
+  endif
+else (no)
+  :Notify customer of unavailability;
+endif
+
+stop
+@enduml
