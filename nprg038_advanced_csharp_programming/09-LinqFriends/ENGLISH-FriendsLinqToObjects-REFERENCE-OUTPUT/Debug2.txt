@@ -1,0 +1,476 @@
+Press ENTER to run without debug prints,
+Press D1 + ENTER to enable some debug prints,
+Press D2 + ENTER to enable all debug prints: 
+Assignment 1: All persons, that consider no one as their friend.
+Main: foreach:
+*** Group is being enumerated.
+ # Person("Hubert").Friends is being enumerated.
+ # All elements of Person("Hubert").Friends have been enumerated.
+Main: got Person(Name = "Hubert", Age = 10)
+ # Person("Anna").Friends is being enumerated.
+ # All elements of Person("Anna").Friends have been enumerated.
+Main: got Person(Name = "Anna", Age = 22)
+ # Person("Frantisek").Friends is being enumerated.
+ # All elements of Person("Frantisek").Friends have been enumerated.
+ # Person("Blazena").Friends is being enumerated.
+ # All elements of Person("Blazena").Friends have been enumerated.
+ # Person("Ursula").Friends is being enumerated.
+ # All elements of Person("Ursula").Friends have been enumerated.
+ # Person("Daniela").Friends is being enumerated.
+ # All elements of Person("Daniela").Friends have been enumerated.
+ # Person("Emil").Friends is being enumerated.
+ # All elements of Person("Emil").Friends have been enumerated.
+ # Person("Vendula").Friends is being enumerated.
+ # All elements of Person("Vendula").Friends have been enumerated.
+ # Person("Cyril").Friends is being enumerated.
+ # All elements of Person("Cyril").Friends have been enumerated.
+ # Person("Gertruda").Friends is being enumerated.
+ # All elements of Person("Gertruda").Friends have been enumerated.
+*** All elements of Group have been enumerated.
+
+alternative solution for Assignment 1:
+Main: foreach:
+*** Group is being enumerated.
+ # Person("Hubert").Friends is being enumerated.
+ # All elements of Person("Hubert").Friends have been enumerated.
+Main: got Person(Name = "Hubert", Age = 10)
+ # Person("Anna").Friends is being enumerated.
+ # All elements of Person("Anna").Friends have been enumerated.
+Main: got Person(Name = "Anna", Age = 22)
+ # Person("Frantisek").Friends is being enumerated.
+ # Person("Blazena").Friends is being enumerated.
+ # Person("Ursula").Friends is being enumerated.
+ # Person("Daniela").Friends is being enumerated.
+ # Person("Emil").Friends is being enumerated.
+ # Person("Vendula").Friends is being enumerated.
+ # Person("Cyril").Friends is being enumerated.
+ # Person("Gertruda").Friends is being enumerated.
+*** All elements of Group have been enumerated.
+
+Assignment 2: All persons, sorted alphabeticaly by name, older than 15, and only those whose name starts with letter D or higher.
+Main: foreach:
+*** Group is being enumerated.
+*** All elements of Group have been enumerated.
+Main: got Person(Name = "Daniela", Age = 18)
+Main: got Person(Name = "Emil", Age = 21)
+Main: got Person(Name = "Ursula", Age = 22)
+Main: got Person(Name = "Vendula", Age = 22)
+
+alternative solution for Assignment 2:
+Main: foreach:
+*** Group is being enumerated.
+*** All elements of Group have been enumerated.
+Main: got Person(Name = "Daniela", Age = 18)
+Main: got Person(Name = "Emil", Age = 21)
+Main: got Person(Name = "Ursula", Age = 22)
+Main: got Person(Name = "Vendula", Age = 22)
+
+Assignment 3: All persons, that are oldest in whole group and whose name starts with letter T or higher (U, V, W, X, Y, Z).
+Main: foreach:
+*** Group is being enumerated.
+*** Group is being enumerated.
+*** All elements of Group have been enumerated.
+*** Group is being enumerated.
+*** All elements of Group have been enumerated.
+*** Group is being enumerated.
+*** All elements of Group have been enumerated.
+*** Group is being enumerated.
+*** All elements of Group have been enumerated.
+*** Group is being enumerated.
+*** All elements of Group have been enumerated.
+Main: got Person(Name = "Ursula", Age = 22)
+*** Group is being enumerated.
+*** All elements of Group have been enumerated.
+*** Group is being enumerated.
+*** All elements of Group have been enumerated.
+*** Group is being enumerated.
+*** All elements of Group have been enumerated.
+Main: got Person(Name = "Vendula", Age = 22)
+*** Group is being enumerated.
+*** All elements of Group have been enumerated.
+*** Group is being enumerated.
+*** All elements of Group have been enumerated.
+*** All elements of Group have been enumerated.
+
+alternative solution for Assignment 3:
+Main: foreach:
+*** Group is being enumerated.
+*** Group is being enumerated.
+*** All elements of Group have been enumerated.
+*** Group is being enumerated.
+*** All elements of Group have been enumerated.
+*** Group is being enumerated.
+*** All elements of Group have been enumerated.
+*** Group is being enumerated.
+*** All elements of Group have been enumerated.
+*** Group is being enumerated.
+*** All elements of Group have been enumerated.
+Main: got Person(Name = "Ursula", Age = 22)
+*** Group is being enumerated.
+*** All elements of Group have been enumerated.
+*** Group is being enumerated.
+*** All elements of Group have been enumerated.
+*** Group is being enumerated.
+*** All elements of Group have been enumerated.
+Main: got Person(Name = "Vendula", Age = 22)
+*** Group is being enumerated.
+*** All elements of Group have been enumerated.
+*** Group is being enumerated.
+*** All elements of Group have been enumerated.
+*** All elements of Group have been enumerated.
+
+alternative solution for Assignment 3:
+Main: query creation:
+*** Group is being enumerated.
+*** All elements of Group have been enumerated.
+Main: foreach:
+*** Group is being enumerated.
+Main: got Person(Name = "Ursula", Age = 22)
+Main: got Person(Name = "Vendula", Age = 22)
+*** All elements of Group have been enumerated.
+
+Assignment 4: All persons, that are older than everyone who they consider as their friend.
+Main: foreach:
+*** Group is being enumerated.
+ # Person("Hubert").Friends is being enumerated.
+ # All elements of Person("Hubert").Friends have been enumerated.
+Main: got Person(Name = "Hubert", Age = 10)
+ # Person("Anna").Friends is being enumerated.
+ # All elements of Person("Anna").Friends have been enumerated.
+Main: got Person(Name = "Anna", Age = 22)
+ # Person("Frantisek").Friends is being enumerated.
+ # All elements of Person("Frantisek").Friends have been enumerated.
+ # Person("Blazena").Friends is being enumerated.
+ # All elements of Person("Blazena").Friends have been enumerated.
+ # Person("Ursula").Friends is being enumerated.
+ # All elements of Person("Ursula").Friends have been enumerated.
+Main: got Person(Name = "Ursula", Age = 22)
+ # Person("Daniela").Friends is being enumerated.
+ # All elements of Person("Daniela").Friends have been enumerated.
+ # Person("Emil").Friends is being enumerated.
+ # All elements of Person("Emil").Friends have been enumerated.
+ # Person("Vendula").Friends is being enumerated.
+ # All elements of Person("Vendula").Friends have been enumerated.
+Main: got Person(Name = "Vendula", Age = 22)
+ # Person("Cyril").Friends is being enumerated.
+ # All elements of Person("Cyril").Friends have been enumerated.
+Main: got Person(Name = "Cyril", Age = 21)
+ # Person("Gertruda").Friends is being enumerated.
+ # All elements of Person("Gertruda").Friends have been enumerated.
+*** All elements of Group have been enumerated.
+
+Assignment 5: All persons, that have no friends (they don't consider anyone as their frend and nobody considers them as their friend).
+Main: foreach:
+*** Group is being enumerated.
+ # Person("Hubert").Friends is being enumerated.
+ # All elements of Person("Hubert").Friends have been enumerated.
+*** Group is being enumerated.
+ # Person("Hubert").Friends is being enumerated.
+ # All elements of Person("Hubert").Friends have been enumerated.
+ # Person("Anna").Friends is being enumerated.
+ # All elements of Person("Anna").Friends have been enumerated.
+ # Person("Frantisek").Friends is being enumerated.
+ # All elements of Person("Frantisek").Friends have been enumerated.
+ # Person("Blazena").Friends is being enumerated.
+ # All elements of Person("Blazena").Friends have been enumerated.
+ # Person("Ursula").Friends is being enumerated.
+ # All elements of Person("Ursula").Friends have been enumerated.
+ # Person("Daniela").Friends is being enumerated.
+ # All elements of Person("Daniela").Friends have been enumerated.
+ # Person("Emil").Friends is being enumerated.
+ # All elements of Person("Emil").Friends have been enumerated.
+ # Person("Vendula").Friends is being enumerated.
+ # All elements of Person("Vendula").Friends have been enumerated.
+ # Person("Cyril").Friends is being enumerated.
+ # All elements of Person("Cyril").Friends have been enumerated.
+ # Person("Gertruda").Friends is being enumerated.
+ # All elements of Person("Gertruda").Friends have been enumerated.
+*** All elements of Group have been enumerated.
+Main: got Person(Name = "Hubert", Age = 10)
+ # Person("Anna").Friends is being enumerated.
+ # All elements of Person("Anna").Friends have been enumerated.
+*** Group is being enumerated.
+ # Person("Hubert").Friends is being enumerated.
+ # All elements of Person("Hubert").Friends have been enumerated.
+ # Person("Anna").Friends is being enumerated.
+ # All elements of Person("Anna").Friends have been enumerated.
+ # Person("Frantisek").Friends is being enumerated.
+ # Person("Frantisek").Friends is being enumerated.
+ # Person("Blazena").Friends is being enumerated.
+ # Person("Ursula").Friends is being enumerated.
+ # Person("Daniela").Friends is being enumerated.
+ # Person("Emil").Friends is being enumerated.
+ # Person("Vendula").Friends is being enumerated.
+ # Person("Cyril").Friends is being enumerated.
+ # Person("Gertruda").Friends is being enumerated.
+*** All elements of Group have been enumerated.
+
+Assignment 6: All persons, that are someone's oldest friend (with repeats).
+Main: foreach:
+*** Group is being enumerated.
+ # Person("Hubert").Friends is being enumerated.
+ # All elements of Person("Hubert").Friends have been enumerated.
+ # Person("Hubert").Friends is being enumerated.
+ # All elements of Person("Hubert").Friends have been enumerated.
+ # Person("Anna").Friends is being enumerated.
+ # All elements of Person("Anna").Friends have been enumerated.
+ # Person("Anna").Friends is being enumerated.
+ # All elements of Person("Anna").Friends have been enumerated.
+ # Person("Frantisek").Friends is being enumerated.
+ # All elements of Person("Frantisek").Friends have been enumerated.
+ # Person("Frantisek").Friends is being enumerated.
+Main: got Person(Name = "Anna", Age = 22)
+ # All elements of Person("Frantisek").Friends have been enumerated.
+ # Person("Blazena").Friends is being enumerated.
+ # All elements of Person("Blazena").Friends have been enumerated.
+ # Person("Blazena").Friends is being enumerated.
+Main: got Person(Name = "Ursula", Age = 22)
+Main: got Person(Name = "Vendula", Age = 22)
+ # All elements of Person("Blazena").Friends have been enumerated.
+ # Person("Ursula").Friends is being enumerated.
+ # All elements of Person("Ursula").Friends have been enumerated.
+ # Person("Ursula").Friends is being enumerated.
+Main: got Person(Name = "Blazena", Age = 18)
+Main: got Person(Name = "Daniela", Age = 18)
+ # All elements of Person("Ursula").Friends have been enumerated.
+ # Person("Daniela").Friends is being enumerated.
+ # All elements of Person("Daniela").Friends have been enumerated.
+ # Person("Daniela").Friends is being enumerated.
+Main: got Person(Name = "Ursula", Age = 22)
+ # All elements of Person("Daniela").Friends have been enumerated.
+ # Person("Emil").Friends is being enumerated.
+ # All elements of Person("Emil").Friends have been enumerated.
+ # Person("Emil").Friends is being enumerated.
+Main: got Person(Name = "Vendula", Age = 22)
+ # All elements of Person("Emil").Friends have been enumerated.
+ # Person("Vendula").Friends is being enumerated.
+ # All elements of Person("Vendula").Friends have been enumerated.
+ # Person("Vendula").Friends is being enumerated.
+Main: got Person(Name = "Emil", Age = 21)
+ # All elements of Person("Vendula").Friends have been enumerated.
+ # Person("Cyril").Friends is being enumerated.
+ # All elements of Person("Cyril").Friends have been enumerated.
+ # Person("Cyril").Friends is being enumerated.
+Main: got Person(Name = "Daniela", Age = 18)
+ # All elements of Person("Cyril").Friends have been enumerated.
+ # Person("Gertruda").Friends is being enumerated.
+ # All elements of Person("Gertruda").Friends have been enumerated.
+ # Person("Gertruda").Friends is being enumerated.
+Main: got Person(Name = "Frantisek", Age = 15)
+ # All elements of Person("Gertruda").Friends have been enumerated.
+*** All elements of Group have been enumerated.
+
+Assignment 6B: All persons, that are someone's oldest friend (without repeats).
+Main: foreach:
+*** Group is being enumerated.
+ # Person("Hubert").Friends is being enumerated.
+ # All elements of Person("Hubert").Friends have been enumerated.
+ # Person("Hubert").Friends is being enumerated.
+ # All elements of Person("Hubert").Friends have been enumerated.
+ # Person("Anna").Friends is being enumerated.
+ # All elements of Person("Anna").Friends have been enumerated.
+ # Person("Anna").Friends is being enumerated.
+ # All elements of Person("Anna").Friends have been enumerated.
+ # Person("Frantisek").Friends is being enumerated.
+ # All elements of Person("Frantisek").Friends have been enumerated.
+ # Person("Frantisek").Friends is being enumerated.
+Main: got Person(Name = "Anna", Age = 22)
+ # All elements of Person("Frantisek").Friends have been enumerated.
+ # Person("Blazena").Friends is being enumerated.
+ # All elements of Person("Blazena").Friends have been enumerated.
+ # Person("Blazena").Friends is being enumerated.
+Main: got Person(Name = "Ursula", Age = 22)
+Main: got Person(Name = "Vendula", Age = 22)
+ # All elements of Person("Blazena").Friends have been enumerated.
+ # Person("Ursula").Friends is being enumerated.
+ # All elements of Person("Ursula").Friends have been enumerated.
+ # Person("Ursula").Friends is being enumerated.
+Main: got Person(Name = "Blazena", Age = 18)
+Main: got Person(Name = "Daniela", Age = 18)
+ # All elements of Person("Ursula").Friends have been enumerated.
+ # Person("Daniela").Friends is being enumerated.
+ # All elements of Person("Daniela").Friends have been enumerated.
+ # Person("Daniela").Friends is being enumerated.
+ # All elements of Person("Daniela").Friends have been enumerated.
+ # Person("Emil").Friends is being enumerated.
+ # All elements of Person("Emil").Friends have been enumerated.
+ # Person("Emil").Friends is being enumerated.
+ # All elements of Person("Emil").Friends have been enumerated.
+ # Person("Vendula").Friends is being enumerated.
+ # All elements of Person("Vendula").Friends have been enumerated.
+ # Person("Vendula").Friends is being enumerated.
+Main: got Person(Name = "Emil", Age = 21)
+ # All elements of Person("Vendula").Friends have been enumerated.
+ # Person("Cyril").Friends is being enumerated.
+ # All elements of Person("Cyril").Friends have been enumerated.
+ # Person("Cyril").Friends is being enumerated.
+ # All elements of Person("Cyril").Friends have been enumerated.
+ # Person("Gertruda").Friends is being enumerated.
+ # All elements of Person("Gertruda").Friends have been enumerated.
+ # Person("Gertruda").Friends is being enumerated.
+Main: got Person(Name = "Frantisek", Age = 15)
+ # All elements of Person("Gertruda").Friends have been enumerated.
+*** All elements of Group have been enumerated.
+
+Assignment 7: All persons, who are oldest among someone's friends, but only those who are younger than that specific someone (with repeats).
+Main: foreach:
+*** Group is being enumerated.
+ # Person("Hubert").Friends is being enumerated.
+ # All elements of Person("Hubert").Friends have been enumerated.
+ # Person("Hubert").Friends is being enumerated.
+ # All elements of Person("Hubert").Friends have been enumerated.
+ # Person("Anna").Friends is being enumerated.
+ # All elements of Person("Anna").Friends have been enumerated.
+ # Person("Anna").Friends is being enumerated.
+ # All elements of Person("Anna").Friends have been enumerated.
+ # Person("Frantisek").Friends is being enumerated.
+ # All elements of Person("Frantisek").Friends have been enumerated.
+ # Person("Blazena").Friends is being enumerated.
+ # All elements of Person("Blazena").Friends have been enumerated.
+ # Person("Ursula").Friends is being enumerated.
+ # All elements of Person("Ursula").Friends have been enumerated.
+ # Person("Ursula").Friends is being enumerated.
+Main: got Person(Name = "Blazena", Age = 18)
+Main: got Person(Name = "Daniela", Age = 18)
+ # All elements of Person("Ursula").Friends have been enumerated.
+ # Person("Daniela").Friends is being enumerated.
+ # All elements of Person("Daniela").Friends have been enumerated.
+ # Person("Emil").Friends is being enumerated.
+ # All elements of Person("Emil").Friends have been enumerated.
+ # Person("Vendula").Friends is being enumerated.
+ # All elements of Person("Vendula").Friends have been enumerated.
+ # Person("Vendula").Friends is being enumerated.
+Main: got Person(Name = "Emil", Age = 21)
+ # All elements of Person("Vendula").Friends have been enumerated.
+ # Person("Cyril").Friends is being enumerated.
+ # All elements of Person("Cyril").Friends have been enumerated.
+ # Person("Cyril").Friends is being enumerated.
+Main: got Person(Name = "Daniela", Age = 18)
+ # All elements of Person("Cyril").Friends have been enumerated.
+ # Person("Gertruda").Friends is being enumerated.
+ # All elements of Person("Gertruda").Friends have been enumerated.
+*** All elements of Group have been enumerated.
+
+Assignment 7: All persons, who are oldest among someone's friends, but only those who are younger than that specific someone (without repeats).
+Main: foreach:
+*** Group is being enumerated.
+ # Person("Hubert").Friends is being enumerated.
+ # All elements of Person("Hubert").Friends have been enumerated.
+ # Person("Hubert").Friends is being enumerated.
+ # All elements of Person("Hubert").Friends have been enumerated.
+ # Person("Anna").Friends is being enumerated.
+ # All elements of Person("Anna").Friends have been enumerated.
+ # Person("Anna").Friends is being enumerated.
+ # All elements of Person("Anna").Friends have been enumerated.
+ # Person("Frantisek").Friends is being enumerated.
+ # All elements of Person("Frantisek").Friends have been enumerated.
+ # Person("Frantisek").Friends is being enumerated.
+ # All elements of Person("Frantisek").Friends have been enumerated.
+ # Person("Blazena").Friends is being enumerated.
+ # All elements of Person("Blazena").Friends have been enumerated.
+ # Person("Blazena").Friends is being enumerated.
+ # All elements of Person("Blazena").Friends have been enumerated.
+ # Person("Ursula").Friends is being enumerated.
+ # All elements of Person("Ursula").Friends have been enumerated.
+ # Person("Ursula").Friends is being enumerated.
+Main: got Person(Name = "Blazena", Age = 18)
+Main: got Person(Name = "Daniela", Age = 18)
+ # All elements of Person("Ursula").Friends have been enumerated.
+ # Person("Daniela").Friends is being enumerated.
+ # All elements of Person("Daniela").Friends have been enumerated.
+ # Person("Daniela").Friends is being enumerated.
+ # All elements of Person("Daniela").Friends have been enumerated.
+ # Person("Emil").Friends is being enumerated.
+ # All elements of Person("Emil").Friends have been enumerated.
+ # Person("Emil").Friends is being enumerated.
+ # All elements of Person("Emil").Friends have been enumerated.
+ # Person("Vendula").Friends is being enumerated.
+ # All elements of Person("Vendula").Friends have been enumerated.
+ # Person("Vendula").Friends is being enumerated.
+Main: got Person(Name = "Emil", Age = 21)
+ # All elements of Person("Vendula").Friends have been enumerated.
+ # Person("Cyril").Friends is being enumerated.
+ # All elements of Person("Cyril").Friends have been enumerated.
+ # Person("Cyril").Friends is being enumerated.
+ # All elements of Person("Cyril").Friends have been enumerated.
+ # Person("Gertruda").Friends is being enumerated.
+ # All elements of Person("Gertruda").Friends have been enumerated.
+ # Person("Gertruda").Friends is being enumerated.
+ # All elements of Person("Gertruda").Friends have been enumerated.
+*** All elements of Group have been enumerated.
+
+alternative solution for Assignment 7B:
+Main: foreach:
+*** Group is being enumerated.
+ # Person("Hubert").Friends is being enumerated.
+ # All elements of Person("Hubert").Friends have been enumerated.
+ # Person("Hubert").Friends is being enumerated.
+ # All elements of Person("Hubert").Friends have been enumerated.
+ # Person("Anna").Friends is being enumerated.
+ # All elements of Person("Anna").Friends have been enumerated.
+ # Person("Anna").Friends is being enumerated.
+ # All elements of Person("Anna").Friends have been enumerated.
+ # Person("Frantisek").Friends is being enumerated.
+ # All elements of Person("Frantisek").Friends have been enumerated.
+ # Person("Blazena").Friends is being enumerated.
+ # All elements of Person("Blazena").Friends have been enumerated.
+ # Person("Ursula").Friends is being enumerated.
+ # All elements of Person("Ursula").Friends have been enumerated.
+ # Person("Ursula").Friends is being enumerated.
+Main: got Person(Name = "Blazena", Age = 18)
+Main: got Person(Name = "Daniela", Age = 18)
+ # All elements of Person("Ursula").Friends have been enumerated.
+ # Person("Daniela").Friends is being enumerated.
+ # All elements of Person("Daniela").Friends have been enumerated.
+ # Person("Emil").Friends is being enumerated.
+ # All elements of Person("Emil").Friends have been enumerated.
+ # Person("Vendula").Friends is being enumerated.
+ # All elements of Person("Vendula").Friends have been enumerated.
+ # Person("Vendula").Friends is being enumerated.
+Main: got Person(Name = "Emil", Age = 21)
+ # All elements of Person("Vendula").Friends have been enumerated.
+ # Person("Cyril").Friends is being enumerated.
+ # All elements of Person("Cyril").Friends have been enumerated.
+ # Person("Cyril").Friends is being enumerated.
+ # All elements of Person("Cyril").Friends have been enumerated.
+ # Person("Gertruda").Friends is being enumerated.
+ # All elements of Person("Gertruda").Friends have been enumerated.
+*** All elements of Group have been enumerated.
+
+Assignment 7C: All persons, who are oldest among someone's friends, but only those who are younger than that specific someone (without repeats and sorted alphabeticaly in reverse by name ).
+Main: foreach:
+*** Group is being enumerated.
+ # Person("Hubert").Friends is being enumerated.
+ # All elements of Person("Hubert").Friends have been enumerated.
+ # Person("Hubert").Friends is being enumerated.
+ # All elements of Person("Hubert").Friends have been enumerated.
+ # Person("Anna").Friends is being enumerated.
+ # All elements of Person("Anna").Friends have been enumerated.
+ # Person("Anna").Friends is being enumerated.
+ # All elements of Person("Anna").Friends have been enumerated.
+ # Person("Frantisek").Friends is being enumerated.
+ # All elements of Person("Frantisek").Friends have been enumerated.
+ # Person("Blazena").Friends is being enumerated.
+ # All elements of Person("Blazena").Friends have been enumerated.
+ # Person("Ursula").Friends is being enumerated.
+ # All elements of Person("Ursula").Friends have been enumerated.
+ # Person("Ursula").Friends is being enumerated.
+ # All elements of Person("Ursula").Friends have been enumerated.
+ # Person("Daniela").Friends is being enumerated.
+ # All elements of Person("Daniela").Friends have been enumerated.
+ # Person("Emil").Friends is being enumerated.
+ # All elements of Person("Emil").Friends have been enumerated.
+ # Person("Vendula").Friends is being enumerated.
+ # All elements of Person("Vendula").Friends have been enumerated.
+ # Person("Vendula").Friends is being enumerated.
+ # All elements of Person("Vendula").Friends have been enumerated.
+ # Person("Cyril").Friends is being enumerated.
+ # All elements of Person("Cyril").Friends have been enumerated.
+ # Person("Cyril").Friends is being enumerated.
+ # All elements of Person("Cyril").Friends have been enumerated.
+ # Person("Gertruda").Friends is being enumerated.
+ # All elements of Person("Gertruda").Friends have been enumerated.
+*** All elements of Group have been enumerated.
+Main: got Person(Name = "Emil", Age = 21)
+Main: got Person(Name = "Daniela", Age = 18)
+Main: got Person(Name = "Blazena", Age = 18)

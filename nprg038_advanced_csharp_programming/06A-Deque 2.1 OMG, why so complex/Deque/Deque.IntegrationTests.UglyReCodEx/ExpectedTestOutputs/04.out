@@ -1,0 +1,8 @@
+Count=0 Items=IEnumerable{} IList{}
+Count=3 Items=IEnumerable{1 2 3} IList{1 2 3}
+Count=4 Items=IEnumerable{-1 1 2 3} IList{-1 1 2 3}
+Count=5 Items=IEnumerable{-2 -1 1 2 3} IList{-2 -1 1 2 3}
+Count=6 Items=IEnumerable{-3 -2 -1 1 2 3} IList{-3 -2 -1 1 2 3}
+Count=5 Items=IEnumerable{-3 -2 -1 2 3} IList{-3 -2 -1 2 3}
+Count=4 Items=IEnumerable{-2 -1 2 3} IList{-2 -1 2 3}
+Count=3 Items=IEnumerable{-2 -1 2} IList{-2 -1 2}

@@ -1,0 +1,61 @@
+
+LS 2023/2024 (Summer Semester): DU12 [T] AsyncSemaphore
+(after lecture 13)
+
+SemaphoreSlim
+bool .Wait()
+
+.Release()
+Task<bool> .WaitAsync()
+
+Th1 -> Task1
+Th2 -> Task2
+Th1 -> Task3
+.Release(2)
+
+Task.Run( .... , asyncState: xxx )
+object Task.AsyncState
+
+*** What can you use in your solution? ***
+
+NO: Semaphore / SemaphoreSlim
+
+YES: "async" marked methods containing the "await" keyword
+YES: Task.ContinueWith(...)
+YES: System.Threading.*
+YES: System.Threading.Tasks.*
+YES: Monitor.*
+YES: lock
+YES: Interlocked.* (if you know it from Czech class EXTENDED TRACK lectures)
+
+*** IMPORTANT NOTE ***
++ Implement only .WaitAsync(...) method on your AsyncSemaphore.
++ Do NOT implement sync .Wait() method as well, as the SemaphoreSlim has !!!
+!!! Implementing both async .WaitAsync(...) and sync .Wait() correctly and effectively leads to extreme complexity of the implementation !!!
+
+Futher notes:
+
+Task
+.Status
+.IsCompleted
+.IsCompletedSuccessfully
+Task<T>
+.Result
+Task.FromResult<T>(T result) -> Task<T>
+Task.Delay(ms) -> Task
+
+Task/Task<T> = future
+TaskCompletionSource<T>(....) = promise
+-> .Task -> Task<T>
+-> .SetResult(xxx)
+-> .TrySetResult(xxx)
+
+Task.WaitAll/Any
+Task.WhenAll/Any
+.ContinueWith( .... )
+
+Task<T> : Task
+
+Task<A> : Task
+Task<B> : Task
+Task<Task> : Task

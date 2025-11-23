@@ -1,0 +1,1 @@
+## Implementation in file [Types.cs](./src/FixedPoint2023.ConsoleApp/Types.cs)

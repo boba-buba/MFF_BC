@@ -1,0 +1,12 @@
+Count=9 Items=IEnumerable{z y x  X  a b c} IList{z y x  X  a b c}
+6
+0
+4
+3
+Reverse: Count=9 Items=IEnumerable{c b a  X  x y z} IList{c b a  X  x y z}
+2
+8
+4
+3
+Count=0 Items=IEnumerable{} IList{}
+Count=0 Items=IEnumerable{} IList{}

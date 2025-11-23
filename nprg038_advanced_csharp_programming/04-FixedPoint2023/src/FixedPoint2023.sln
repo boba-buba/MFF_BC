@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34622.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FixedPoint2023.ConsoleApp", "FixedPoint2023.ConsoleApp\FixedPoint2023.ConsoleApp.csproj", "{75C82C6A-0213-461F-9FEC-C824083B3D04}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{75C82C6A-0213-461F-9FEC-C824083B3D04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75C82C6A-0213-461F-9FEC-C824083B3D04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75C82C6A-0213-461F-9FEC-C824083B3D04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75C82C6A-0213-461F-9FEC-C824083B3D04}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1C51040B-CA34-41D5-A994-61CEE5D7B700}
+	EndGlobalSection
+EndGlobal
