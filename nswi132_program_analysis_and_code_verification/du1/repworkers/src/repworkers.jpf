@@ -1,0 +1,16 @@
+target = fse2006apps.Main
+
+# error #1: gov.nasa.jpf.listener.PreciseRaceDetector "race for field fse2006replicatedworkers.Coordinato..."
+# listener = gov.nasa.jpf.listener.PreciseRaceDetector
+# search.class=gov.nasa.jpf.search.heuristic.MostBlocked
+# search.depth_limit = 10000
+
+# error #1: gov.nasa.jpf.listener.PreciseRaceDetector "race for field fse2006replicatedworkers.Coordinato..."
+# listener = gov.nasa.jpf.listener.PreciseRaceDetector
+# search.class=gov.nasa.jpf.search.heuristic.Interleaving
+
+log.level = ERROR
+log.path = jpf.log
+
+vm.heap = 512
+vm.stack = 2048

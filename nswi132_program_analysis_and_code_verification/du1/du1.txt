@@ -1,0 +1,30 @@
+1. 
+- NoDuplicateFilesListener:
+Ten Listener sleduje jestli "zaroven" uspesne mohla skoncit funkce creat pro dva soubory se stejnym jemenem.
+Ten spadne na tom ze JPF dosla pamet, i kdyz jsem to poustela s 4GB.
+
+- DirectoryConsistencyListener:
+Sleduje konzistenci slozky po volani funkci creat a unlink na souborech
+Ten skutecne odhaly chyby.
+
+- UnexpectedDeletionListener
+Zde myslenka spocivala v tom, ze kdyby behem cteni nebo psani nekdo smazal soubor a to by to zachytilo.
+Ale behem psani kodu jsem pochopila, ze nejsem schopna to overit, jelikoz pisu do/ctu soubor pres filehandler,
+a uz nemam ten nazev souboru a prave pomoci tech nazvu jsem poznamanevala smazane soubory. Takze ten soubor posilam
+z duvodu, ze bych se chtela zeptat, jestli existuje nejaky zpusob napsat takovy listener, a me to nenapadlo nebo ne?
+
+A mezitim to je i ten duvod proc bych chtela vytvaret v tom listeneru instance objektu z DaisyFS na overeni urcitych vlastnosti
+tech objektu, ktere nevim jak dostat jinym zpusobem. Treba kdybych chtela v tom listeneru inode z file handleru, jak bych jej mohla dostat?
+
+V program se vytvari jenom jedna slozka, takze tyhle listenery obsahuji jenom HashMap pro soubory a nerozlisuje
+slozky.
+
+2. 
+
+
+
+3) Pro elevator je soubor elevator.jpf a pro workery je repworkers.jpf.
+V souborech jsou komentare jake konfigurace nasly jake chyby. Nepodarilo se mi 
+nastavit vic listeneru nez jeden, pokazde jpf mi psal, ze je tam chyba a kdybych
+mohla nastavit vic nez jeden, tak trochu nechapu k cemu by to bylo, jestli se program
+zastavi, jakmile najde tu prvni.

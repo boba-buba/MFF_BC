@@ -1,0 +1,33 @@
+1. Nepodařílo se mi zbuildit llvm. Zkoušela jsem na linuxu (Fedora, Ubuntu) a windows. Vždycky padalo na buildu samotného llvm ještě před tím
+než jsem tam zkusila přidat něco svého.
+
+2.
+- run: standardní funkce pro ty passy. Funkce najde limity LOWER a UPPER a spustí analýzu.
+- extractBoundValuesFromMain: prochazí postupně instrukce v programu od BasicBlocku a snaží se najít instrukce uložení int do globálních proměnných LOWER a UPPER.
+Hodnoty se uloží do privátních proměnných třídy RangeAnalysisPass.
+- analyzeFunction: prochází instrukce postupně a analyzuje instruckce načtení a uložení int z/do pamětia a binární opearace jako Add, Sub, Mul.
+Z těch instrukcí najde interval a přidá ten interval (asociovaný s toutou instrukcí) do mapy.
+V poslední části cyklu si vezme z mapy přečtený interval aporovná je s intervalem UPPER-LOWER. Případně vypíše, že interval
+není v hranicích.
+- evalBinaryOp: uloží interval asociovaný s indtrukcí binární operace, skladání a odečítání jsou triviální,
+v případě součinu je potřeba projít všechny možné kombinace (pro případ s negativními čísly).
+
+
+Co se tyče analýzy cyklů, tak LLV má Scalar Evolution (SCEV) nebo LoopInfo. LoopInfo umožňuje přístup k struktoře cyklu a SCEV modeluje jak se
+hodnoty mění uvnitř cyklu.
+
+SCEV zvládá indukční proměnné (jako i = i + 1) a předpovídá hranice smyčky.
+
+Například v:
+for (int i = 0; i < 10; ++i)
+ a = i;
+bude LLVM reprezentovat vývoj hodnoty i pomocí SCEVAddRecExpr, něco jako:
+{0,+,1}<%loop>
+
+Což znamená: začínáme od 0, každou iteraci zvyšujeme o 1, v %cyklu.
+SCEV pak může vypočítat rozsah hodnot, kterých i nabývá (zde: [0, 9]).
+Zkusila jsem přidat analýzu smyček. V kódu jsou komentaře, které popisují SCEV a LoopInfo elementy.
+Obecný nápad: získat info o cyklech pomocí SCEVu a potom to dát RangeAnalysisPass, který vypíše out-of-bounds
+range.
+
+Nepodařílo se mi ale ani jednou spustit, takže nemohla jsem ověřit, jestli to funguje.

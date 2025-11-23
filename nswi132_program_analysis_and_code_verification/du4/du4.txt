@@ -1,0 +1,75 @@
+Nakonec jsem zvolila CPAchecker, ten měl nejvic dokumentace a ten se mi podařilo zbuildit docela rychle.
+
+1. Build tool
+Pro můj případ jsem potřebovala CPAchecker na linuxu. Já mám distribuci Fedora a tutoriály na webových stránkách CPAchecker uvádějí jenom instrukce pro 
+stažení CPAcheckeru na Debian nebo Ubuntu. Takže jsem musela zbuildit nástroj ze zdrojů. To proběhlo docela v pohodě, musela jsem mít Javu a ant, to jsem
+ale nemusela nijak řešit, ty jsem měla před tím. Potom jsem postupovala podle tutorialu a šlo to.
+
+2. Zvolený kód
+Zvolila jsem kód z předmětu Operační systémy. Během semestru jsme v týmech museli vyvinout kernel a začátky uspace. Pro nástroj jsem použila jenom kód kernelu,
+i tak toho bylo dost, protože jsem musela vyřešit přípravu kódu pro spuštění nástroju.
+
+3. Příprava kódu pro verifikáční nástroj
+CPAchecker nepodporuje verifikaci několika souboru, bylo potřeba ze všech relevantních souborů vytvořit .i file. Původně jsem napsala pravidlo do Makefile:
+
+# New target for CPAchecker preprocessing
+PREPROCESSED_I = kernel_preprocessed.i
+PREPROCESS_SOURCES = \
+    src/main.c \
+    $(KERNEL_SOURCES)
+
+preprocess: $(PREPROCESSED_I)
+
+$(PREPROCESSED_I): $(PREPROCESS_SOURCES)
+	$(CC) $(CCFLAGS) -E $(KERNEL_EXTRA_CFLAGS) \
+        -I$(SRC_BASE)kernel/include -I$(SRC_BASE)kernel/src \
+        $(PREPROCESS_SOURCES) > $(PREPROCESSED_I)
+
+To ale byla špatná cesta, jelikož v průběhu toho "buildu", hlavičkové soubory jsou nakopirované do výsledného .i několikrát (i když jsem tam všude měla ty 
+guards jako #ifndef #define ... #endif ). Nakonec jsem přišla na to, že musím vytvořit entry_point.c soubor, kde budou include relevantní zdrojové soubory
+a ten entry_point.c soubor dát překladači. entry_point.c vypadá takhle:
+
+// kernel/src/entry_point.c
+
+#include "adt/bitmap.c"
+#include "main.c"
+#include "debug/code.c"
+#include "debug/padding.c"
+#include "exc/exc.c"
+#include "exc/syscall.c"
+#include "exc/tlb.c"
+#include "lib/print.c"
+#include "lib/runtime.c"
+#include "mm/as.c"
+#include "mm/frame.c"
+#include "mm/heap.c"
+#include "proc/mutex.c"
+#include "proc/process.c"
+#include "proc/scheduler.c"
+#include "proc/sem.c"
+#include "proc/thread.c"
+
+// Final stub to start the kernel
+extern void kernel_main();
+int main() {
+    kernel_main();
+    return 0;
+}
+
+a příkaz na vytvoření výsledného .i soubory, který by CPAchecker neodmitl je:
+
+/opt/mffd3s/mips32/bin/mipsel-linux-gnu-gcc   -E   -ffile-prefix-map==   -Ikernel/include -Ikernel/src   -O2 -march=r4000 -mabi=32 -mgp32 -msoft-float -mlong32 -G 0 -mno-abicalls   -fno-pic -fno-builtin -ffreestanding -nostdlib -nostdinc   -pipe -Wall -Wextra -Werror -Wno-unused-parameter -Wmissing-prototypes   -g3 -std=c11   kernel/src/entry_point.c > kernel/kernel_preprocessed.i
+
+4. Verifikace
+Nakonec jsem spustila CPAchecker s různými specifikacemi (přikládám i log soubory, na začátku každého je příkaz na spuštění):
+- default (log.txt)
+- assertion (assertion_log.txt)
+- null dereference (nul_deref_log.txt)
+- terminationg functions (log_terminationg_funcs.txt)
+
+příkaz: scripts/cpa.sh --spec config/specification/NAME.spc ../snowflakes/kernel/kernel_preprocessed.i >log_file.txt
+
+5. Výsledky:
+- assertion: žádné assertion violations nebyly nalezené
+- null dereference: null dereference nebyly nalezené
+- terminationg functions: taky nic nebylo nalezeno

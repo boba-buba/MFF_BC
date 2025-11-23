@@ -1,0 +1,27 @@
+# DaisyFS main class
+target=DaisyFSMain
+
+# Custom Listener to check properties
+listener=gov.nasa.jpf.listener.MyDaisyFSListener
+
+# ----------------------
+# Custom Properties
+# ----------------------
+
+# Precondition: creat() should have valid parameters
+creat.precondition=dir != null && fh != null && dir != fh
+creat.precondition.message=Precondition violation in DaisyDir.creat
+
+
+# ----------------------
+# JPF Options
+# ----------------------
+
+# Use symbolic execution for better analysis
+symbolic.method=DaisyDir.creat,DaisyFS.lookup,DaisyFS.unlink
+
+# Use state matching to optimize JPF execution
+vm.matching=true
+
+# Report all assertion failures
+report.console.assert=true

@@ -1,0 +1,40 @@
+1. Informal
+Zkusila jsme použit "predicate", což je vlastně funkce, která vrací bool a (aspoň teoreticky)
+ lze ji vložit do nějakého Ensures nebo Requires. Druhá věc, kterou jsem zkoušela byly přístupová 
+ práva pro "globální" (v kontextu jedné instance) proměnné. Myslela jsem si, že to bude jednodušší.
+ Ve výsledku ve většině funkcí nikdy nebylo dost těch práv, pořád mi hlásilo "Verification failed: 
+ Assignment might fail. There might be insufficient permission to access current._next".
+Ještě zajímavá věc byla funkce "Old()", pomocí které v kontraktech bylo možné porovnávat hodnotu 
+proměnné před a po spuštění funkce, jako třeba "Ensures(Old(self._count) >= self._count)" ve funkci Remove.
+
+2. Positive
+Moc se ta verifikace nepodařila, ale chtěla bych se zminit o několika užitečných funkcích (kromě standárdních Ensures, Requires)
+Old() -  dobrá funkce na porovnání proměnných, které se mění ve funkci ale nejsou vracené, jako třeba privátní položky
+uvnitř třídy.
+Result() - hodí na ověřování návratové hodnoty funkce.
+Invariant() - ten jsem se taky snažila přidat do více cyklů, kvůli problémů s právy se mi take to nepodařilo ověřit, ale
+to je užitečné (aspoň na příkladech, které jsem zkoušela stranou, když jsem se snažila zprovoznit po verifikaci třídy po částech)
+
+Ale obecně pro mě bylo hlavní pozitivum v tom, že to člověka nutí přemýšlet o tom jak programovat, nejen jak testovat. Třeba jen to, 
+kolik práv potřebuji na iteraci kolekci (i když to je jenom čtení).
+
+3. Všechny funkce, které vyžadovaly iteraci přes kolekci prvků, se nepodařilo verifikovat. Nepodařilo se mi
+vymyslet takovou implementaci, kde bych mohla definovat kontrakt s přístupovými právy na každý prvek kolekce. Jak 
+jsem už psala prvním nápadem byla implementace pomocí pythonovského array/List. Taková implementace vedla na verifikační 
+chybu o nedostatku práv. Druhým nápadem byl linked list, který ale situaci taky nezlepšil. Potom jsem zkusila přidat
+predikát, kde jsem dodefinovala přístupy na položku current. To taky nepomohlo a vedlo na další chyby.
+
+Ještě jsem si všimla, že nagini nepodporuje docela hodně built-in pythonovských funkcí. Několikrát jsem musela
+změnit kód, abych se zbavila takové chyby. Z toho, co pamatuji, tak třeba funkce "a.sort()", kde a je array/List. Musela 
+jsem to změnit na "b = sorted(a)". Nebo ještě i len(a) (Ensures(Result() == len(self._elements))) taky není podporován 
+(tam jsem musela v první implementaci přidat položku self._count a tak jsem ověřovala počet prvků)
+
+4. Celkem:
+Líbilo se mi, že nagini má docela hodně příkladů programů. Ale chybí dokumentace, když jsem si chtěla přečíst více o funkcionalitě
+nagini, tak jsem četla o viperu a příklady byly v javě. Většina funkcí se jmenovala stejně ale byly tam i rozdíly. Potom jak jsem si už
+zmínila nagini nepodporuje docela hodně built-in pythonovských funkcí, což nutí člověka přepisovat implementaci kódu a když není možné něco
+přepsat, tak dál "translation" fáze to nepůjde (Celkem se proces skládá ze dvou fází: translation a verification).
+
+5. Verification errors:
+Ty se týkaly jenom přístupových práv na položky typu "current._next" a tam zřejmé, proč tu chybu hlásí. Špatné je to, že se mi 
+nepodařilo najít způsob, jak bych mohla definovat, že ta práva tam mají být udělená.

@@ -1,0 +1,16 @@
+target = elevator.Elevator
+
+listener = gov.nasa.jpf.listener.CGRemover
+search.heuristic.queue_limit=-1
+
+search.depth_limit = 10000
+
+log.level = ERROR
+log.path = jpf.log
+
+vm.heap = 512
+vm.stack = 512
+
+# error #1: gov.nasa.jpf.listener.PreciseRaceDetector "race for field elevator.Floor@245.upPeople    Lift..."
+# listener = gov.nasa.jpf.listener.PreciseRaceDetector
+# search.class=gov.nasa.jpf.search.heuristic.BFSHeuristic

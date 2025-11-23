@@ -1,0 +1,211 @@
+slaid: Example
+Fig. 1 shows an example TPot specification, consisting
+of two proof-oriented tests (POTs) and a global invariant.
+POTs specify the main functional correctness properties, and
+global invariants help prove their correctness. TPot verifies
+the system in two steps. First, it symbolically executes the
+initializer followed by the global invariant and ensures that
+the latter must return true. Then, TPot symbolically executes
+each POT under the assumption that the invariant holds over
+the initial system state, proving all assertions. For each POT,
+TPot also ensures that the invariant must return true over
+the final system state, which concludes an inductive proof.
+
+slaid: TPot architecture
+Fig. 3 shows TPot’s architecture. With TPot, developers write,
+in C, functional correctness specifications as POTs and in-
+variants, using the verification primitives that TPot pro-
+vides (§4.1). TPot lowers POTs, global invariants, and the
+implementation code into LLVM intermediate representation
+(IR), to avoid dealing directly with the complicated semantics
+of C [43, 48]. TPot then performs exhaustive symbolic execu-
+tion (SE) over each POT, using a custom symbolic executor
+based on KLEE [ 8 ]. During SE, TPot checks for violations of
+conditions asserted by the POT, as well as low-level errors,
+like memory safety violations and division by zero.
+During verification, TPot uses the Z3 [ 23] SMT solver to
+decide the feasibility of each branch and to enumerate all
+possible targets for symbolic pointers. The TCB of a system
+component verified with TPot includes TPot itself (which
+builds on KLEE), user-written specifications (POTs), Z3, and
+the LLVM toolchain
+
+slaid Design goals:
+First, the specification language should be
+familiar to developers without verification expertise, and
+they should not have to learn new languages for the purpose
+of verification, even if they might need to learn new specifi-
+cation primitives. Second, as much as possible, developers
+should not have to write intermediate specifications for the
+purposes of verification—they should only specify the behav-
+ior they are interested in verifying. Last, the specification
+language must enable the right combination of expressiveness
+and automated reasoning. It should be expressive enough to
+specify safety of critical system components and to express
+functional-correctness properties of interest. On the other
+hand, it should be restrictive enough that properties can be
+encoded into SMT in a way that decreases risks of instabil-
+ity [40, 46], and avoids common causes of solver explosion.
+
+slaid Language overview:
+Table 2 summarizes the 8 primitives
+with which we extend C. TPot’s specification language ex-
+tends a conventional symbolic execution (SE) API with global
+invariants, heap primitives, and a restricted form of univer-
+sal quantification. The SE primitives ( 1 – 3 ) define symbolic
+variables, restrict their values through assumptions, and assert
+conditions expressed as C boolean expressions. This style of
+specification resembles property-based tests [17], which re-
+cent research [ 7 ] suggests are acceptable to developers. Using
+these primitives, developers express functional correctness
+properties as POTs. TPot encapsulates shared properties in
+functions, making C functions serve the same purpose as
+logical predicates in other C verifiers [3, 34, 38, 57
+
+slaid Global invariants. 
+To facilitate the specification of stateful
+components, TPot includes the notion of global invariants,
+which are conditions that are expected to hold over the global
+state both before and after each API function execution. TPot
+treats any boolean function whose name starts with inv__
+as a global invariant (such as inv__owners() in Fig. 4).
+
+slaid Naming. 
+Specifying heap-manipulating programs requires
+two facilities missing from conventional SE primitives: mem-
+ory safety predicates, and mechanisms to concisely con-
+trol aliasing. Interactive verification tools often provide
+these facilities through a permission system like dynamic
+frames [39, 64 ], separation logic [59], linear types [42], or
+ownership types [37]. Permission systems often require de-
+velopers to explicitly manipulate proof state (e.g., fold and
+unfold predicates), while linear and ownership types restrict
+the implementation by disallowing certain forms of aliasing.
+TPot instead addresses these needs through a naming-
+based abstraction exposed through primitives 4 – 6 . These
+primitives simplify and automate heap reasoning in the ab-
+sence of recursive data structures. This is enabled by a crucial
+observation: each block of memory can be identified by a
+unique name, or a unique name-index pair. We next motivate
+and explain the naming abstraction through an example, then
+present a rule for renaming and discuss quantified naming.
+Naming example. Figure 5 presents a toy system that main-
+tains two dynamically allocated integers whose addresses are
+stored in global variables p1 and p2. The system’s initializer
+allocates the integers and its single API function increments
+the integer p1 points to. spec_incr_p1 is a POT specifying
+the behavior expected of this function.
+To understand inv__alloc’s purpose, consider the sce-
+nario where it is omitted. Without a global invariant specify-
+ing otherwise, p1 and p2 can have arbitrary pointer values,
+including null or a dangling value. Therefore, dereferencing
+either would cause a memory safety error, and so the POT
+would fail at line 15. To avoid this, we need a global invariant
+stating that p1 and p2 both point to allocated memory.
+
+slaid Universal quantification.
+To keep reasoning about the
+specifications automatable, TPot does not support conditions
+that are universally quantified over all values of a type. In-
+stead, TPot allows universal quantification over memory
+regions through primitives 7 and 8 , which TPot’s specifi-
+cations can use to quantify properties over all elements in
+a collection, e.g., an array. For instance, while one may not
+quantify over integers generically in TPot specifications, one
+may quantify over all integers in an array.
+Developers can use the forall_elem primitive to quan-
+tify properties over contiguous blocks of memory and
+names_obj_forall_cond to quantify over more flexible
+groups of objects described by quantified naming. Impor-
+tantly, TPot can encode these properties into SMT queries
+that do not involve quantifiers in most cases (§4.3). Re-
+stricting quantification on stateful objects in this way also
+sidesteps gnarly soundness issues related to allocatedness of
+quantified variables
+
+slaid Custom Memory model
+Our memory model separates the heap from global vari-
+ables and from the stack. While global variables and stack
+objects have concrete base addresses and sizes, heap objects
+have symbolic ones. TPot uses additional SMT constraints to
+encode that the ranges specified by symbolic base addresses
+and object sizes do not overlap. To avoid a quadratic number
+of constraints with respect to the number of heap objects,
+TPot fixes an ordering of objects in the heap. While TPot
+fixes an ordering, it does not constrain the distance between
+subsequent objects. Otherwise out-of-bounds accesses to
+an object could be unsoundly deemed as safe accesses to
+another object. Moreover, an additional level of encoding
+indirection (§4.3) ensures that the fixed order of objects does
+not unsoundly imply an ordering between pointer values.
+
+slaid TPot SMT encoding
+- Eliminating quantifiers. Universal quantifiers are a com-
+mon cause of solver explosion, as they may cause the solver
+to discover an arbitrary number of facts that are not useful
+for solving the current query. Worse, some combinations of
+quantifiers give rise to matching loops [ 40], compounding
+the issue and leading to unpredictable verification times.
+To ensure the stability of its SMT encoding, TPot han-
+dles most quantifiers without sending quantified queries to
+the solver. Specifically, TPot only makes quantified queries
+before lazily materializing an object whose existence is im-
+plied by a names_obj_forall condition. Normally, memory
+resolution queries exclude the quantified memory safety
+constraints (over heap_safe) that encode names_obj_forall.
+When TPot fails to prove the safety of a memory operation, it
+retries the safety check once per such quantified constraint,
+including one of them each time. In this way, the impact of
+quantifiers on verification performance is controlled: lazily
+including quantified constraints in this way makes it likely
+that they will be useful in solving the query; each query
+is given a single quantifier with triggers picked to avoid
+self-loops, so matching loops are avoided; and the process
+happens at most once per object, just before instantiation
+- Converting pointer values, heap addresses, and object
+sizes to integers. Since TPot does not distinguish between
+pointers and data and supports bit-level operations over both,
+it needs to represent pointer values, heap addresses, and ob-
+ject sizes as 64-bit vectors. However, we have found that
+doing so naively tends to leads to solver explosion in the
+form of bit-blasting over these values. When the solver fails
+to solve a query involving bitvectors heuristically through
+bitvector arithmetic, it tries to discharge the query using
+propositional logic, which entails interpreting a 64-bit vec-
+tor as 64 independent boolean variables, giving rise to 264
+combinations.
+With a naive encoding, bit-blasting happens frequently
+during pointer resolution, since heap addresses relate to each
+other through bitvector arithmetic. To mitigate this, TPot
+converts bitvectors to integers during pointer resolution,
+allowing Z3 to use integer arithmetic solvers.
+Converting precisely between bitvectors and integers (e.g.
+using the bv2int function offered by Z3) is prohibitively
+costly for SMT solving and can itself cause instability. In-
+stead, TPot approximates the bv2int conversion using an
+uninterpreted function tpot_bv2int that assumes overflow-
+free semantics and is explicitly axiomatized.
+- Query simplification. To further stabilize SMT solving,
+TPot includes a custom query simplifier. Unlike prior ap-
+proaches that simply propagate constants and equalities [ 8 ],
+TPot’s simplifier performs much more extensive simplifi-
+cation, often involving intermediate SMT queries to check
+whether certain simplification is possible. While intermedi-
+ate queries can impact TPot’s verification time negatively,
+they benefit its stability as they may prevent solver explo-
+sions in more complex queries. Below, we present two exam-
+ples of the types of simplification TPot performs.
+- Read after write. For expressions of the form
+(Read (Write 𝑂 𝑥 𝑗) 𝑖), TPot checks if it is possible
+to simplify to either (Read 𝑂 𝑖), or 𝑥. To achieve this, TPot
+makes SMT queries to check if i is provably equal to or
+provably different from j.
+-Constant offsets. During pointer resolution, if TPot infers
+that the difference between a pointer and a base address
+must be constant, it caches and reuses this fact to rewrite
+byte offsets in later queries. Concretely, while performing a
+memory operation (say, a read), after resolving a pointer 𝑝
+to an object 𝑂, TPot will construct an expression of the form
+(Read 𝑂 (Subtract 𝑃 base_of (𝑂))). If TPot infers that P is
+equal to base_of (𝑂) plus some constant, it will substitute P
+in the Read, and in all subsequent expressions.
