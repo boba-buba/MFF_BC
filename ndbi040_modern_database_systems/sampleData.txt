@@ -1,0 +1,43 @@
+Maybe add album 
+
+Record Label
+id	Name 	FoundDate 	Founder 	Country
+
+Artist
+id 	Name 	YearStart 	Country 		Awards 	RealName
+
+Producer
+id 	Name 		YaerOfB 	Country 	Record_Label_id
+1 	The National
+2	Rashad Thomas
+3	Labrinth
+4 	Ron Perry
+5	Pdogg
+6	DVLP
+7	Eminem
+8	Bang Chan
+9 	Inflo
+10 	Detail
+11	Greg Kurstin
+12 	Seven
+
+SONG
+id	name			RDate	Lang		Artist_id		Credists 	Producer_id
+1 	The Alcott	04/28/23	Eng		The National			1
+2	Gang Gang Gang	04/28/23	Eng		Jack Harlow			2
+3	The Feels		04/28/23	Eng		Labrinth 				3
+4 	Butter		05/21/21	Kor		BTS					4
+5 	DNA			09/18/17	Kor 		BTS					5
+6	Not Today		02/14/17	Kor		BTS					5
+7 	Rap God 		10/14/13	Eng		Eminem				6
+8 	Blunt Blowin	08/29/11	Eng		Lil Wayne				6
+9 	Venom		08/31/18	Eng		Eminem				7
+10 	Venom		03/18/22	Kor		Stray Kids			8
+11	Venom		03/01/19	Eng		Little Simz			9
+12	Hold On		11/19/21	Eng		Adele				9
+13	Drunk in Love	12/17/13	Eng		Beyonce				10
+14	Worst Behavior	09/24/13	Eng 		Drake				10
+15	Snowman		11/10/17	Eng		Sia					11
+16	Sorry		06/02/17	Eng		Halsey				11
+17	Easy On Me	10/15/21	Eng		Adele				11
+18	Worldwide Choppers05/31/11Eng		TEch N9ne				12

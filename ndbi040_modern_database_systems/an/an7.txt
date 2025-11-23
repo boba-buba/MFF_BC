@@ -1,0 +1,5 @@
+awards:
+Academy Award   Best Original Song  2003
+Teen Choice Awards   Choice Music: Male Artist    2003
+name:
+Marshall Bruce Mathers III.
