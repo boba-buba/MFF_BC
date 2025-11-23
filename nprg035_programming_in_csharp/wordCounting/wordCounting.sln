@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33516.290
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "wordCounting", "wordCounting.csproj", "{A86182F2-ECE6-4AD6-AB80-AF192568AE63}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordFrequency", "..\WordFrequency\WordFrequency.csproj", "{24FEE1F4-63CB-41A3-9BA2-CC8A556C43EB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ParagraphWordCounter", "..\ParagraphWordCounter\ParagraphWordCounter.csproj", "{9209196B-D717-4737-8F40-9A4143A75A8A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CountOrNotCount", "..\CountOrNotCount\CountOrNotCount.csproj", "{912E7C5A-01AF-4815-9B6E-DDAD242FEC38}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ParargaphWordCounter_UnitTests", "..\ParargaphWordCounter_UnitTests\ParargaphWordCounter_UnitTests.csproj", "{71C84092-6276-4932-9FDD-03956C613EE1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CountOrNotCount_UnitTests", "..\CountOrNotCount_UnitTests\CountOrNotCount_UnitTests.csproj", "{428B4687-6149-4F53-A548-7B7FB56744E4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A86182F2-ECE6-4AD6-AB80-AF192568AE63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A86182F2-ECE6-4AD6-AB80-AF192568AE63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A86182F2-ECE6-4AD6-AB80-AF192568AE63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A86182F2-ECE6-4AD6-AB80-AF192568AE63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24FEE1F4-63CB-41A3-9BA2-CC8A556C43EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24FEE1F4-63CB-41A3-9BA2-CC8A556C43EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24FEE1F4-63CB-41A3-9BA2-CC8A556C43EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24FEE1F4-63CB-41A3-9BA2-CC8A556C43EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9209196B-D717-4737-8F40-9A4143A75A8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9209196B-D717-4737-8F40-9A4143A75A8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9209196B-D717-4737-8F40-9A4143A75A8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9209196B-D717-4737-8F40-9A4143A75A8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{912E7C5A-01AF-4815-9B6E-DDAD242FEC38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{912E7C5A-01AF-4815-9B6E-DDAD242FEC38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{912E7C5A-01AF-4815-9B6E-DDAD242FEC38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{912E7C5A-01AF-4815-9B6E-DDAD242FEC38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71C84092-6276-4932-9FDD-03956C613EE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71C84092-6276-4932-9FDD-03956C613EE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71C84092-6276-4932-9FDD-03956C613EE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71C84092-6276-4932-9FDD-03956C613EE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{428B4687-6149-4F53-A548-7B7FB56744E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{428B4687-6149-4F53-A548-7B7FB56744E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{428B4687-6149-4F53-A548-7B7FB56744E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{428B4687-6149-4F53-A548-7B7FB56744E4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8593C9DB-9979-4670-95ED-84D59995477D}
+	EndGlobalSection
+EndGlobal

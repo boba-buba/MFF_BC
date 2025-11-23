@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "zapocet": {
+      "commandName": "Project",
+      "commandLineArgs": "1in.txt"
+    }
+  }
+}

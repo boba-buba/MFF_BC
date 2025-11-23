@@ -1,0 +1,82 @@
+﻿Základní pravidla
+
+    Zadání musíte splnit v časovém limitu 3 hodiny, který začíná po vysvětlení zadání a zodpovězení dotazům k zadání. Je možné pokládat dotazy i během testu, ale tak, aby nerušily vaše kolegy při práci.
+    Vaše řešení bude testováno v prostředí ReCodEx. Je tedy nutné dbát na detaily ze zadání (např. co se týče přesného obsahu chybových/informačních hlášení).
+    Hodnotí se také tvar odevzdaného souboru, tedy navrhněte vhodnou architekturu, dodržujte programátorské konvence, dbejte na úpravu, pište hezký, dobře členěný a hlavně čitelný kód. Programy bez rozumné dekompozice (např. obsahující pouze pár metod), případně programy s nečitelnými zdrojovými kódy a jim podobné nemusí být uznány!
+    Je dovoleno používat tištěné i elektronické materiály, pokud to není přímo řešení dané (nebo podobné) úlohy nebo její dílčí části. Nezapomeňte, že pokud kopírujete nějaký kód, který Vám nepatří, je nutné uvést zdroj! Není dovolena jakákoliv forma komunikace s kýmkoliv z jakéhokoliv důvodu (kromě zkoušejících) - do toho se počítá i to, že není dovolena komunikace s libovolnou umělou inteligencí (AI) nad rámec standardní IntelliSense ve Visual Studiu (tj. je zakázáno používat služby jako ChatGPT, GitHub Copilot, apod.).
+    Až bude Vaše řešení hotové, přihlaste se a vyčkejte na zkoušejícího, který s Vámi řešení projde. Pokud zkoušející najde ve Vašem řešení nějaké problémy, můžete je v rámci časového limitu odstranit.
+    Řešení je nutné splnit na 100% správnosti.
+
+Zadání: Kombinace unixových utilit "cut & paste"
+
+Vaším úkolem je naprogramovat konzolovou aplikaci, která zpracuje vstupní soubory podle nastavených přepínačů (optionů) a výstup vypíše na standartní výstup nebo do souboru.
+Přepínače.
+
+Program očekává pouze následující přepínače s povinnými argumenty, oddělené alespoň jednou mezerou, a názvy vstupních souborů. Přepínače s jednou pomlčkou platí pouze pro aktuální soubor, zatímco se dvěmi pro všechny soubory.
+
+    -f   LIST:         Field-list, seznam sloupců, obsahuje čísla sloupců, která se mají objevit na výstupu (v pořadí v jakém byly zadány v argumentech, opakovaný výskyt je povolen). V seznamu jsou sloupce číslovány od 1. a jsou bez mezery odděleny čárkou (např. 1,4,3,2). K dispozici je i operand rozmezí (-), který má vždy oba operandy ale ty mohou být i v sestupném pořadí (předchozí výběr lze zapsat i jako 1,4-2). Čísla vyšší než reálný počet sloupců jsou tiše ignorována. Ve výchozím nastavení se tisknou všechny sloupce.
+
+    -d   STRING:    Delimiter, oddělovač jednotlivých sloupců. Jeho argumentem je vždy neprázdný string o délce alespoň 1. Ve výchozím nastavení nabývá hodnoty TAB.
+
+    --od   STRING:    Output delimiter, výstupní oddělovač. Syntaxe i výchozí hodnota shodná s -d.
+
+    --out   filename:    Výstupní soubor, pokud přepínač není definovaný použije se standartní výstup.
+
+    filename:        Vstupní soubor, každý jiný řetězec než známý přepínač a jeho argument považujte za jméno souboru. Přepínače s jednou pomlčkou nacházející se za názvem souboru se na něj již nevztahují.
+
+Pokud libovolný soubor neexistuje, nelze otevřít nebo z něj nelze číst, tak program vypíše "File Error" a skončí.
+
+V řešení zohlednětě, že se celý soubor se do paměti nemusí vejít, ale výstupní řádek i vstupní řádky všech souborů (pro každý pouze 1) se do paměti najednou vejdou.
+Příklady
+
+$ cat file.in
+The quick brown fox jumps over the lazy dog 10 11 12 13.
+20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 0
+a b c d e f g h i j k l m n o p q r s t u v w z y z
+
+$ Program.exe --od "|" -f 1-3,6,11-9 -d " " file.in --out file.out
+$ Program.exe --od "|" -f 1-3,6,11-9 -d " " file.in > file.out
+$ Program.exe --od "|" -d " " -f 1-3,6,11-9 file.in > file.out
+$ Program.exe --od "|" -f 1-3,6 -d " " file.in -f 11-9 -d " " file.in --out file.out
+$ Program.exe -f 1,2,3,6,11,10,9 -d " " --od "|" file.in > file.out
+
+Všechny tyto běhy mají stejný výstup:
+
+$ cat file.out
+The|quick|brown|over|11|10|dog
+20|19|18|15|10|11|12
+a|b|c|f|k|j|i                      
+
+DirectLink na soubory: CutPasteData.zip
+FAQ - odpovědi bez otázek
+
+    program má umožnovat práci s vícero vstupními soubory najednou.
+
+    dřívější konec jednoho ze souborů není problém - ignoruje se. Viz příklad.
+
+$cat file.file.in.txt (dvakrát za sebou soubor file.in)
+
+The quick brown fox jumps over the lazy dog 10 11 12 13.
+20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 0
+a b c d e f g h i j k l m n o p q r s t u v w z y z
+The quick brown fox jumps over the lazy dog 10 11 12 13.
+20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 0
+a b c d e f g h i j k l m n o p q r s t u v w z y z
+
+
+$ Program.exe --od "|" -f 1-3,6,11-9 -d " " file.file.in.txt -d " " -f 1,13-20 file.in.txt
+
+The|quick|brown|over|11|10|dog|The|13.
+20|19|18|15|10|11|12|20|8|7|6|5|4|3|2|1
+a|b|c|f|k|j|i|a|m|n|o|p|q|r|s|t
+The|quick|brown|over|11|10|dog
+20|19|18|15|10|11|12
+a|b|c|f|k|j|i
+
+
+speciálně si všimněte konců které způsobuje příkaz:
+$ Program.exe --od "|" -d " " -f 1,13-20 file.in.txt
+
+The|13.
+20|8|7|6|5|4|3|2|1
+a|m|n|o|p|q|r|s|t

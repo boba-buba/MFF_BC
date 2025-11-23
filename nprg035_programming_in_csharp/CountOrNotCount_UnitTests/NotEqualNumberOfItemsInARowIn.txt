@@ -1,0 +1,10 @@
+banana grape lemon orange mango
+grape 4 date lemon lemon
+mango 5 mango banana date
+orange 2 orange apple kiwi
+kiwi 9  lemon date
+date 1 mango date lemon
+mango 3 mango orange cherry
+apple 4 date mango fig
+date 6 orange grape grape
+mango 1 banana banana grape

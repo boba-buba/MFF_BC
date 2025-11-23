@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34202.233
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlockAlignment", "BlockAlignment.csproj", "{5B32EB4D-EC31-4AC8-BAE0-62D09DEC45C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlockAlignment_UnitTests", "..\BlockAlignment_UnitTests\BlockAlignment_UnitTests.csproj", "{31AADD0A-8116-4AE0-AF62-A517E5D6AB7D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5B32EB4D-EC31-4AC8-BAE0-62D09DEC45C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B32EB4D-EC31-4AC8-BAE0-62D09DEC45C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B32EB4D-EC31-4AC8-BAE0-62D09DEC45C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B32EB4D-EC31-4AC8-BAE0-62D09DEC45C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31AADD0A-8116-4AE0-AF62-A517E5D6AB7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31AADD0A-8116-4AE0-AF62-A517E5D6AB7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31AADD0A-8116-4AE0-AF62-A517E5D6AB7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31AADD0A-8116-4AE0-AF62-A517E5D6AB7D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EB56EC28-D1AA-49B1-A777-1EA0B7661CA3}
+	EndGlobalSection
+EndGlobal

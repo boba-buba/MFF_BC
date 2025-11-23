@@ -1,0 +1,101 @@
+List of all ReCodEx test and their commands and the expected outputs:
+-------------------------------------------
+01 print file to the stdout
+Program.exe a.txt
+== T1.out
+
+02 print file to a file
+Program.exe --out out.out a.txt
+== T2.out
+
+03 output delimiter
+Program.exe --od '|' file_tab.in
+== T3.out
+
+04 input delimiter
+Program.exe -d " " file.in
+== T4.out
+
+05 multichar delimiter
+Program.exe -d ':a:' a.txt
+== T5.out
+
+06 multiple files
+// 1-91.out je kopie 1-9.out
+Program.exe 1-91.out 1-9.out
+== T6.out
+
+07 Line without delimiter
+Program.exe -d # -f 2 missing_delimiter.in.txt
+== T7.out
+
+07 Multiple delimiters
+Program.exe -d # --out out.out --od " :)" multiple_delimiters.in.txt
+== T8.out
+
+07 Multiple delimiters
+Program.exe -d # --out out.out --od " :)" multiple_delimiters2.in.txt
+== T9.out
+
+10 fields just one
+Program.exe -f "1" file_tab.in
+== T10.out
+
+11 fields multiple
+Program.exe -f "2,3" file_tab.in
+== T11.out
+
+12 fields repeat
+Program.exe -f "2,2,2,2,2,2" file_tab.in
+== T12.out
+
+13 fields range
+Program.exe -f 2-4 file_tab.in
+== T13.out
+
+14 fields inverse range
+Program.exe -f 4-2 file_tab.in
+== T14.out
+
+15 fields too high to print anything
+Program.exe -f "999" file_tab.in
+== T15.out
+
+16 two files different length
+Program.exe 1-9.out a.txt
+== T16.out
+
+17 multiple files different settings
+Program.exe -f "13" file_tab.in -d ':' -f "2" a.txt
+== T17.out
+
+
+// for any renamed file
+18 awful filename --ooh
+Program.exe --ooh
+== --ooh
+
+// for any renamed file
+19 awful filename -a
+Program.exe -a
+== -a
+
+Big file - multiple lines
+Program.exe -f "2" big.in
+== big_multiple.out
+
+Big file - one line
+Program.exe -f "2" -d R big_one_line.in
+== big_one.out
+
+Big files 5x new
+Program.exe -d a -f "1" big.in -f "8" -d \t big.in -f "2" -d R big.in -f "77" big.in -f "99" big.in --out big.out
+== big5new.out
+
+Big numbers
+Program.exe --od '|' -f "2" -d '#' a1M.txt -f "4" -d '#' a1M.txt
+==o1M.txt
+
+ERROR - nonexistent file
+Program.exe a.txt
+== "File Error"

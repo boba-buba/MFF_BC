@@ -1,0 +1,5 @@
+LOAD test3.1.dbdata
+LOAD test3.2.dbdata
+SELECT_FROM t1 c1 c2 c3
+SELECT_FROM t2 c1
+SELECT_FROM t3 c1

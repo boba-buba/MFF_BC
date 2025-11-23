@@ -1,0 +1,1 @@
+mesic   zbozi       typ         prodejce    mnozstvi    cena    trzba

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "SeveralFilesBlockAlignment": {
+      "commandName": "Project",
+      "commandLineArgs": "01.in 02.in ex02.out 17"
+    }
+  }
+}

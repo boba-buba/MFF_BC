@@ -1,0 +1,21 @@
+item
+IronIngot
+1 Iron,1 Fire
+Unlocked
+3
+Known
+---
+eureka
+Wheel
+1 Plank,5 Stick
+Unlocked
+Cart,Mill
+---
+item
+Cart
+10 IronIngot,2 Fire,100 Stick
+Locked
+1
+Unknown
+===
+10 Wood,5 Iron,* Fire,* Stick,10 Plank

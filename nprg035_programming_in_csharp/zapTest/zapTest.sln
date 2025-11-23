@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34511.84
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zapTest", "zapTest.csproj", "{2821B506-EE33-4226-B7A3-96DB5C6A4CE7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest_ZapTest", "..\UnitTest_ZapTest\UnitTest_ZapTest.csproj", "{90ED1CA4-AEB0-42FA-B8F3-B7EEEBD59EDF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2821B506-EE33-4226-B7A3-96DB5C6A4CE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2821B506-EE33-4226-B7A3-96DB5C6A4CE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2821B506-EE33-4226-B7A3-96DB5C6A4CE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2821B506-EE33-4226-B7A3-96DB5C6A4CE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90ED1CA4-AEB0-42FA-B8F3-B7EEEBD59EDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90ED1CA4-AEB0-42FA-B8F3-B7EEEBD59EDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90ED1CA4-AEB0-42FA-B8F3-B7EEEBD59EDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90ED1CA4-AEB0-42FA-B8F3-B7EEEBD59EDF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B05A951D-7DE7-45FA-8EAD-730991CD6C50}
+	EndGlobalSection
+EndGlobal

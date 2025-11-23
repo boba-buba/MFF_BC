@@ -1,0 +1,15 @@
+7
+hQ hK hA h2 h3
+cQ cK cA c2 c3
+c2 c3 c4 c5 c6
+hJ h6 hK h2 h7
+hJ hQ hK cA c2
+h5 d5 s8 c7 h7
+dX cX hX sX dJ
+h5 c5 c7 d5 cJ
+h2 h3 c4 c5 c6
+
+3
+dX cX hX sX dJ
+h5 c5 c7 d5 cJ
+h2 h3 c4 c5 c6

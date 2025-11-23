@@ -1,0 +1,7 @@
+DATA-BEGIN
+CUSTOMER;1;Pavel;Jezek
+CUSTOMER;2;Jan;Kofron
+CUSTOMER;3;Petr;Hnetynka
+CUSTOMER;4;Tomas;Bures
+DATA-END
+GET 1 http://www.nezarka.net/Books

@@ -1,0 +1,12 @@
+CREATE_TABLE t1 c1 c2
+CREATE_TABLE t1 c1 c2
+
+SELECT_FROM t2 c1
+INSERT_INTO t2 5
+UPDATE t2 c1 5 c1 = 5
+
+SELECT_FROM t1 c3
+UPDATE t1 c3 5 c1 = 5
+UPDATE t1 c1 5 c3 = 5
+
+LOAD nonexistingfile

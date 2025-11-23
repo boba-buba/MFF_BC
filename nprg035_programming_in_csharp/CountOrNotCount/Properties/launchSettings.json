@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CountOrNotCount": {
+      "commandName": "Project",
+      "commandLineArgs": "ZeleninaShort.txt out.txt cena"
+    }
+  }
+}

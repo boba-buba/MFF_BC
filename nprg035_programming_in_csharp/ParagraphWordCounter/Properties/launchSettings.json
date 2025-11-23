@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ParagraphWordCounter": {
+      "commandName": "Project",
+      "commandLineArgs": "WhiteCharsOnTheEOL.txt"
+    }
+  }
+}

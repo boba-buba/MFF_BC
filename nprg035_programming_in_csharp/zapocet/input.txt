@@ -1,0 +1,6 @@
+0 1 2
+dec 1 2 3
+inc 0 1
+dec 2 4 5
+inc 0 3
+halt
