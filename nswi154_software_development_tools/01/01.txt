@@ -1,0 +1,165 @@
+[koropn@fedora ~]$ mkdir nswi154
+[koropn@fedora ~]$ cd nswi154/
+[koropn@fedora nswi154]$ mkdir 01
+[koropn@fedora nswi154]$ cd 01/
+[koropn@fedora 01]$ git init
+hint: Using 'master' as the name for the initial branch. This default branch name
+hint: is subject to change. To configure the initial branch name to use in all
+hint: of your new repositories, which will suppress this warning, call:
+hint: 
+hint: 	git config --global init.defaultBranch <name>
+hint: 
+hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+hint: 'development'. The just-created branch can be renamed via this command:
+hint: 
+hint: 	git branch -m <name>
+Initialized empty Git repository in /home/koropn/nswi154/01/.git/
+[koropn@fedora 01]$ git config --global init.defaultBranch master
+[koropn@fedora 01]$ nano factorial.c
+[koropn@fedora 01]$ git st
+On branch master
+
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	factorial.c
+
+nothing added to commit but untracked files present (use "git add" to track)
+[koropn@fedora 01]$ git add factorial.c 
+[koropn@fedora 01]$ git st
+On branch master
+
+No commits yet
+
+Changes to be committed:
+  (use "git rm --cached <file>..." to unstage)
+	new file:   factorial.c
+
+[koropn@fedora 01]$ git commit -m "factorial counter"
+[master (root-commit) 75dd4dd] factorial counter
+ 1 file changed, 14 insertions(+)
+ create mode 100644 factorial.c
+[koropn@fedora 01]$ git st
+On branch master
+nothing to commit, working tree clean
+[koropn@fedora 01]$ touch main.c
+[koropn@fedora 01]$ nano main.c 
+[koropn@fedora 01]$ nano factorial.c
+[koropn@fedora 01]$ nano main.c 
+[koropn@fedora 01]$ git st
+On branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   factorial.c
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	main.c
+
+no changes added to commit (use "git add" and/or "git commit -a")
+[koropn@fedora 01]$ mkdir lib
+[koropn@fedora 01]$ mv factorial.c lib/
+[koropn@fedora 01]$ ls lib/
+factorial.c
+[koropn@fedora 01]$ ls]
+bash: ls]: command not found...
+[koropn@fedora 01]$ ls
+lib  main.c
+[koropn@fedora 01]$ git add main.c 
+[koropn@fedora 01]$ git ts
+git: 'ts' is not a git command. See 'git --help'.
+
+The most similar command is
+	st
+[koropn@fedora 01]$ git st
+On branch master
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	new file:   main.c
+
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	deleted:    factorial.c
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	lib/
+
+[koropn@fedora 01]$ git add lib/
+[koropn@fedora 01]$ git rm factorial.c 
+rm 'factorial.c'
+[koropn@fedora 01]$ git st
+On branch master
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	renamed:    factorial.c -> lib/factorial.c
+	new file:   main.c
+
+[koropn@fedora 01]$ git commit -m "code divided to lib and main"
+[master d5415c3] code divided to lib and main
+ 2 files changed, 7 insertions(+), 4 deletions(-)
+ rename factorial.c => lib/factorial.c (75%)
+ create mode 100644 main.c
+[koropn@fedora 01]$ git branch oneline
+[koropn@fedora 01]$ git br
+* master
+  oneline
+[koropn@fedora 01]$ git checkout oneline 
+Switched to branch 'oneline'
+[koropn@fedora 01]$ nano lib/factorial.c 
+[koropn@fedora 01]$ git st
+On branch oneline
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   lib/factorial.c
+
+no changes added to commit (use "git add" and/or "git commit -a")
+[koropn@fedora 01]$ git add lib/factorial.c 
+[koropn@fedora 01]$ git commit -m "output on one line"
+[oneline 5f94567] output on one line
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+[koropn@fedora 01]$ git st
+On branch oneline
+nothing to commit, working tree clean
+[koropn@fedora 01]$ git checkout master 
+Switched to branch 'master'
+[koropn@fedora 01]$ nano main.c 
+[koropn@fedora 01]$ git st
+On branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   main.c
+
+no changes added to commit (use "git add" and/or "git commit -a")
+[koropn@fedora 01]$ nano lib/square.c
+[koropn@fedora 01]$ git st
+On branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   main.c
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	lib/square.c
+
+no changes added to commit (use "git add" and/or "git commit -a")
+[koropn@fedora 01]$ nano lib/square.c 
+[koropn@fedora 01]$ git add lib/square.c
+[koropn@fedora 01]$ git commit -m "added square procedure to lib" 
+[master f61c930] added square procedure to lib
+ 1 file changed, 7 insertions(+)
+ create mode 100644 lib/square.c
+[koropn@fedora 01]$ git st
+On branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   main.c
+
+no changes added to commit (use "git add" and/or "git commit -a")

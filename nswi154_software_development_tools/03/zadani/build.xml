@@ -1,0 +1,63 @@
+<project name="FTPServer" default="dist" basedir=".">
+    <property name="src.dir" value="./src"/>
+    <property name="build.dir" value="./build"/>
+    <property name="lib.dir" value="lib"/>
+    <property name="dist.dir" value="dist"/>
+    <property name="run.output" value="build/run_output.txt"/>
+
+    <tstamp>
+      <format property="TODAY_MY" pattern="YYYYMMdd" locale="cz,CZ"/>
+    </tstamp>
+    <property name="jar.name" value="ftpserver-${TODAY_MY}.jar"/>
+
+    <path id="classpath">
+        <fileset dir="${lib.dir}" includes="*.jar"/>
+    </path>
+
+    <!-- Target: clean -->
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete file="${dist.dir}/${jar.name}"/>
+    </target>
+
+    <!-- Target: build -->
+    <target name="build" depends="clean">
+        <mkdir dir="${build.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${build.dir}" classpathref="classpath"/>
+    </target>
+
+    <!-- Target: dist -->
+    <target name="dist" depends="build">
+        <mkdir dir="${dist.dir}"/>
+        <jar destfile="${dist.dir}/${jar.name}" basedir="${build.dir}">
+            <manifest>
+                <attribute name="Project" value="FTP"/>
+                <attribute name="BuildDate" value="${TODAY_MY}"/>
+            </manifest>
+        </jar>
+        <zip destfile="${dist.dir}/src.zip">
+            <fileset dir="${src.dir}"/>
+        </zip>
+    </target>
+
+    <!-- Target: run -->
+    <target name="run" depends="dist">
+        <condition property="run.exists">
+            <and>
+                <available file="${dist.dir}/${jar.name}" type="file"/>
+                <uptodate targetfile="${dist.dir}/${jar.name}">
+                    <srcfiles dir="${src.dir}"/>
+                </uptodate>
+            </and>
+        </condition>
+
+        <fail message="The JAR file is missing or outdated. Run 'ant dist' to create or update it." unless="run.exists"/>
+
+        <java classname="org.apache.ftpserver.commandline.CommandLine" fork="true" output="${run.output}">
+            <classpath location="${dist.dir}/${jar.name}"/>
+        </java>
+    </target>
+
+    <!-- Default target -->
+    <target name="default" depends="build"/>
+</project>

@@ -1,0 +1,33 @@
+May  3 07:23:26 fedora tools[8279]: Starting the application
+May  3 07:23:47 fedora tools[8279]: Data with name `‰(Yÿ are not in memory
+May  3 08:35:18 fedora tools[12288]: Starting the application
+May  3 08:35:18 fedora tools[12288]: Standard::GetData
+May  3 08:35:18 fedora tools[12288]: Data::ExtractHTMLString
+May  3 08:35:19 fedora tools[12288]: WriteMemoryCallback
+May  3 08:35:19 fedora tools[12288]: WriteMemoryCallback
+May  3 08:35:19 fedora tools[12288]: Successfully retrieved data
+May  3 08:35:19 fedora tools[12288]: Data::GetHistoricalData
+May  3 08:35:19 fedora tools[12288]: Standard::CalculateReturns
+May  3 08:35:21 fedora tools[12288]: case 1: Add new comapny
+May  3 08:35:24 fedora tools[12288]: AllStocks::StockInMem
+May  3 08:35:24 fedora tools[12288]: AllStocks::addNewStock
+May  3 08:35:24 fedora tools[12288]: Stock::GetData
+May  3 08:35:24 fedora tools[12288]: Data::ExtractHTMLString
+May  3 08:35:25 fedora tools[12288]: WriteMemoryCallback
+May  3 08:35:25 fedora tools[12288]: WriteMemoryCallback
+May  3 08:35:25 fedora tools[12288]: Successfully retrieved data
+May  3 08:35:25 fedora tools[12288]: Data::GetHistoricalData
+May  3 08:35:25 fedora tools[12288]: Stock::CalculateReturns
+May  3 08:35:25 fedora tools[12288]: Data::ExtractHTMLString
+May  3 08:35:26 fedora tools[12288]: WriteMemoryCallback
+May  3 08:35:26 fedora tools[12288]: WriteMemoryCallback
+May  3 08:35:26 fedora tools[12288]: Successfully retrieved data
+May  3 08:36:41 fedora tools[12288]: case 5: Show Companies in Memory
+May  3 08:37:34 fedora tools[12288]: case 1: Add new comapny
+May  3 08:37:36 fedora tools[12288]: AllStocks::StockInMem
+May  3 08:37:36 fedora tools[12288]: AllStocks::addNewStock
+May  3 08:37:36 fedora tools[12288]: Stock::GetData
+May  3 08:37:36 fedora tools[12288]: Data::ExtractHTMLString
+May  3 08:37:36 fedora tools[12288]: No internet connection
+May  3 08:38:38 fedora tools[12288]: case 9: Exit
+May  3 08:38:38 fedora tools[12288]: Stopping the application

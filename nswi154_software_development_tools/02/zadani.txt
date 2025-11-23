@@ -1,0 +1,297 @@
+Nataliia Korop
+n.corop08@gmail.com
+
+Deadline: 17.3.2024
+
+Requirements:
+- You do not have to procotol absolutely everything, such as 'cd' commands,
+  'rm -rf' when the task tells you to do a 'rm -rf', 'vim file', etc.
+- Include output of commands only when explicitly requested.
+- You can write answers in Czech.
+
+Useful links and help:
+  http://www.gnu.org/software/make/manual/
+
+
+-----
+Tasks
+-----
+
+0. The "mydb" directory contains implementation of a very simple database.
+   All source code files are in the "src" subdirectory.
+
+1. Write all necessary Makefiles for the "mydb" project.
+   Satisfy the following requirements:
+	- create one Makefile at the top level (project root) and one Makefile in the 'src' subdirectory
+		- for each target, the top-level Makefile should invoke the nested Makefile (in the 'src' directory) using the recommended approach
+		- the nested Makefile should contain the actual rules for compiling source code files, removing generated object files, and so on
+	- the full build process should create three binaries (programs): testadmin, testclient, testserver
+		- each binary program should be linked against the static library libmydb.a (see below)
+		- the binary programs 'testclient' and 'testadmin' will be also linked with the following libraries: libreadline, libhistory
+		- you can use a command similar to the following one to perform correct linking: gcc -o testclient -L. testclient.c client_comm.c -lmydb -lreadline -lhistory
+		- the binary program 'testclient' must be built from these source files: testclient.c, client_comm.c
+		- the binary program 'testserver' must be built from these source files: testserver.c, server_comm.c
+		- the binary program 'testadmin' must be built from these source files: testadmin.c
+	- the build process should also create the static library libmydb.a 
+		- the library must contain object files for all source files except those specific for the binary programs (see above)
+		- use the following command to create the library file libmydb.a: ar -rcvs libmydb.a <list of object files to be included>
+	- specify proper dependencies between object files, source files (.c), and binary programs
+	- specify dependencies on header files (.h) only for "data.c" (by looking into the source code)
+		- you do *not* have to specify dependencies on header files in the case of other source files, because there is too many of them
+	- other requirements on both Makefiles
+		- support the following targets
+			all -> compiles everything (i.e., the full build)
+			clean -> deletes all the generated files
+		- define and use built-in variables for compiler and flags
+			- variable CC with the value 'gcc'
+			- variable CFLAGS with the value '-g -Wall'
+			- set values of the variables in the top-level Makefile and tell Make to propagate the values to the Makefile in the 'src' subdirectory
+		- use features supported by Make to eliminate duplication (static pattern rules, implicit rules, variables, functions), but do not over-generalize at the expense of clarity
+ 		- targets that do not correspond to real files should be marked appropriately
+
+2. Test the Makefiles by executing "make" in the root directory of "mydb".
+   Ignore all the warnings printed by GCC. The source code is quite old and does not follow the recent standards of C, but it should compile anyway.
+   Paste the output of Make here.
+
+```
+make -C src clean
+make[1]: Entering directory '/home/koropn/nswi154/SW_tools/02/mydb/src'
+rm -f *.o libmydb.a testadmin testclient testserver
+make[1]: Leaving directory '/home/koropn/nswi154/SW_tools/02/mydb/src'
+[koropn@fedora mydb]$ make
+make -C src libmydb.a
+make[1]: Entering directory '/home/koropn/nswi154/SW_tools/02/mydb/src'
+make[1]: *** No rule to make target 'src/*.o', needed by 'libmydb.a'.  Stop.
+make[1]: Leaving directory '/home/koropn/nswi154/SW_tools/02/mydb/src'
+make: *** [Makefile:18: all] Error 2
+[koropn@fedora mydb]$ make clean 
+make -C src clean
+make[1]: Entering directory '/home/koropn/nswi154/SW_tools/02/mydb/src'
+rm -f *.o libmydb.a testadmin testclient testserver
+make[1]: Leaving directory '/home/koropn/nswi154/SW_tools/02/mydb/src'
+[koropn@fedora mydb]$ make
+make -C src libmydb.a
+make[1]: Entering directory '/home/koropn/nswi154/SW_tools/02/mydb/src'
+make[1]: *** No rule to make target '%.o', needed by 'libmydb.a'.  Stop.
+make[1]: Leaving directory '/home/koropn/nswi154/SW_tools/02/mydb/src'
+make: *** [Makefile:18: all] Error 2
+[koropn@fedora mydb]$ ls src/
+btree_int.c    client_comm.h  config.c  data.h       db_main.c  error.c  index.h     memory.c           parser_commands.h  query.c   result.h       sql_parser.c  strutil.h  tabdef.c     testclient.c  textfileio.h
+btree_int.h    conds.c        config.h  db_engine.c  db_main.h  error.h  linklist.h  memory.h           parser_conds.c     query.h   server_comm.c  sql_parser.h  tabconf.c  tabdef.h     testserver.c
+client_comm.c  conds.h        data.c    db_engine.h  defs.h     index.c  Makefile    parser_commands.c  parser_conds.h     result.c  server_comm.h  strutil.c     tabconf.h  testadmin.c  textfileio.c
+[koropn@fedora mydb]$ make
+make -C src libmydb.a
+make[1]: Entering directory '/home/koropn/nswi154/SW_tools/02/mydb/src'
+gcc -g -Wall -c btree_int.c -o btree_int.o
+gcc -g -Wall -c config.c -o config.o
+gcc -g -Wall -c db_main.c -o db_main.o
+gcc -g -Wall -c error.c -o error.o
+gcc -g -Wall -c parser_conds.c -o parser_conds.o
+gcc -g -Wall -c tabconf.c -o tabconf.o
+gcc -g -Wall -c conds.c -o conds.o
+conds.c: In function ‘copy_condnode’:
+conds.c:523:25: warning: ‘cnnod’ may be used uninitialized [-Wmaybe-uninitialized]
+  523 |                         destroy_condnode(cnnod);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~
+conds.c:514:23: note: ‘cnnod’ was declared here
+  514 |         st_cond_node *cnnod;
+      |                       ^~~~~
+gcc -g -Wall -c db_engine.c -o db_engine.o
+db_engine.c: In function ‘get_resset_tree’:
+db_engine.c:97:13: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+   97 |             if (!cnnod) goto error1;
+      |             ^~
+db_engine.c:99:25: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+   99 |                         resnode = create_resnode(resnode1,resnode2,NULL,0,cnnod);
+      |                         ^~~~~~~
+db_engine.c: In function ‘join_resulttabs’:
+db_engine.c:683:36: warning: variable ‘prev’ set but not used [-Wunused-but-set-variable]
+  683 |         st_result_tab *tab1,*tab2,*prev,*cur,*copy_head;
+      |                                    ^~~~
+db_engine.c: In function ‘sort_rows’:
+db_engine.c:1106:46: warning: variable ‘cur2’ set but not used [-Wunused-but-set-variable]
+ 1106 |         st_row_data *head,*cur,*prev,*head2,*cur2,*prev2;
+      |                                              ^~~~
+db_engine.c: In function ‘remove_duplicate_rows’:
+db_engine.c:1234:13: warning: variable ‘remove’ set but not used [-Wunused-but-set-variable]
+ 1234 |         int remove;
+      |             ^~~~~~
+gcc -g -Wall -c memory.c -o memory.o
+gcc -g -Wall -c parser_commands.c -o parser_commands.o
+parser_commands.c: In function ‘parse_select’:
+parser_commands.c:381:17: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+  381 |                 if (!s) goto error1;
+      |                 ^~
+parser_commands.c:383:25: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  383 |                         selectquery->ordercol = s;
+      |                         ^~~~~~~~~~~
+gcc -g -Wall -c result.c -o result.o
+gcc -g -Wall -c strutil.c -o strutil.o
+gcc -g -Wall -c data.c -o data.o
+gcc -g -Wall -c index.c -o index.o
+index.c: In function ‘get_indexrows’:
+index.c:151:13: warning: variable ‘block’ set but not used [-Wunused-but-set-variable]
+  151 |         int block;
+      |             ^~~~~
+index.c:150:28: warning: variable ‘cur’ set but not used [-Wunused-but-set-variable]
+  150 |         st_block_no *head,*cur;
+      |                            ^~~
+index.c: In function ‘index_insertrow’:
+index.c:255:24: warning: variable ‘cur’ set but not used [-Wunused-but-set-variable]
+  255 |     st_block_no *head,*cur;
+      |                        ^~~
+index.c:254:13: warning: variable ‘block’ set but not used [-Wunused-but-set-variable]
+  254 |         int block;
+      |             ^~~~~
+index.c: In function ‘index_deleterow’:
+index.c:395:24: warning: variable ‘cur’ set but not used [-Wunused-but-set-variable]
+  395 |     st_block_no *head,*cur;
+      |                        ^~~
+index.c: In function ‘destroy_indexrow’:
+index.c:791:26: warning: ‘cur’ may be used uninitialized [-Wmaybe-uninitialized]
+  791 |                 xfree(cur->value);
+      |                       ~~~^~~~~~~
+index.c:777:23: note: ‘cur’ was declared here
+  777 |         st_index_row *cur;
+      |                       ^~~
+gcc -g -Wall -c query.c -o query.o
+gcc -g -Wall -c sql_parser.c -o sql_parser.o
+gcc -g -Wall -c tabdef.c -o tabdef.o
+gcc -g -Wall -c textfileio.c -o textfileio.o
+ar -rcvs libmydb.a btree_int.o config.o db_main.o error.o parser_conds.o tabconf.o conds.o db_engine.o memory.o parser_commands.o result.o strutil.o data.o index.o query.o sql_parser.o tabdef.o textfileio.o
+a - btree_int.o
+a - config.o
+a - db_main.o
+a - error.o
+a - parser_conds.o
+a - tabconf.o
+a - conds.o
+a - db_engine.o
+a - memory.o
+a - parser_commands.o
+a - result.o
+a - strutil.o
+a - data.o
+a - index.o
+a - query.o
+a - sql_parser.o
+a - tabdef.o
+a - textfileio.o
+make[1]: Leaving directory '/home/koropn/nswi154/SW_tools/02/mydb/src'
+make -C src testadmin
+make[1]: Entering directory '/home/koropn/nswi154/SW_tools/02/mydb/src'
+gcc -g -Wall -c testadmin.c -o testadmin.o
+gcc -g -Wall -o testadmin testadmin.o btree_int.o config.o db_main.o error.o parser_conds.o tabconf.o conds.o db_engine.o memory.o parser_commands.o result.o strutil.o data.o index.o query.o sql_parser.o tabdef.o textfileio.o -L. -lmydb -lreadline -lhistory
+make[1]: Leaving directory '/home/koropn/nswi154/SW_tools/02/mydb/src'
+make -C src testserver
+make[1]: Entering directory '/home/koropn/nswi154/SW_tools/02/mydb/src'
+gcc -g -Wall -c testserver.c -o testserver.o
+gcc -g -Wall -c server_comm.c -o server_comm.o
+server_comm.c: In function ‘wait_for_request’:
+server_comm.c:66:62: warning: passing argument 3 of ‘accept’ from incompatible pointer type [-Wincompatible-pointer-types]
+   66 |         new_sock = accept(sock,(struct sockaddr*)&clientname,&size);
+      |                                                              ^~~~~
+      |                                                              |
+      |                                                              size_t * {aka long unsigned int *}
+In file included from server_comm.c:1:
+/usr/include/sys/socket.h:307:42: note: expected ‘socklen_t * restrict’ {aka ‘unsigned int * restrict’} but argument is of type ‘size_t *’ {aka ‘long unsigned int *’}
+  307 |                    socklen_t *__restrict __addr_len);
+      |                    ~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~
+server_comm.c: In function ‘send_result’:
+server_comm.c:174:9: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+  174 |         if (!s) return 0;
+      |         ^~
+server_comm.c:176:17: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  176 |                 ret = snprintf(s,15,"%d",result->resultret);
+      |                 ^~~
+gcc -g -Wall -o testserver testserver.o server_comm.o btree_int.o config.o db_main.o error.o parser_conds.o tabconf.o conds.o db_engine.o memory.o parser_commands.o result.o strutil.o data.o index.o query.o sql_parser.o tabdef.o textfileio.o -L. -lmydb -lreadline -lhistory
+make[1]: Leaving directory '/home/koropn/nswi154/SW_tools/02/mydb/src'
+make -C src testclient
+make[1]: Entering directory '/home/koropn/nswi154/SW_tools/02/mydb/src'
+gcc -g -Wall -c testclient.c -o testclient.o
+gcc -g -Wall -c client_comm.c -o client_comm.o
+gcc -g -Wall -o testclient testclient.o client_comm.o btree_int.o config.o db_main.o error.o parser_conds.o tabconf.o conds.o db_engine.o memory.o parser_commands.o result.o strutil.o data.o index.o query.o sql_parser.o tabdef.o textfileio.o -L. -lmydb -lreadline -lhistory
+make[1]: Leaving directory '/home/koropn/nswi154/SW_tools/02/mydb/src'
+```
+
+3. Demonstrate that the dependencies work properly by invoking "make", "touch src/memory.h", "make", "touch src/testserver.c", "make". 
+   Paste the output of each command here.
+   make (1st): from 2. task
+   touch src/memory.h: nothing
+   make (2nd):
+```
+make -C src libmydb.a
+make[1]: Entering directory '/home/koropn/nswi154/SW_tools/02/mydb/src'
+make[1]: 'libmydb.a' is up to date.
+make[1]: Leaving directory '/home/koropn/nswi154/SW_tools/02/mydb/src'
+make -C src testadmin
+make[1]: Entering directory '/home/koropn/nswi154/SW_tools/02/mydb/src'
+make[1]: 'testadmin' is up to date.
+make[1]: Leaving directory '/home/koropn/nswi154/SW_tools/02/mydb/src'
+make -C src testserver
+make[1]: Entering directory '/home/koropn/nswi154/SW_tools/02/mydb/src'
+make[1]: 'testserver' is up to date.
+make[1]: Leaving directory '/home/koropn/nswi154/SW_tools/02/mydb/src'
+make -C src testclient
+make[1]: Entering directory '/home/koropn/nswi154/SW_tools/02/mydb/src'
+make[1]: 'testclient' is up to date.
+make[1]: Leaving directory '/home/koropn/nswi154/SW_tools/02/mydb/src'
+```
+touch src/testserver.c: nothing
+make (3rd):
+```
+make -C src libmydb.a
+make[1]: Entering directory '/home/koropn/nswi154/SW_tools/02/mydb/src'
+make[1]: 'libmydb.a' is up to date.
+make[1]: Leaving directory '/home/koropn/nswi154/SW_tools/02/mydb/src'
+make -C src testadmin
+make[1]: Entering directory '/home/koropn/nswi154/SW_tools/02/mydb/src'
+make[1]: 'testadmin' is up to date.
+make[1]: Leaving directory '/home/koropn/nswi154/SW_tools/02/mydb/src'
+make -C src testserver
+make[1]: Entering directory '/home/koropn/nswi154/SW_tools/02/mydb/src'
+gcc -g -Wall -c testserver.c -o testserver.o
+gcc -g -Wall -o testserver testserver.o server_comm.o btree_int.o config.o db_main.o error.o parser_conds.o tabconf.o conds.o db_engine.o memory.o parser_commands.o result.o strutil.o data.o index.o query.o sql_parser.o tabdef.o textfileio.o -L. -lmydb -lreadline -lhistory
+make[1]: Leaving directory '/home/koropn/nswi154/SW_tools/02/mydb/src'
+make -C src testclient
+make[1]: Entering directory '/home/koropn/nswi154/SW_tools/02/mydb/src'
+make[1]: 'testclient' is up to date.
+make[1]: Leaving directory '/home/koropn/nswi154/SW_tools/02/mydb/src'
+```
+
+
+4. Send all the Makefiles together with the protocol in a single archive.
+   Do not include binaries, object files, and other temporary files generated during the build.
+
+
+-------
+Survey:
+-------
+
+We use the survey to evaluate the labs (tasks) and homework assignments.
+It is completely voluntary, but useful for future tuning of the content and level of complexity of the labs.
+Most questions can be answered using the scale from 1 to 10.
+Write your answer under the corresponding question.
+
+(1) How new was the topic and content of the lab for you? - 4
+     (1 - brand new, 10 - I already knew everything)
+
+
+(2) Do you think that the content of this lab was useful? - 10
+     (1 - useless or too trivial, 10 - very useful)
+
+
+(3) How do you evaluate the level of complexity of the homework assignment? - 5
+     (1 - too trivial, 5-6 - just about right, 10 - too demanding or complex)
+
+
+(4) How do you evaluate your prior experience with the tool in the context of the homework assignment? - 5
+     (1 - I already know and can use everything, 10 - I tried everything practically for the first time)
+
+
+(5) How much time (in minutes) did you spend working on the homework assignment? - 60
+
+
+(6) Additional space for your own comments on the lab and homework assignment: 
+
+

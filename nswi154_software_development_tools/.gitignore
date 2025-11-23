@@ -1,0 +1,9 @@
+*.o
+bin/
+03/zadani/ftp/build
+03/zadani/ftp/dist
+03/zadani/ftp/lib
+03/zadani/ftp/
+04/project
+04/zadani.txt
+04/*.tgz

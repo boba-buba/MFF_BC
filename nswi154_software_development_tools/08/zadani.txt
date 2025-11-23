@@ -1,0 +1,91 @@
+Nataliia Korop
+n.corop08@gmail.com
+
+Deadline: 12.5.2024
+
+Requirements:
+- You do not have to procotol absolutely everything, such as 'cd' commands,
+  'rm -rf' when the task tells you to do a 'rm -rf', 'vim file', etc.
+- Include output of commands only when explicitly requested.
+- You can write answers in Czech.
+
+Useful links and help:
+  http://logging.apache.org/log4j/2.x/
+  http://www.gnu.org/software/libc/manual/html_node/Syslog.html
+  man pages of respective tools
+  https://visualvm.github.io/
+
+
+-----
+Tasks
+-----
+
+The main goal of this assignment is to get some practice with tools for logging and monitoring of program behavior.
+
+1. Choose your own program of a reasonable size and complexity, written in C++, Java or C# (e.g., term project / "zapoctak").
+
+2. Implement logging into the program, using some framework (library) available for the language and platform (e.g., Log4j for Java, log4net, or syslog API).
+   Configure the logging framework such that log messages are saved into the file "events.log".
+   Log some important events of your choice (such as warnings and error situations).
+   For each logged event, record also the name (ID) of the current thread, current time in seconds, and source code location (class, method), if possible.
+   Report fatal errors also to console, in addition to the file "events.log".
+
+
+3. Submit the program (source code), some kind of a diff that shows the added logging commands, and configuration of the logging framework.
+
+ For diff.txt use "cat diff.txt". Configuration is:
+ - sudo nano /etc/rsyslog.conf
+ - local0.*        /var/log/events.log
+ - sudo systemctl restart rsyslog
+
+4. Choose some long-running program in C# or Java, for example a web server or some GUI application (text editor, game).
+
+5. Use any mature runtime monitoring tool for the respective platform (VisualVM for Java, or .NET Memory Profiler) to get a report of memory usage.
+   In the case of VisualVM and Java, get the list of Java classes sorted by the size of memory (heap) fragments taken by all their instances together.
+     Record the list of Java classes roughly 5 minutes after you start the program.
+     You can provide just around top 20 classes (bit more or less is fine), depending on how many records fit on the screen of your computer.
+   In the case of C#/.NET, use the .NET Memory Profiler (that should be available in recent Visual Studio) to get the total amount of memory used by all instances of each individual class.
+     Record the information (in the form of a screenshot or text file) at some point during the program execution.
+     The profiler can be downloaded here: https://marketplace.visualstudio.com/items?itemName=SciTechSoftware.NETMemoryProfiler.
+
+The report is in file simpleWebServer.diagsession, file can be opened in VS. When I tried to run .NETMemoryProfiler on apps that werent mine, I could only see the whole memory usage, there were no details.
+I suppose it was because I did not have source code of those programs. Therefore I desided to run profiler on one of my Advanced C# assignments. Assignment was to implement simple Web server. In the file 
+simpleWebServer.diagsession I was able to find detailed information about memory usage by the program. 
+
+6. Submit the report of memory usage in some form (a text file or screenshot).
+
+7. Pick some rather mature tool for measuring test coverage of projects in your preferred language (Java or C#) and use it on your own large program with unit tests, just to see how much your code is really covered by tests that you have written.
+   Submit the report of test coverage in some form (a text file or screenshot).
+
+
+-------
+Survey:
+-------
+
+We use the survey to evaluate the labs (tasks) and homework assignments.
+It is completely voluntary, but useful for future tuning of the content and level of complexity of the labs.
+Most questions can be answered using the scale from 1 to 10.
+Write your answer under the corresponding question.
+
+(1) How new was the topic and content of the lab for you?
+     (1 - brand new, 10 - I already knew everything) 3
+
+
+(2) Do you think that the content of this lab was useful?
+     (1 - useless or too trivial, 10 - very useful) 7
+
+
+(3) How do you evaluate the level of complexity of the homework assignment?
+     (1 - too trivial, 5-6 - just about right, 10 - too demanding or complex) 5
+
+
+(4) How do you evaluate your prior experience with the tool in the context of the homework assignment?
+     (1 - I already know and can use everything, 10 - I tried everything practically for the first time) 10
+
+
+(5) How much time (in minutes) did you spend working on the homework assignment? 200
+
+
+(6) Additional space for your own comments on the lab and homework assignment:
+ 
+

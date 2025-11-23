@@ -1,0 +1,613 @@
+[1mdiff --git a/tools/tools/CMakeLists.txt b/tools/tools/CMakeLists.txt[m
+[1mindex 0ba98f6..e9ba8c0 100644[m
+[1m--- a/tools/tools/CMakeLists.txt[m
+[1m+++ b/tools/tools/CMakeLists.txt[m
+[36m@@ -4,7 +4,7 @@[m
+ #[m
+ [m
+ # Set the Vcpkg directory[m
+[31m-set(VCPKG_ROOT "/vcpkg")[m
+[32m+[m[32mset(VCPKG_ROOT "/home/koropn/vcpkg")[m
+ [m
+ [m
+ # Find and configure the desired package(s)[m
+[36m@@ -70,7 +70,7 @@[m [mtarget_link_libraries(tools PRIVATE unofficial::gumbo::gumbo)[m
+ [m
+ [m
+ if (CMAKE_VERSION VERSION_GREATER 3.12)[m
+[31m-  set_property(TARGET tools PROPERTY CXX_STANDARD 20)[m
+[32m+[m[32m  set_property(TARGET tools PROPERTY CXX_STANDARD 26)[m
+ endif()[m
+ [m
+[31m-# TODO: Add tests and install targets if needed.[m
+[32m+[m[32m# TODO: Add tests and install targets if needed.[m
+\ No newline at end of file[m
+[1mdiff --git a/tools/tools/DataRetrieval.cpp b/tools/tools/DataRetrieval.cpp[m
+[1mindex e1b9d41..e134c4c 100644[m
+[1m--- a/tools/tools/DataRetrieval.cpp[m
+[1m+++ b/tools/tools/DataRetrieval.cpp[m
+[36m@@ -1,17 +1,18 @@[m
+ #include "DataRetrieval.h"[m
+ #include "Utilities.h"[m
+ #include "data.h"[m
+[31m-[m
+[32m+[m[32m#include <syslog.h>[m
+ [m
+ static size_t[m
+ WriteMemoryCallback(void* contents, size_t size, size_t nmemb, void* userp)[m
+ {[m
+[32m+[m[32m    syslog(LOG_INFO, "WriteMemoryCallback");[m
+     size_t realsize = size * nmemb;[m
+     struct MemoryStruct* mem = (struct MemoryStruct*)userp;[m
+ [m
+     char* ptr = (char*)realloc(mem->memory, mem->size + realsize + 1);[m
+     if (!ptr) {[m
+[31m-        //printf("not enough memory (realloc returned NULL)\n");[m
+[32m+[m[32m        syslog(LOG_CRIT, "No memory available for the data");[m
+         return 0;[m
+     }[m
+ [m
+[36m@@ -25,11 +26,12 @@[m [mWriteMemoryCallback(void* contents, size_t size, size_t nmemb, void* userp)[m
+ [m
+ void Data::ExtractHTMLString(const char*& url)[m
+ {[m
+[32m+[m[32m    syslog(LOG_INFO, "Data::ExtractHTMLString");[m
+     CURL* curl_handle;[m
+     CURLcode res;[m
+ [m
+     this->chunk.memory = (char*)malloc(1);  // will be grown as needed by the realloc above [m
+[31m-    this->chunk.size = 0;    // no data at this point [m
+[32m+[m[32m    this->chunk.size = 0;    // no data at this point[m
+ [m
+     curl_global_init(CURL_GLOBAL_ALL);[m
+     curl_handle = curl_easy_init();[m
+[36m@@ -42,15 +44,17 @@[m [mvoid Data::ExtractHTMLString(const char*& url)[m
+     res = curl_easy_perform(curl_handle);[m
+ [m
+     if (res != CURLE_OK) {[m
+[32m+[m[32m        syslog(LOG_EMERG, "No internet connection");[m
+         throw std::runtime_error( "Check your Internet Connection\n");[m
+     }[m
+[31m-    [m
+[32m+[m[32m    syslog(LOG_INFO, "Successfully retrieved data");[m
+     curl_easy_cleanup(curl_handle);[m
+     curl_global_cleanup();[m
+ }[m
+ [m
+ int Data::GetHistoricalData()[m
+ {[m
+[32m+[m[32m    syslog(LOG_INFO, "Data::GetHistoricalData");[m
+     Parser::GetDataFromNodeTable(this->chunk.memory, this->ClosePrices, this->Dates);[m
+     free(this->chunk.memory); this->chunk.size = 0;[m
+     for (std::size_t i = 0; i < this->Dates.size(); ++i)[m
+[36m@@ -62,8 +66,9 @@[m [mint Data::GetHistoricalData()[m
+ [m
+ void Stock::GetEPSData()[m
+ {[m
+[32m+[m[32m    syslog(LOG_INFO, "Stock::GetEPSData");[m
+     std::string currentDate = Dates[0];[m
+[31m-    auto it = eps_.rbegin(); [m
+[32m+[m[32m    auto it = eps_.rbegin();[m
+ [m
+     std::string ReleasedEPSDate = (*it)[0];[m
+     if (ReleasedEPSDate.size() < 10) ReleasedEPSDate = '0' + ReleasedEPSDate;[m
+[36m@@ -75,8 +80,17 @@[m [mvoid Stock::GetEPSData()[m
+ [m
+ void Stock::CalculateAbnormalReturns(const std::vector<double>& spyReturns)[m
+ {[m
+[31m-    if (pos == ClosePrices.size()) throw std::runtime_error("During this date stock prices were unknown.\nAbnormal Returns can not be calculated.\n");[m
+[31m-    if (pos == 0) throw std::runtime_error("Actual EPS was released today.\nAbnormal Returns can not be calculated.\n");[m
+[32m+[m[32m    syslog(LOG_INFO, "Stock::CalculateAbnormalReturns");[m
+[32m+[m[32m    if (pos == ClosePrices.size())[m
+[32m+[m[32m    {[m
+[32m+[m[32m        syslog(LOG_WARNING, "No data available for calculating abnormal returns.");[m
+[32m+[m[32m        throw std::runtime_error("During this date stock prices were unknown.\nAbnormal Returns can not be calculated.\n");[m
+[32m+[m[32m    }[m
+[32m+[m[32m    if (pos == 0)[m
+[32m+[m[32m    {[m
+[32m+[m[32m        syslog(LOG_WARNING, "No data available for calculating abnormal returns. EPS was released today.");[m
+[32m+[m[32m        throw std::runtime_error("Actual EPS was released today.\nAbnormal Returns can not be calculated.\n");[m
+[32m+[m[32m    }[m
+     std::vector<std::size_t> intervals {30, pos, Returns.size() - pos-1, spyReturns.size() - pos - 1 };[m
+     this->interval = *(std::min_element(intervals.begin(), intervals.end()));[m
+     std::size_t priceCount = (interval) * 2;[m
+[36m@@ -88,9 +102,14 @@[m [mvoid Stock::CalculateAbnormalReturns(const std::vector<double>& spyReturns)[m
+ [m
+ int Stock::GetData()[m
+ {[m
+[32m+[m[32m    syslog(LOG_INFO, "Stock::GetData");[m
+     Data::ExtractHTMLString(this->urlHistory_);[m
+     int DataToStock = this->GetHistoricalData();[m
+[31m-    if (DataToStock != 0) { return -1; }[m
+[32m+[m
+[32m+[m[32m    if (DataToStock != 0)[m
+[32m+[m[32m    {[m
+[32m+[m[32m        return -1;[m
+[32m+[m[32m    }[m
+     CalculateReturns();[m
+     Data::ExtractHTMLString(this->urlAnalysis_);[m
+     this->eps_ = std::move(Parser::GetEPSTable(this->chunk.memory));[m
+[36m@@ -100,7 +119,8 @@[m [mint Stock::GetData()[m
+ }[m
+ [m
+ int Standard::GetData()[m
+[31m-{    [m
+[32m+[m[32m{[m
+[32m+[m[32m    syslog(LOG_INFO, "Standard::GetData");[m
+     Data::ExtractHTMLString(this->urlHistory_);[m
+     int DataToStock = this->GetHistoricalData();[m
+     if (DataToStock != 0) { return -1; }[m
+[36m@@ -110,6 +130,7 @@[m [mint Standard::GetData()[m
+ [m
+ void Stock::CalculateReturns()[m
+ {[m
+[32m+[m[32m    syslog(LOG_INFO, "Stock::CalculateReturns");[m
+     for (std::size_t i = 1; i < ClosePrices.size(); i++)[m
+     {[m
+         Returns.push_back((ClosePrices[i] - ClosePrices[i - 1]) / ClosePrices[i - 1]);[m
+[36m@@ -118,6 +139,7 @@[m [mvoid Stock::CalculateReturns()[m
+ [m
+ void Standard::CalculateReturns()[m
+ {[m
+[32m+[m[32m    syslog(LOG_INFO, "Standard::CalculateReturns");[m
+     for (std::size_t i = 1; i < ClosePrices.size(); i++)[m
+     {[m
+         ReturnsStandard.push_back((ClosePrices[i] - ClosePrices[i - 1]) / ClosePrices[i - 1]);[m
+[1mdiff --git a/tools/tools/DataRetrieval.h b/tools/tools/DataRetrieval.h[m
+[1mindex ce12b82..150ff4d 100644[m
+[1m--- a/tools/tools/DataRetrieval.h[m
+[1m+++ b/tools/tools/DataRetrieval.h[m
+[36m@@ -22,7 +22,7 @@[m [mstruct MemoryStruct {[m
+ using vvs = std::vector<std::vector<std::string>>;[m
+ class Data[m
+ {[m
+[31m-protected:	[m
+[32m+[m[32mprotected:[m
+ 	const char* urlHistory_ = "";[m
+ 	const char* urlAnalysis_ = "";[m
+ 	void ExtractHTMLString(const char*& url);[m
+[36m@@ -59,7 +59,7 @@[m [mpublic:[m
+ 	Stock(const char* t, const char* t2) :Data(t, t2){}[m
+ 	virtual ~Stock() {}[m
+ 	virtual int GetData();[m
+[31m-	virtual void ShowData();	[m
+[32m+[m	[32mvirtual void ShowData();[m
+ 	virtual void CalculateAbnormalReturns(const std::vector<double>& spyReturns);[m
+ 	virtual const std::vector<std::string>&  GetDates() const{ return Dates; }[m
+ 	virtual const std::vector<double>& GetTimeSeries() const { return ClosePrices; }[m
+[36m@@ -71,12 +71,12 @@[m [mpublic:[m
+ };[m
+ [m
+ [m
+[31m-class Standard :public Data //default SPY[m
+[32m+[m[32mclass Standard : public Data //default SPY[m
+ {[m
+[31m-	[m
+[32m+[m
+ public:[m
+ 	Standard(const char* t, const char* t2 = "") :Data(t, t2) {}[m
+[31m-	virtual ~Standard() {}	[m
+[32m+[m	[32mvirtual ~Standard() {}[m
+ 	virtual int GetData();[m
+ 	virtual void ShowData() {};[m
+ 	virtual void CalculateAbnormalReturns(const std::vector<double>&) {};[m
+[1mdiff --git a/tools/tools/ECalculator.cpp b/tools/tools/ECalculator.cpp[m
+[1mindex ad628e4..94afbbe 100644[m
+[1m--- a/tools/tools/ECalculator.cpp[m
+[1m+++ b/tools/tools/ECalculator.cpp[m
+[36m@@ -1,7 +1,10 @@[m
+[32m+[m[32m#include <syslog.h>[m
+ #include "ECalculator.h"[m
+ [m
+[32m+[m
+ vd MACalculator::calculateMA()[m
+ {[m
+[32m+[m	[32msyslog(LOG_INFO, "MACalculator::calculateMA");[m
+ 	vd ma;[m
+ 	double sum = 0;[m
+ 	for (std::size_t i = 0; i < prices_.size(); ++i)[m
+[36m@@ -18,6 +21,7 @@[m [mvd MACalculator::calculateMA()[m
+ [m
+ vd MACalculator::calculateEMA()[m
+ {[m
+[32m+[m	[32msyslog(LOG_INFO, "MACalculator::calculateEMA");[m
+ 	vd ema;[m
+ 	double sum = 0;[m
+ 	double multiplier = 2.0 / (numPeriods_ + 1);[m
+[36m@@ -52,6 +56,7 @@[m [mMACalculator &MACalculator::operator=(const MACalculator& ma)[m
+ [m
+ double VolatilityCalculator::rangeVolatility()[m
+ {[m
+[32m+[m	[32msyslog(LOG_INFO, "VolatilityCalculator::rangeVolatility");[m
+ 	if (prices_.size() < 2)[m
+ 	{[m
+ 		return 0;[m
+[36m@@ -68,6 +73,7 @@[m [mdouble VolatilityCalculator::rangeVolatility()[m
+ [m
+ double VolatilityCalculator::avgDailyRange()[m
+ {[m
+[32m+[m	[32msyslog(LOG_INFO, "VolatilityCalculator::avgDailyRange");[m
+ 	std::size_t n = prices_.size();[m
+ 	if (n < 2) return 0;[m
+ [m
+[36m@@ -93,6 +99,7 @@[m [mVolatilityCalculator& VolatilityCalculator::operator=(const VolatilityCalculator[m
+ [m
+ double CorrelationCalculator::correlation()[m
+ {[m
+[32m+[m	[32msyslog(LOG_INFO, "CorrelationCalculator::correlation");[m
+ 	double sum = 0;[m
+ 	double meanA = mean(this->pricesA_);[m
+ 	double meanB = mean(this->pricesB_);[m
+[36m@@ -111,7 +118,7 @@[m [mdouble CorrelationCalculator::correlation()[m
+ 	return sum / (minimum - 1);[m
+ }[m
+ [m
+[31m-CorrelationCalculator& CorrelationCalculator::operator= (const CorrelationCalculator& c)[m
+[32m+[m[32mCorrelationCalculator& CorrelationCalculator::operator=(const CorrelationCalculator& c)[m
+ {[m
+ 	if (this != &c)[m
+ 	{[m
+[1mdiff --git a/tools/tools/ECalculator.h b/tools/tools/ECalculator.h[m
+[1mindex 43f702e..e9a6bea 100644[m
+[1m--- a/tools/tools/ECalculator.h[m
+[1m+++ b/tools/tools/ECalculator.h[m
+[36m@@ -21,8 +21,8 @@[m [mpublic:[m
+ 	MACalculator& operator=(const MACalculator&);[m
+ 	virtual double mean(const vd&) {return 0;}[m
+ 	virtual double stdDev(const vd&) {return 0;}[m
+[31m-	vd calculateMA(); [m
+[31m-	vd calculateEMA(); [m
+[32m+[m	[32mvd calculateMA();[m
+[32m+[m	[32mvd calculateEMA();[m
+ private:[m
+ 	std::size_t numPeriods_ = 5;[m
+ 	vd prices_;[m
+[36m@@ -75,7 +75,7 @@[m [mpublic:[m
+ 		{[m
+ 			sum += p[i];[m
+ 		}[m
+[31m-		return sum / p.size();	[m
+[32m+[m		[32mreturn sum / p.size();[m
+ 	}[m
+ [m
+ 	virtual double stdDev(const vd& prices)[m
+[1mdiff --git a/tools/tools/GumboParser.cpp b/tools/tools/GumboParser.cpp[m
+[1mindex 80c8a39..174d7a4 100644[m
+[1m--- a/tools/tools/GumboParser.cpp[m
+[1m+++ b/tools/tools/GumboParser.cpp[m
+[36m@@ -1,3 +1,4 @@[m
+[32m+[m[32m#include <syslog.h>[m
+ #include "GumboParser.h"[m
+ [m
+ namespace Parser {[m
+[36m@@ -84,13 +85,13 @@[m [mnamespace Parser {[m
+ 	}[m
+ [m
+ 	//Table[m
+[31m-	[m
+[32m+[m
+ 	std::vector<std::string> getCellsFromRow(const GumboNode* row)[m
+ 	{[m
+ 		auto r = FindIf(row, [](const GumboNode* cell) {[m
+ 			return (NodeTagEqual(cell, GUMBO_TAG_TH) || NodeTagEqual(cell, GUMBO_TAG_TD));[m
+ 		});[m
+[31m-		[m
+[32m+[m
+ 		std::vector<std::string> result;[m
+ 		for (auto it = r.begin(); it != r.end(); ++it)[m
+ 		{[m
+[36m@@ -105,7 +106,7 @@[m [mnamespace Parser {[m
+ 		r = FindIf(node, [](const GumboNode* row) {[m
+ 			return NodeTagEqual(row, GUMBO_TAG_TR);[m
+ 		});[m
+[31m-		return r;			[m
+[32m+[m		[32mreturn r;[m
+ 	}[m
+ [m
+ 	const GumboNode* GetTBody(const GumboNode* node)[m
+[36m@@ -160,13 +161,12 @@[m [mnamespace Parser {[m
+ 					{[m
+ 						ClosePrices.push_back(std::stod(row[columnClose]));[m
+ 						Dates.push_back(row[columnDates]);[m
+[31m-					[m
+ 					}[m
+ 				}[m
+[31m-			}	[m
+[32m+[m			[32m}[m
+ 		}[m
+ 	}[m
+[31m-	[m
+[32m+[m
+ 	vvs GetEPSTable(char*& data_html)[m
+ 	{[m
+ 		vvs eps;[m
+[36m@@ -174,7 +174,7 @@[m [mnamespace Parser {[m
+ 		std::vector<const GumboNode*> tables = FindIf(output->root, [](const GumboNode* table) {[m
+ 			return NodeTagEqual(table, GUMBO_TAG_TABLE);[m
+ 		});[m
+[31m-		if (tables.size() == 0) throw std::runtime_error("no Analysis link to create EPS data");[m
+[32m+[m		[32mif (tables.size() < 2) throw std::runtime_error("no Analysis link to create EPS data");[m
+ 		auto rows = getRowsFromTable(tables[2]);[m
+ 		std::vector<std::string> headers = getCellsFromRow(rows[0]);[m
+ 		std::vector<std::string> epsEst = getCellsFromRow(rows[1]);[m
+[1mdiff --git a/tools/tools/GumboParser.h b/tools/tools/GumboParser.h[m
+[1mindex 62322cb..ed8ceef 100644[m
+[1m--- a/tools/tools/GumboParser.h[m
+[1m+++ b/tools/tools/GumboParser.h[m
+[36m@@ -44,11 +44,11 @@[m [mnamespace Parser[m
+ [m
+ 	//Table[m
+ 	std::vector<std::string> getCellsFromRow(const GumboNode* row);[m
+[31m-	[m
+[32m+[m
+ 	std::vector<const GumboNode*> getRowsFromTable(const GumboNode* node);[m
+ [m
+ 	void GetDataFromNodeTable(char*& data_html, std::vector<double>& ClosePrices, std::vector<std::string>& Dates);[m
+[31m-	[m
+[32m+[m
+ 	vvs GetEPSTable(char*& data_html);[m
+ };[m
+ [m
+[1mdiff --git a/tools/tools/data.h b/tools/tools/data.h[m
+[1mindex 15c966e..2be4911 100644[m
+[1m--- a/tools/tools/data.h[m
+[1m+++ b/tools/tools/data.h[m
+[36m@@ -6,6 +6,7 @@[m
+ #include "gumbo.h"[m
+ #include <map>[m
+ #include "DataRetrieval.h"[m
+[32m+[m[32m#include <syslog.h>[m
+ [m
+ [m
+ [m
+[36m@@ -18,7 +19,7 @@[m [mpublic:[m
+ 		Standard SPY(spy);[m
+ 		SPY.GetData();[m
+ 		stocks.emplace( "SPY", std::make_unique<Standard>(SPY) );[m
+[31m-		[m
+[32m+[m
+ 	}[m
+ 	void ShowCompanies()[m
+ 	{[m
+[36m@@ -26,20 +27,24 @@[m [mpublic:[m
+ 		{[m
+ 			if (it->first != "SPY")[m
+ 				std::cout << it->first << std::endl;[m
+[31m-		}	[m
+[32m+[m		[32m}[m
+ 	}[m
+[32m+[m
+ 	int RemoveCompany(std::string& ticker)[m
+ 	{[m
+[31m-		[m
+[32m+[m		[32msyslog(LOG_INFO, "AllStocks::RemoveCompany");[m
+ 		return stocks.erase(ticker);[m
+ 	}[m
+[32m+[m
+ 	auto findStockInMem(std::string& ticker)[m
+ 	{[m
+[31m-		return stocks.find(ticker);	[m
+[32m+[m		[32msyslog(LOG_INFO, "AllStocks::findStockInMem");[m
+[32m+[m		[32mreturn stocks.find(ticker);[m
+ 	}[m
+[31m-	[m
+[32m+[m
+ 	bool StockInMem(std::string& ticker)[m
+ 	{[m
+[32m+[m		[32msyslog(LOG_INFO, "AllStocks::StockInMem");[m
+ 		auto it = stocks.find(ticker);[m
+ 		if (it != stocks.end())[m
+ 		{[m
+[36m@@ -47,25 +52,43 @@[m [mpublic:[m
+ 		}[m
+ 		return false;[m
+ 	}[m
+[32m+[m
+ 	auto GetStock(std::string& ticker)[m
+ 	{[m
+[32m+[m		[32msyslog(LOG_INFO, "AllStocks::GetStock");[m
+ 		if (StockInMem(ticker))[m
+ 		{[m
+[32m+[m			[32msyslog(LOG_INFO, "Data with name %s are found in memory\n", ticker);[m
+ 			auto it = findStockInMem(ticker);[m
+ 			return it;[m
+ 		}[m
+[31m-		else throw std::runtime_error("Company Data not in Memory");[m
+[31m-	[m
+[32m+[m		[32melse[m
+[32m+[m		[32m{[m
+[32m+[m			[32msyslog(LOG_NOTICE, "Data with name %s are not in memory\n", ticker);[m
+[32m+[m			[32mthrow std::runtime_error("Company Data not in Memory");[m
+[32m+[m		[32m}[m
+ 	}[m
+[32m+[m
+ 	void addNewStock(std::string& t)[m
+ 	{[m
+[32m+[m		[32msyslog(LOG_INFO, "AllStocks::addNewStock");[m
+[32m+[m		[32mprintf("%s\n", t);[m
+ 		std::string historyLink = link(t, history);[m
+ 		std::string analysisLink = link(t, analysis);[m
+[32m+[m
+ 		Stock s(historyLink.c_str(), analysisLink.c_str());[m
+[32m+[m
+ 		s.GetData();[m
+ 		stocks.emplace(t, std::make_unique<Stock>(std::move(s)));[m
+[32m+[m
+[32m+[m		[32msyslog(LOG_INFO, "New stock %s was added successfully\n", t);[m
+ 	}[m
+[31m-	void SetTicker(std::string& t) { ticker = t; }[m
+[32m+[m
+[32m+[m	[32mvoid SetTicker(std::string& t)[m
+[32m+[m	[32m{[m
+[32m+[m		[32mticker = t;[m
+[32m+[m	[32m}[m
+[32m+[m
+ 	std::string link(std::string& name, std::string& type)[m
+ 	{[m
+ 		return urlA + name + type + urlB + name;[m
+[36m@@ -78,9 +101,8 @@[m [mprivate:[m
+ 	std::string urlB = "?p=";[m
+ 	std::string srcURLhistory = ""; // urlA + ticker + analysis + urlB + ticker;[m
+ 	std::string srcURLanalysis = "";[m
+[32m+[m	[32mstd::map<std::string, D> stocks;[m
+ [m
+[31m-	std::map<std::string, D> stocks; [m
+[31m-	[m
+ };[m
+ [m
+ [m
+[1mdiff --git a/tools/tools/main_tools.cpp b/tools/tools/main_tools.cpp[m
+[1mindex 24d2117..2ea0cfc 100644[m
+[1m--- a/tools/tools/main_tools.cpp[m
+[1m+++ b/tools/tools/main_tools.cpp[m
+[36m@@ -2,6 +2,7 @@[m
+ #include "DataRetrieval.h"[m
+ #include "ECalculator.h"[m
+ #include "data.h"[m
+[32m+[m[32m#include <syslog.h>[m
+ [m
+ [m
+ static bool CheckNumber(std::string& n, int maxNumber)[m
+[36m@@ -41,7 +42,7 @@[m [mstatic void Options(std::size_t& num)[m
+         std::cin >> temp;[m
+     }[m
+     num = std::stoi(temp);[m
+[31m-    [m
+[32m+[m
+ }[m
+ [m
+ static void NameToUpper(std::string& s)[m
+[36m@@ -54,7 +55,9 @@[m [mstatic void NameToUpper(std::string& s)[m
+ [m
+ int main()[m
+ {[m
+[31m-    try [m
+[32m+[m[32m    openlog("tools", LOG_CONS | LOG_PID, LOG_LOCAL0);[m
+[32m+[m[32m    syslog(LOG_INFO, "Starting the application");[m
+[32m+[m[32m    try[m
+     {[m
+         AllStocks stocks;[m
+         std::size_t option = 0;[m
+[36m@@ -65,6 +68,7 @@[m [mswitchStart:[m
+         {[m
+         case 1:[m
+             {[m
+[32m+[m[32m                syslog(LOG_INFO, "case 1: Add new comapny");[m
+                 std::cout << "Enter symbol of the Company\n";[m
+                 std::cin >> name;[m
+                 NameToUpper(name);[m
+[36m@@ -83,12 +87,13 @@[m [mswitchStart:[m
+                 else[m
+                 {[m
+                     std::cout << "Company data already in the Memory,\nif You want to add new data, you must remove\nCompany data from the Memory first with command 8.\nAnd then add data again\n";[m
+[31m-                }   [m
+[32m+[m[32m                }[m
+                 Options(option);[m
+                 goto switchStart;[m
+             }[m
+         case 2:[m
+             {[m
+[32m+[m[32m                syslog(LOG_INFO, "case 2: Calculate MA and EMA");[m
+                 std::string periods;[m
+                 std::cout << "Enter symbol of the Company\n";[m
+                 std::cin >> name; NameToUpper(name);[m
+[36m@@ -96,7 +101,7 @@[m [mswitchStart:[m
+                 {[m
+                     auto stock = stocks.GetStock(name);[m
+                     const vd& prices = (*(stock->second)).GetTimeSeries();[m
+[31m-                    [m
+[32m+[m
+                     std::size_t maxPeriods = prices.size();[m
+                     std::cout << "Enter number of periods, it must be less than\nnumber of prices stored in memory, which is " << maxPeriods << std::endl;[m
+ [m
+[36m@@ -106,12 +111,12 @@[m [mswitchStart:[m
+                         std::cout << "number, which is less than "<< maxPeriods << " must be entered\n";[m
+                         std::cin >> periods;[m
+                     }[m
+[31m-                    [m
+[32m+[m
+                     if (maxPeriods <= std::stoi(periods))[m
+                     {[m
+                         throw std::runtime_error("number of periods must be less than number of prices above");[m
+                     }[m
+[31m-                        [m
+[32m+[m
+                     MACalculator calculator(std::stoi(periods), prices);[m
+                     vd ma = calculator.calculateMA();[m
+                     vd ema = calculator.calculateEMA();[m
+[36m@@ -124,12 +129,13 @@[m [mswitchStart:[m
+                 catch (std::exception& e)[m
+                 {[m
+                     std::cout << e.what() << std::endl;[m
+[31m-                } [m
+[32m+[m[32m                }[m
+                 Options(option);[m
+                 goto switchStart;[m
+             }[m
+         case 3:[m
+[31m-            { [m
+[32m+[m[32m            {[m
+[32m+[m[32m                syslog(LOG_INFO, "case 3: Calculate Volatility");[m
+                 try {[m
+                     std::cout << "Enter symbol of the Company\n";[m
+                     std::cin >> name; NameToUpper(name);[m
+[36m@@ -154,6 +160,7 @@[m [mswitchStart:[m
+             }[m
+         case 4:[m
+             {[m
+[32m+[m[32m                syslog(LOG_INFO, "case 4: Compare two companies with correlation");[m
+                 try {[m
+                     std::cout << "Enter symbol of the first Company to compare\n";[m
+                     std::cin >> name; NameToUpper(name);[m
+[36m@@ -176,6 +183,7 @@[m [mswitchStart:[m
+             }[m
+         case 5:[m
+             {[m
+[32m+[m[32m                syslog(LOG_INFO, "case 5: Show Companies in Memory");[m
+                 std::cout << "Companies with data saved in Memory\n";[m
+                 stocks.ShowCompanies();[m
+                 Options(option);[m
+[36m@@ -183,6 +191,7 @@[m [mswitchStart:[m
+             }[m
+         case 6:[m
+             {[m
+[32m+[m[32m                syslog(LOG_INFO, "case 6: Calculate Abnormal Returns before and after EPS was announced");[m
+                 try {[m
+                     std::cout << "Enter symbol of the Company\n";[m
+                     std::cin >> name; NameToUpper(name);[m
+[36m@@ -202,6 +211,7 @@[m [mswitchStart:[m
+             }[m
+         case 7:[m
+             {[m
+[32m+[m[32m                syslog(LOG_INFO, "case 7: Show Company Data");[m
+                 try {[m
+                     std::cout << "Enter symbol of the Company\n";[m
+                     std::cin >> name; NameToUpper(name);[m
+[36m@@ -217,6 +227,7 @@[m [mswitchStart:[m
+             }[m
+         case 8:[m
+             {[m
+[32m+[m[32m                syslog(LOG_INFO, "case 8: Remove Company from Memory");[m
+                 std::cout << "Enter symbol of the Company\n";[m
+                 std::cin >> name; NameToUpper(name);[m
+                 int del = stocks.RemoveCompany(name);[m
+[36m@@ -227,6 +238,7 @@[m [mswitchStart:[m
+             }[m
+         case 9:[m
+             {[m
+[32m+[m[32m                syslog(LOG_INFO, "case 9: Exit");[m
+                 option = 8;[m
+                 break;[m
+             }[m
+[36m@@ -234,7 +246,10 @@[m [mswitchStart:[m
+     }[m
+     catch (std::exception& e)[m
+     {[m
+[32m+[m[32m        syslog(LOG_ALERT, "Exception");[m
+         std::cout << e.what() << std::endl;[m
+     }[m
+[31m-        return 0;[m
+[32m+[m[32m    syslog(LOG_INFO, "Stopping the application");[m
+[32m+[m[32m    closelog();[m
+[32m+[m[32m    return 0;[m
+ }[m
