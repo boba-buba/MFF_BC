@@ -14,3 +14,4 @@
 - Computer Systems (NSWI170) (2021-2022)
 - Programming of Web Applications (NSWI142) (2022-2023)
 - Modern Database Systems (NDBI040) (2022-2023)
+- Programming in C# (NPRG035) (2023-2024)
