@@ -1,0 +1,10 @@
+# Basic address space tests (required)
+kernel as/basic
+kernel as/fault
+kernel as/shared
+kernel as/large:m4096
+kernel as/asids
+kernel as/mapping1:m3768
+kernel as/mapping1:m1156
+kernel as/mapping2:m4032
+kernel as/mapping2:m1284
