@@ -1,0 +1,20 @@
+# Doxyfile configuration
+
+# Project information
+PROJECT_NAME           = "cmd_args_parser"
+PROJECT_NUMBER         = "1.0"
+PROJECT_BRIEF          = "library for parsing command-line arguments"
+
+# Output directory
+OUTPUT_DIRECTORY       = lib/docs
+
+# Input files
+USE_MDFILE_AS_MAINPAGE = APIdoc.md
+INPUT                  = lib/include \
+                         APIdoc.md
+RECURSIVE              = YES
+
+# Exclude patterns
+EXCLUDE_PATTERNS       = */build/*
+
+# Other configuration options...
